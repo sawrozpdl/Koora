@@ -1,12 +1,18 @@
 # Koora
-College project
 
+College project
+Group Name : Dali's
 
 
 For Dokcer Users : 
-    Run docker-compose run kooraApp
+    RUN 
+        docker-compose run kooraApp
 
 For Non Docker Users : 
-    Exec "python setup.py"
-    Then, move to src/
-    And, Exec "python manage.py runserver"
+    RUN
+        virtualenv .
+        source bin/activate
+        pip install -r requirements.txt
+        export $(cat .env)"
+        cd src/
+        python manage.py runserver 0.0.0.0:$APP_PORT
