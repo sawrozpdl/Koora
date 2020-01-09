@@ -15,33 +15,42 @@
 
 >Copy .env.example as .env and setup the required variables
 
->For Dokcer Users : 
-    **RUN** 
-        `docker-compose run kooraApp`
+**For Dokcer Users ,**
 
->For Non Docker Users : 
-    **RUN**
-        `virtualenv .`
-        `source bin/activate`  OR `source script/activate`
-        `pip install -r requirements.txt`
-        `export $(cat .env)`
-        `cd src`
-        `python manage.py runserver 0.0.0.0:$APP_PORT`
+>`docker-compose run kooraApp`
+
+**For Non Docker Users :**
+
+>`virtualenv .`
+
+>>`source bin/activate` (Linux)
+
+>>**OR**
+ 
+>>`source script/activate` (Windows)
+ 
+>`pip install -r requirements.txt`
+
+>`export $(cat .env)`
+
+>`cd src`
+
+>`python manage.py runserver 0.0.0.0:$APP_PORT`
 
 
 
 ## Detailed Description
 
     Aiming to create the platform where one can get various answers to their
-different questions online, we decided of creating a web application. Regarding the
-current scenario, Internet is used by almost 58% of the people worldwide, where they
-use Internet for the various purposes like social networking, online shopping, learning
-new things and so on. So, this platform for the Internet users will work as a guide. Our
-web application is named as “KOORA”. The name itself describes its purpose. It is the
-place where people ask questions and get answers from complete strangers, which can
-lead it to be called as the hub of information and source. It will also empower people to
-share their knowledge worldwide. It is quite simple to use, users just have to create their
-profile and get started.
+    different questions online, we decided of creating a web application. Regarding the
+    current scenario, Internet is used by almost 58% of the people worldwide, where they
+    use Internet for the various purposes like social networking, online shopping, learning
+    new things and so on. So, this platform for the Internet users will work as a guide. Our
+    web application is named as “KOORA”. The name itself describes its purpose. It is the
+    place where people ask questions and get answers from complete strangers, which can
+    lead it to be called as the hub of information and source. It will also empower people to
+    share their knowledge worldwide. It is quite simple to use, users just have to create their
+    profile and get started.
 
 
 **Features:**
