@@ -1,6 +1,8 @@
 bin/
 include/
+Scripts/
 lib/
+tcl/
 *.log
 .env
 *.log
