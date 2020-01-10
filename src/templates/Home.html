@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: center;
+  width: 50%;
+  background: #f1f1f1;
+}
+
+form.example button {
+  float:center;
+  width:5%;
+  padding: 10px;
+  background:black;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background:black;
+}
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.container{
+position: absolute;
+    top: 20%;
+    left:25%;
+    margin-top: -50px;
+    margin-left:-50px;
+    width: 80%;
+    height:100px;}
+.left{
+position: absolute;
+    top: 18%;
+    left:10%;
+    margin-top: -50px;
+    margin-left:-50px;
+    }
+#left_side_menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#left_side_menu li a {
+  padding: 12px;
+  text-decoration: none;
+  color: black;
+  display: block
+  
+}
+
+#left_side_menu li a:hover {
+  color:#457AC2 ;
+}
+
+.vertical_leftline{
+  position:absolute;
+  left:18%;
+  border-left: 1px solid grey;
+  height: 1000px;
+}
+</style>
+</head>
+<body>
+<nav class="navbar navbar-inverse  navbar-dark navbar-fixed-top" style= "background-color:#800000">
+ <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><strong>Koora</strong></a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-pencil"></span> Answer</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-bell"></span> Notification</a></li>
+     
+    </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="left">
+  <ul id="left_side_menu">
+      <li><a href="#"><span class="glyphicon glyphicon-th-list" style="font-size:15px;color:blue"></span> Feed</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-star" style="font-size:15px;color:blue"></span> Featured</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-tower" style="font-size:15px;color:blue"></span> Smart Business</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-cutlery" style="font-size:15px;color:blue"></span> Food</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-film" style="font-size:15px;color:blue"></span> Entertainment</a></li>
+      <li><a href="#"><span class= "glyphicon glyphicon-equalizer"="font-size:15px;color:blue"></span> Technology</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-globe" style="font-size:15px;color:blue"></span> Climate</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-camera" style="font-size:15px;color:blue"></span> Design</a></li>
+      </ul>
+</div>
+<div class="vertical_leftline"></div>
+<div class="container">
+<form class="example" action="">
+  <input type="text" placeholder="Search" name="search">
+  <button type="submit"><span class=" glyphicon glyphicon-search"></span></button>
+</form>
+</div>
+
+</body>
+</html>
