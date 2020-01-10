@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="jumbotron container">
+  <h1 class="display-4">{{ title }}</h1>
+  <p class="lead"> Click Show to display more about the article! </p>
+</div>
+
+
+<div class= 'container'>
+    {% if error %}
+        <div class = 'alert alert-danger'> {{error}} </div>
+    {% elif success %}
+        <div class = 'alert alert-success'> {{success}} </div>
+    {% elif guide %}
+        <div class = 'alert alert-warning'> {{guide}} </div>
+    {% elif searchQuery %}
+        {% if not hasResults %}
+            <div class = 'alert alert-warning'> No results found for '{{searchQuery}}' </div>
+        {% else %}
+            <div class = 'alert alert-secondary'> Search results for '{{searchQuery}}' </div>
+        {% endif %}
+    {% endif %}
+
+    {%  if articles  %}
+        <ul class = "article-list">
+            {% for article in articles %}
+                <li class = "card w-50">
+                    <span class = 'card-header'>{{article.title}}</span>
+                    <a class = 'btn btn-primary' href = "{% url 'articles:detail' article.article_id %}">Show</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif not searchQuery %}
+        <div class = 'alert alert-warning'> No articles! Go to Create article to add some </div>
+    {% endif %}
+</div>
+{% endblock content %}
+
+
+
+
+
+

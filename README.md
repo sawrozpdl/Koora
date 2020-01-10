@@ -15,9 +15,9 @@
 
 >Copy .env.example as .env and setup the required variables
 
-**For Dokcer Users ,**
+**For Docker Users ,**
 
->`docker-compose run kooraApp`
+>`docker-compose up`
 
 **For Non Docker Users :**
 
@@ -27,7 +27,7 @@
 
 >>**OR**
  
->>`source script/activate` (Windows)
+>>`source Scripts/activate` (Windows @ GitBash)
  
 >`pip install -r requirements.txt`
 

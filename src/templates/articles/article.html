@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class = "container">
+    <div class = "card">
+    <div class = 'card-header'>
+        <span class = "float-left">{{article.title}}</span>
+        <form action="{% url 'articles:detail' article.article_id %}" method='post'>
+            {% csrf_token %}
+            <button type='submit'><i class = "float-right fa fa-trash"></i><button>
+        </form>
+    </div>
+    <span class = 'card-body'>{{article.content}}</span>
+    <div class = 'card-footer clearfix'>
+        <span class = 'date-created float-left'>Date Created: {{article.dateCreated}}</span>
+        <span class = 'date-modified float-right'>Date Modified: {{article.dateModified}}</span>
+    </div>
+</div>
+</div>
+
+{% endblock content %}
+
+ 
