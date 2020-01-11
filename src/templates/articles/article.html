@@ -27,8 +27,10 @@
                             <form action = "{% url 'articles:detail' article.slug %}" method='post'>
                                 {% csrf_token %}
                                 <button class = "dropdown-item" style="border:none;background:none;color:none"  type='submit'>Delete</button>
+                                <a class="dropdown-item" href="{{ article.update_url }}">Update</a>
                             </form>
                         {% endif %}
+
                         {% if article.image_url %}
                             <a class="dropdown-item" href="{{ article.image_url}}">Download</a>
                         {% endif %}

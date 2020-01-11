@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from markdown_deux import markdown
+from django.urls import reverse
 
 class ArticleManager(KooraManager):
 
