@@ -32,4 +32,7 @@ class Article(Koora):
     @property
     def get_markdown(self):
         return mark_safe(markdown(self.content))
+
+    def contains_tag(self, tag):
+        return (tag.lower() in self.title.lower()) | (tag.lower() in self.content.lower())
         
