@@ -1,23 +1,17 @@
 from django.views import View
 from django.template import loader
 from django.http import HttpResponse
+from ..models import Article
 
-dummy = {
-            "article_id" : 2,
-            "dateCreated" : 2012,
-            "dateUpdated" : 2018,
-            "title" : "title lol",
-            "content" : "this is contetn"
-        }
 
 class ListView(View):
 
     def get(self, request):
         searchQuery = request.POST.get("searchQuery", False)  # False is default when there"s no search
-        articles = [dummy, dummy, dummy, dummy, dummy, dummy, dummy]
+        articles = list(Article.objects.all())
         template = loader.get_template("articles/articles.html")
         content = {
-            "title" : "articles by Users:",
+            "title" : "Articles by Users on Koora:",
             "articles" : articles,
             "searchQuery" : request.POST.get("searchQuery", False),
             "hasResults" : True if (len(articles) > 0) else False

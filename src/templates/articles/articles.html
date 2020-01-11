@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block content %}
 
@@ -27,8 +28,27 @@
         <ul class = "article-list">
             {% for article in articles %}
                 <li class = "card w-50">
-                    <span class = 'card-header'>{{article.title}}</span>
-                    <a class = 'btn btn-primary' href = "{% url 'articles:detail' article.article_id %}">Show</a>
+                    <div class="card gedf-card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="mr-2">
+                                    <img class="rounded-circle" width="45" src=" {% if article.user.has_image %} {{ article.user.avatar_url }} {% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="">
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h5 m-0">{{article.user.username}}</div>
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ article.published_at|naturaltime }} </div>
+                        <h2 class="card-title">{{article.title}}</h2>
+                        </div>
+                    </div>
+                    <a class = 'btn btn-primary' href = "{% url 'articles:detail' article.slug %}">Show</a>
                 </li>
             {% endfor %}
         </ul>

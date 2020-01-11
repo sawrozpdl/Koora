@@ -40,7 +40,7 @@
             </li>
             {% if request.user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link" href="#">MEEE</a>
+                <a class="nav-link" href="#">{{request.user.username}}</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Sign out</a>
@@ -58,6 +58,7 @@
       </nav>
 
     </div>
+
 
     <div class="container">
       {% if messages %}

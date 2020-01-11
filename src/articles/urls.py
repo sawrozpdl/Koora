@@ -1,12 +1,12 @@
 from django.urls import path
 
-from .views import (create, update, list, detail)
+from .views import (CreateView, UpdateView, ListView, DetailView)
 
 app_name = 'articles'
 
 urlpatterns = [
-    path('', list.ListView.as_view(), name='list'),
-    path('create', create.CreateView.as_view(), name='create'),
-    path('<slug:article_id>', detail.DetailView.as_view(), name='detail'),
-    path('update/<slug:article_id>', update.UpdateView.as_view(), name='update')
+    path('', ListView.as_view(), name='list'),
+    path('create', CreateView.as_view(), name='create'),
+    path('<slug:slug>', DetailView.as_view(), name='detail'),
+    path('update/<slug:slug>', UpdateView.as_view(), name='update')
 ]

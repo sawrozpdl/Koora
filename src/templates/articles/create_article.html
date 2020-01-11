@@ -4,6 +4,8 @@
 
 {% block content %}
 
+                 
+
   <form class = "container" action = "{% url 'articles:create' %}" method = "post">
     {% csrf_token %}
     {% if error %}
