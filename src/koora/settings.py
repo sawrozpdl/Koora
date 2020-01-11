@@ -25,6 +25,21 @@ DEBUG = os.environ['DEBUG']
 ALLOWED_HOSTS = ['*']
 
 
+#Settings for Article Categories
+
+KOORA_CATEGORIES = [
+    ('RN', 'RANDOM'),
+    ('SC', 'SCIENCE'),
+    ('TG', 'TECHNOLOGY'),
+    ('FD', 'FOOD'),
+    ('AR', 'ART'),
+    ('LT', 'LITERATURE'),
+    ('PH', 'PHILOSOPHY'),
+    ('MM', 'MUSIC&MOVIES'),
+    ('TS', 'TVSERIES'),
+    ('GM', 'GAMES')
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -34,6 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'articles.apps.ArticlesConfig',
+    'django.contrib.humanize',
+    'markdown_deux',
+    'boto3'
 ]
 
 MIDDLEWARE = [

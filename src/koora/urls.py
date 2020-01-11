@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.conf.urls import include, url
 from django.urls import path
-from .views import hello, read_file, search
+from .views import hello, read_file
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -9,4 +10,5 @@ urlpatterns = [
 
 
 
+    path('articles/', include('articles.urls', namespace='articles'), name='articles')
 ]
