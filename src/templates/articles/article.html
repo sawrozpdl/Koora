@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load humanize %}
+
 
 {% block content %}
 
@@ -11,7 +13,7 @@
                 </div>
                 <div class="ml-2">
                     <div class="h5 m-0">{{article.user.username}}</div>
-                    <div class="h7 text-muted">{{article.user.first_name + article.user.last_name}}</div>
+                    <div class="h7 text-muted">No name for now</div>
                 </div>
             </div>
             <div>
@@ -20,11 +22,11 @@
                         <i class="fa fa-ellipsis-h"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                        <div class="h6 dropdown-header">Configuration</div>
+                        <div class="h6 dropdown-header">Actions</div>
                         {% if article.user == request.user %}
-                            <form action="{% url 'articles:detail' article.article_id %}" method='post'>
+                            <form action = "{% url 'articles:detail' article.slug %}" method='post'>
                                 {% csrf_token %}
-                                <button type='submit'><i class = "float-right fa fa-trash"></i><button>
+                                <button class = "dropdown-item" style="border:none;background:none;color:none"  type='submit'>Delete</button>
                             </form>
                         {% endif %}
                         {% if article.image_url %}
@@ -39,13 +41,11 @@
 
     </div>
     <div class="card-body">
-        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ article.created_at|date:"U" }} ago</div>
-        <a class="card-link" href="#">
-            <h5 class="card-title">{{article.title}}</h5>
-        </a>
+        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ article.published_at|naturaltime }} </div>
+        <h5 class="card-title">{{article.title}}</h5>
         {% if article.image_url %}
             <div class="cardbox-item">
-                <img class="img-fluid" src="{{ article.image_url}}" alt="Image">
+                <img class="rounded mx-auto d-block img-fluid" src="{{ article.image_url}}" alt="Image">
             </div>
         {% endif %}
 

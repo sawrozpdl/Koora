@@ -4,8 +4,8 @@ from django.http import HttpResponse
 
 class UpdateView(View):
 
-    def get(self, request, article_id):
+    def get(self, request, slug):
         return HttpResponse('Update is under construction!')
 
-    def post(self, request, article_id):
+    def post(self, request, slug):
         pass

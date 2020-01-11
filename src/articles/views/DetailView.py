@@ -1,33 +1,27 @@
 from django.views import View
 from django.template import loader
 from django.http import HttpResponse
-
-
-dummy = {
-            "article_id" : 2,
-            "dateCreated" : 2012,
-            "dateUpdated" : 2018,
-            "title" : "title lol",
-            "content" : "this is contetn"
-        }
+from articles.models import Article
 
 class DetailView(View):
 
-    def get(self, request, article_id):
-        article = dummy
+    def get(self, request, slug):
+        article = Article.objects.get(slug=slug)
         template = loader.get_template("articles/article.html")
         content = {
             "article": article
         }
         return HttpResponse(template.render(content, request))
 
-    def post(self, request, article_id):
-        articles = [dummy, dummy, dummy, dummy, dummy, dummy, dummy]
+    def post(self, request, slug):
+        article = Article.objects.get(slug=slug)
+        article.delete()
+        articles = Article.objects.all()
         template = loader.get_template("articles/articles.html")
         content = {
             "title" : "Articles by Users:",
             "articles" : articles,
-            "success" : "todo deletion successfull!"
+            "success" : "Article deletion successfull!"
         }
         return HttpResponse(template.render(content, request))
         

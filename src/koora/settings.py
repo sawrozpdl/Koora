@@ -28,12 +28,12 @@ ALLOWED_HOSTS = ['*']
 #Settings for Article Categories
 
 KOORA_CATEGORIES = [
+    ('RN', 'RANDOM'),
     ('SC', 'SCIENCE'),
     ('TG', 'TECHNOLOGY'),
     ('FD', 'FOOD'),
     ('AR', 'ART'),
     ('LT', 'LITERATURE'),
-    ('RN', 'RANDOM'),
     ('PH', 'PHILOSOPHY'),
     ('MM', 'MUSIC&MOVIES'),
     ('TS', 'TVSERIES'),
@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'articles.apps.ArticlesConfig',
     'django.contrib.humanize',
-    'markdown_deux'
+    'markdown_deux',
+    'boto3'
 ]
 
 MIDDLEWARE = [

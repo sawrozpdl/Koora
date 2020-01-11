@@ -6,7 +6,7 @@ ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY']
 ACCESS_SECRET_KEY = os.environ['AWS_SECRET_KEY']
 BUCKET_NAME = os.environ['AWS_BUCKET_NAME']
 
-BUCKET_LOCATION = boto3.client('s3').get_bucket_location(Bucket=BUCKET_NAME)
+#BUCKET_LOCATION = boto3.client('s3').get_bucket_location(Bucket=BUCKET_NAME)
 
 # SETUP S3 CREDENTIALS
 
@@ -24,11 +24,11 @@ def upload(file, fileName):
     s3.Bucket(BUCKET_NAME).put_object(
         Key=fileName, Body=file, ACL='public-read')
 
-    file_url = "https://s3-{0}.amazonaws.com/{1}/{2}".format(
-        BUCKET_LOCATION['LocationConstraint'],
-        BUCKET_NAME,
-        fileName)
-
+    # file_url = "https://s3-{0}.amazonaws.com/{1}/{2}".format(
+    #     BUCKET_LOCATION['LocationConstraint'],
+    #     BUCKET_NAME,
+    #     fileName)
+    file_url = "https://s3.amazonaws.com/{0}/{1}".format(BUCKET_NAME, fileName)
     return file_url
 
 
