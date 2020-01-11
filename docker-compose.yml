@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  kooraApp:
+  koora_app:
     build: .
     environment:
         - DEBUG=${DEBUG}

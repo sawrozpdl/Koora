@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="jumbotron container">
+  <h1 class="display-4">{{ title }}</h1>
+  <p class="lead"> Click Show to display more about the article! </p>
+</div>
+
+
+<div class= 'container'>
+    {% if error %}
+        <div class = 'alert alert-danger'> {{error}} </div>
+    {% elif success %}
+        <div class = 'alert alert-success'> {{success}} </div>
+    {% elif guide %}
+        <div class = 'alert alert-warning'> {{guide}} </div>
+    {% elif searchQuery %}
+        {% if not hasResults %}
+            <div class = 'alert alert-warning'> No results found for '{{searchQuery}}' </div>
+        {% else %}
+            <div class = 'alert alert-secondary'> Search results for '{{searchQuery}}' </div>
+        {% endif %}
+    {% endif %}
+
+    {%  if articles  %}
+        <ul class = "article-list">
+            {% for article in articles %}
+                <li class = "card w-50">
+                    <div class="card gedf-card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="mr-2">
+                                    <img class="rounded-circle" width="45" src=" {% if article.user.has_image %} {{ article.user.avatar_url }} {% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="">
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h5 m-0">{{article.user.username}}</div>
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ article.published_at|naturaltime }} </div>
+                        <h2 class="card-title">{{article.title}}</h2>
+                        </div>
+                    </div>
+                    <a class = 'btn btn-primary' href = "{% url 'articles:detail' article.slug %}">Show</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif not searchQuery %}
+        <div class = 'alert alert-warning'> No articles! Go to Create article to add some </div>
+    {% endif %}
+</div>
+{% endblock content %}
+
+
+
+
+
+
