@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from markdown_deux import markdown
+from django.urls import reverse
 
 class ArticleManager(KooraManager):
 
@@ -31,4 +32,7 @@ class Article(Koora):
     @property
     def get_markdown(self):
         return mark_safe(markdown(self.content))
+
+    def contains_tag(self, tag):
+        return (tag.lower() in self.title.lower()) | (tag.lower() in self.content.lower())
         

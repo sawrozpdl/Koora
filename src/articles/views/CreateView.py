@@ -17,23 +17,24 @@ class CreateView(View):
     def post(self, request):
         title = request.POST['title']
         content = request.POST['content']
-        tags = request.POST['tags'].split(", ")
         category = request.POST['category']
-        image = request.FILES['article_image']
+        image = request.FILES.get('article_image', False)
         image_url = ''
         if (image):
             key = "%s_%s.jpg" % (request.user.username, title)
             image_url = uploader.upload(image, key)
         article = Article.objects.create(title=title, content=content, category=category, image_url=image_url)
-        if tags:
-            for tag in tags:
-                existing_tag = Tag.objects.filter(name=tag)
-                if existing_tag.exists():
-                    article.tags.add(existing_tag)
-                else:
-                    new_tag = Tag.objects.create(name=tag, description='nonefornow')
-                    article.tags.add(new_tag)
-            article.save()
+        tags = request.POST.get('tags', '').split(", ")
+        # if tags != '':
+        #     for tag in tags:
+        #         existing_tag = Tag.objects.filter(name=tag)
+        #         if existing_tag.exists():
+        #             article.tags.add(existing_tag.first())
+        #         else:
+        #             new_tag = Tag.objects.create(name=tag, description='nonefeornow')
+        #             article.tags.add(new_tag)
+        #     article.save()
         return HttpResponse(loader.get_template("articles/create_article.html").render({
-            "success" : "Article creation successful!"
+            "success" : "Article creation successful!",
+            "categories" : settings.KOORA_CATEGORIES
         }, request))
