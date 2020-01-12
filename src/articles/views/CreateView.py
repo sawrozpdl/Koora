@@ -10,6 +10,7 @@ class CreateView(View):
 
     def get(self, request):
         return HttpResponse(loader.get_template('articles/create_article.html').render({
+            "page_name" : "create_article",
             "guide" : "Fill up your article and Click Post to publish and Draft to save it as a Draft",
             "categories" : settings.KOORA_CATEGORIES
         }, request))
@@ -25,15 +26,14 @@ class CreateView(View):
             image_url = uploader.upload(image, key)
         article = Article.objects.create(title=title, content=content, category=category, image_url=image_url)
         tags = request.POST.get('tags', '').split(", ")
-        # if tags != '':
-        #     for tag in tags:
-        #         existing_tag = Tag.objects.filter(name=tag)
-        #         if existing_tag.exists():
-        #             article.tags.add(existing_tag.first())
-        #         else:
-        #             new_tag = Tag.objects.create(name=tag, description='nonefeornow')
-        #             article.tags.add(new_tag)
-        #     article.save()
+        if len(tags) > 0:
+            for tag in tags:
+                try:
+                    existing_tag = Tag.objects.get(name=tag)
+                    article.tags.add(existing_tag)
+                except:
+                    article.tags.create(name=tag, description='nonefeornow')
+            article.save()
         return HttpResponse(loader.get_template("articles/create_article.html").render({
             "success" : "Article creation successful!",
             "categories" : settings.KOORA_CATEGORIES
