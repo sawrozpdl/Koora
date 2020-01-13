@@ -9,6 +9,7 @@ class DetailView(View):
         article = Article.objects.get(slug=slug)
         template = loader.get_template("articles/article.html")
         content = {
+            "page_name": "articles",
             "article": article
         }
         return HttpResponse(template.render(content, request))
@@ -19,6 +20,7 @@ class DetailView(View):
         articles = Article.objects.all()
         template = loader.get_template("articles/articles.html")
         content = {
+            "page_name": "articles",
             "title" : "Articles by Users:",
             "articles" : articles,
             "success" : "Article deletion successfull!"

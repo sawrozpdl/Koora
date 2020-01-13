@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="jumbotron container">
+<div class="jumbotron jumbotron-fluid text-center">
   <h1 class="display-4">{{ title }}</h1>
   <p class="lead"> Click Show to display more about the article! </p>
 </div>
@@ -16,11 +16,15 @@
         <div class = 'alert alert-success'> {{success}} </div>
     {% elif guide %}
         <div class = 'alert alert-warning'> {{guide}} </div>
-    {% elif searchQuery %}
+    {% elif query %}
         {% if not hasResults %}
-            <div class = 'alert alert-warning'> No results found for '{{searchQuery}}' </div>
+            <div class = 'alert alert-warning'>
+                 No results found for {% for key, value in query %} {{key}} : {{value}} {% endfor %}
+            </div>
         {% else %}
-            <div class = 'alert alert-secondary'> Search results for '{{searchQuery}}' </div>
+            <div class = 'alert alert-secondary'>
+                Search Results For {% for key, value in query %} {{key}} : {{value}} {% endfor %}
+            </div>
         {% endif %}
     {% endif %}
 
@@ -52,7 +56,7 @@
                 </li>
             {% endfor %}
         </ul>
-    {% elif not searchQuery %}
+    {% elif not query %}
         <div class = 'alert alert-warning'> No articles! Go to Create article to add some </div>
     {% endif %}
 </div>

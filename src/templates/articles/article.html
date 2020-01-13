@@ -56,8 +56,10 @@
         </p>
         <div>
             {% if article.tags %}
-                {% for tag in article.tag %}
-                <span class="badge badge-primary">{{tag.name}}</span>
+                {% for tag in article.tags.all %}
+                    <h5 class = "mx-1" style="display:inline">
+                        <a href="{% url 'articles:list'%}?tag={{tag.name}}" class="badge badge-pill badge-success">{{tag.name}}</a>
+                    </h5>
                 {% endfor %}
             {% endif %}
         </div>
