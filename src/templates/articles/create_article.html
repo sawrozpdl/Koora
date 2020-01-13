@@ -32,20 +32,20 @@
                 <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                     <div class="form-group">
                         <label class="sr-only" for="message">title</label>
-                        <textarea name = "title" class="form-control" id="message" rows="1" placeholder="What is your Article about?"></textarea>
+                        <textarea name = "title" required class="form-control" id="message" rows="1" placeholder="What is your Article about?"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="message">content</label>
-                        <textarea name = "content" class="form-control" id="message" rows="6" placeholder="Place your content here"></textarea>
+                        <textarea name = "content" required class="form-control" id="message" rows="6" placeholder="Place your content here"></textarea>
                     </div>
                     <select name = "category" class="form-group form-control form-control-md">
-                      {% for categoy in categories%}
-                        <option value = "{{ category.0 }}">{{ categoy.1 }}</option>
+                      {% for key, value in categories %}
+                        <option value = "{{ key }}">{{ value }}</option>
                       {% endfor %}
                     </select>
                     <div class="form-group">
                         <label class="sr-only" for="message">tags</label>
-                        <textarea name = "tags" class="form-control" id="message" rows="2" placeholder="Put tags seperated with comma e.g music:<optionalcomment>, "></textarea>
+                        <textarea name = "tags" class="form-control" id="message" rows="2" placeholder="Add tags seperated with comma e.g gooddays, summer"></textarea>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
