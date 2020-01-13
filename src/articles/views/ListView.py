@@ -12,7 +12,7 @@ class ListView(View):
         tag = request.GET.get("tag", False)  
         category = request.GET.get("category", False)  # False is default when there"s no search
         articles = Article.objects.all()
-        required_articles = []
+        required_articles = Article.objects.all()
         query = {}
         if searchQuery:
             required_articles = list(filter(lambda article : article.contains_tag(searchQuery), Article.objects.all()))
