@@ -15,16 +15,14 @@ jobs:
         - run:
             name: Setup Stage
             command: |
-                if [ $CIRCLE_BRANCH == "dev" ]
-                then
-                    echo 'export STAGE=development' >> ~/.bashrc
-                    echo 'export APP_NAME=dev-kooora' >> ~/.bashrc
-                elif [ $CIRCLE_BRANCH == "master" ]
-                then
-                    echo 'export STAGE=production' >> ~/.bashrc
-                    echo 'export APP_NAME=kooora' >> ~/.bashrc
+                if [[ $CIRCLE_BRANCH == "dev" ]]; then
+                echo 'export STAGE=development' >> ~/.bashrc
+                echo 'export APP_NAME=dev-kooora' >> ~/.bashrc
+                elif [[ $CIRCLE_BRANCH == "master" ]]; then
+                echo 'export STAGE=production' >> ~/.bashrc
+                echo 'export APP_NAME=kooora' >> ~/.bashrc
                 else
-                    echo "No stage provided!"
+                echo "No stage provided!"
                 fi
 
         - run:
@@ -58,14 +56,5 @@ jobs:
         - run:
             name: Deploy Heroku Docker Container
             command: |
-                if [ $STAGE == "dev" ]
-                then
-                    heroku container:push web -a dev-kooora
-                    heroku container:release web -a dev-kooora
-                elif [ $STAGE == "master" ]
-                then
-                    heroku container:push web -a kooora
-                    heroku container:release web -a kooora
-                else
-                    echo "No stage provided!"
-                fi
+                heroku container:push web -a $APP_NAME
+                heroku container:release web -a $APP_NAME
