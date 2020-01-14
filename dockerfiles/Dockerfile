@@ -1,9 +1,11 @@
 FROM python:latest
+ENV PYTHONUNBUFFERED 1
 RUN mkdir koora
 RUN mkdir requirements
 WORKDIR /koora
 COPY requirements ./requirements
-RUN pip install -r requirements/$PY_ENV.txt
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 COPY . .
 WORKDIR /koora/src/
-CMD ["python manage.py migrate", "python manage.py runserver $PORT"]
+EXPOSE 8000

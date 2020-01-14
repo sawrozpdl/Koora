@@ -96,6 +96,18 @@ DATABASES = {
     }
 }
 
+if os.environ['PY_ENV'] != 'development':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.' + os.environ['DB_ENGINE'],
+            'NAME': os.environ['DB_NAME'],
+            'USER': os.environ['DB_USER'],
+            'PASSWORD': os.environ['DB_PASSWORD'],
+            'HOST': os.environ['DB_HOST'],
+            'PORT': os.environ['DB_PORT'],
+        }
+    }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -129,4 +141,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static"), ]
+
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+
