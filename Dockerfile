@@ -6,4 +6,5 @@ COPY requirements ./requirements
 RUN pip install -r requirements/production.txt
 COPY . .
 WORKDIR /koora/src/
-CMD ["python manage.py migrate ; python manage.py runserver $PORT"]
+RUN chmod +x ./scripts/runserver.sh
+CMD ["./scripts/runserver.sh"]

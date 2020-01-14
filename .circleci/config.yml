@@ -21,9 +21,6 @@ jobs:
                 echo "it should deploy lol"
                 export APP_NAME=dev-kooora
                 fi
-                echo $APP_NAME
-                echo ${APP_NAME}
-                echo ${CIRCLE_BRANCH}
                 
 
         - run:
@@ -38,7 +35,6 @@ jobs:
             command: |
                 . venv/bin/activate
                 cd src
-                echo ${APP_NAME}
                 python3 manage.py migrate
                 python3 manage.py test
                 
@@ -58,10 +54,5 @@ jobs:
         - run:
             name: Deploy Heroku Docker Container
             command: |
-                if [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
-                heroku container:push web -a kooora
-                heroku container:release web -a kooora
-                else
-                heroku container:push web -a dev-kooora
-                heroku container:release web -a dev-kooora
-                fi
+                heroku container:push web -a $APP_NAME
+                heroku container:release web -a $APP_NAME
