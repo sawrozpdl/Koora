@@ -10,22 +10,7 @@ jobs:
         - checkout
 
         - setup_remote_docker:
-            docker_layer_caching: false
-
-        - run:
-            name: Setup Stage
-            command: |
-                if [ $CIRCLE_BRANCH == "dev" ]
-                then
-                    echo 'export STAGE=development' >> ~/.bashrc
-                    echo 'export APP_NAME=dev-kooora' >> ~/.bashrc
-                elif [ $CIRCLE_BRANCH == "master" ]
-                then
-                    echo 'export STAGE=production' >> ~/.bashrc
-                    echo 'export APP_NAME=kooora' >> ~/.bashrc
-                else
-                    echo "No stage provided!"
-                fi
+            docker_layer_caching: false     
 
         - run:
             name: install dependencies
@@ -38,6 +23,8 @@ jobs:
             name: run tests
             command: |
                 . venv/bin/activate
+                cd src
+                python3 manage.py migrate
                 python3 manage.py test
                 
         - run:
@@ -56,5 +43,11 @@ jobs:
         - run:
             name: Deploy Heroku Docker Container
             command: |
-                heroku container:push web -a $APP_NAME
-                heroku container:release web -a $APP_NAME
+                if [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
+                heroku container:push web -a kooora
+                heroku container:release web -a kooora
+                else
+                heroku container:push web -a dev-kooora
+                heroku container:release web -a dev-kooora
+                fi
+                
