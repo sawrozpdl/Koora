@@ -1,14 +1,9 @@
 version: '3'
 
 services:
-  koora_app:
-    build: .
-    environment:
-        - DEBUG=${DEBUG}
-        - SECRET_KEY=${SECRET_KEY}
-        - AWS_SECRET_KEY=${AWS_SECRET_KEY}
-        - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
-        - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+  web:
+    build: ./dockerfiles
+    env_file: .env
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/koora

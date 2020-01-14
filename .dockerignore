@@ -1,8 +1,10 @@
 .git
 docs/
 temp/
+.env
 **/*.md
 *.example
+src/db.sqlite3
 *.log
 __pycache__
 *.pyc

@@ -2,6 +2,8 @@
 
 ## College project
 
+##Live site of Koora's `master` branch is hosted [here](http://kooora.herokuapp.com "Koora App Heroku")
+
 #### Group Info
     Group Name : Dali's
     Group Members : 
@@ -11,9 +13,16 @@
         -Saroj Paudyal
 
 
-## Project Setup
+## Project Deployment
 
->Copy .env.example as .env and setup the required variables
+>Set/Export variables in `.env.example` and build the `Dockerfile` with
+
+>>docker build .
+
+
+## Project Development Setup
+
+>Copy .env.example as .env and setup the required variables (besides the database variables) And,
 
 **For Docker Users ,**
 
