@@ -18,8 +18,13 @@ jobs:
                 if [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
                 echo 'export APP_NAME=kooora' >> ~/.bashrc
                 else
+                echo "it should deploy lol"
                 echo 'export APP_NAME=dev-kooora' >> ~/.bashrc
                 fi
+                echo $APP_NAME
+                echo ${APP_NAME}
+                echo ${CIRCLE_BRANCH}
+                
 
         - run:
             name: install dependencies
@@ -53,5 +58,10 @@ jobs:
         - run:
             name: Deploy Heroku Docker Container
             command: |
-                heroku container:push web -a "${APP_NAME}"
-                heroku container:release web -a "${APP_NAME}"
+                if [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
+                heroku container:push web -a kooora
+                heroku container:release web -a kooora
+                else
+                heroku container:push web -a dev-kooora
+                heroku container:release web -a dev-kooora
+                fi
