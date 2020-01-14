@@ -10,18 +10,7 @@ jobs:
         - checkout
 
         - setup_remote_docker:
-            docker_layer_caching: false
-
-        - run:
-            name: Setup Stage
-            command: |
-                if [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
-                export APP_NAME=kooora
-                else
-                echo "it should deploy lol"
-                export APP_NAME=dev-kooora
-                fi
-                
+            docker_layer_caching: false     
 
         - run:
             name: install dependencies
@@ -54,5 +43,11 @@ jobs:
         - run:
             name: Deploy Heroku Docker Container
             command: |
-                heroku container:push web -a $APP_NAME
-                heroku container:release web -a $APP_NAME
+                if [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
+                heroku container:push web -a kooora
+                heroku container:release web -a kooora
+                else
+                heroku container:push web -a dev-kooora
+                heroku container:release web -a dev-kooora
+                fi
+                
