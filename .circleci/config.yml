@@ -16,10 +16,8 @@ jobs:
             name: Setup Stage
             command: |
                 if [[ $CIRCLE_BRANCH == "dev" ]]; then
-                echo 'export STAGE=production' >> ~/.bashrc
                 echo 'export APP_NAME=kooora' >> ~/.bashrc
                 else
-                echo 'export STAGE=development' >> ~/.bashrc
                 echo 'export APP_NAME=dev-kooora' >> ~/.bashrc
                 fi
 
@@ -35,6 +33,7 @@ jobs:
             command: |
                 . venv/bin/activate
                 cd src
+                echo $APP_NAME
                 python3 manage.py migrate
                 python3 manage.py test
                 
