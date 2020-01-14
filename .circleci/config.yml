@@ -15,7 +15,7 @@ jobs:
         - run:
             name: Setup Stage
             command: |
-                if [[ $CIRCLE_BRANCH == "dev" ]]; then
+                if [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
                 echo 'export APP_NAME=kooora' >> ~/.bashrc
                 else
                 echo 'export APP_NAME=dev-kooora' >> ~/.bashrc
@@ -53,10 +53,5 @@ jobs:
         - run:
             name: Deploy Heroku Docker Container
             command: |
-                if [[ $CIRCLE_BRANCH == "dev" ]]; then
-                heroku container:push web -a dev-kooora
-                heroku container:release web -a dev-kooora
-                else
-                heroku container:push web -a kooora
-                heroku container:release web -a kooora
-                fi
+                heroku container:push web -a "${APP_NAME}"
+                heroku container:release web -a "${APP_NAME}"
