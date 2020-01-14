@@ -32,13 +32,13 @@ jobs:
             command: |
                 python3 -m venv venv
                 . venv/bin/activate
-                cd src
                 pip install -r requirements.txt
 
         - run:
             name: run tests
             command: |
                 . venv/bin/activate
+                cd src
                 python3 manage.py migrate
                 python3 manage.py test
                 
