@@ -15,6 +15,8 @@ jobs:
         - run:
             name: Setup Stage
             command: |
+                echo $CIRCLE_BRANCH
+                echo ${CIRCLE_BRANCH}
                 if [[ $CIRCLE_BRANCH == "dev" ]]; then
                 echo 'export STAGE=development' >> ~/.bashrc
                 echo 'export APP_NAME=dev-kooora' >> ~/.bashrc
