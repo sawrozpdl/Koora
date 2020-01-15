@@ -1,3 +1,6 @@
+# This Dockerfile is meant to be used for development only!
+# For production, use the one in the base directory
+
 FROM python:latest
 ENV PYTHONUNBUFFERED 1
 RUN mkdir code

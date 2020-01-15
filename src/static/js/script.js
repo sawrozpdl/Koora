@@ -1,4 +1,5 @@
 const darkSwitch = document.getElementById("darkSwitch");
+
 function initTheme() {
   const e =
     null !== localStorage.getItem("darkSwitch") &&
@@ -8,6 +9,7 @@ function initTheme() {
       ? document.body.setAttribute("data-theme", "dark")
       : document.body.removeAttribute("data-theme");
 }
+
 function resetTheme() {
   darkSwitch.checked
     ? (document.body.setAttribute("data-theme", "dark"),
@@ -15,6 +17,7 @@ function resetTheme() {
     : (document.body.removeAttribute("data-theme"),
       localStorage.removeItem("darkSwitch"));
 }
+
 window.addEventListener("load", () => {
   darkSwitch &&
     (initTheme(),

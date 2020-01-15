@@ -32,7 +32,7 @@ class ListView(View):
         template = loader.get_template("articles/articles.html")
         content = {
             "page_name": "articles",
-            "title" : "Articles by Users on Koora:",
+            "title" : "Articles from Koora Users:",
             "articles" : required_articles,
             "query" : query.items(),
             "hasResults" : True if (len(required_articles) > 0) else False
