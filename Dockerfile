@@ -1,10 +1,11 @@
 FROM python:latest
-RUN mkdir koora
+RUN mkdir code
 RUN mkdir requirements
-WORKDIR /koora
-COPY requirements ./requirements
+RUN mkdir scripts
+COPY requirements /requirements
+COPY src /code
+COPY script /scripts
+RUN chmod +x /scripts/runserver.sh
 RUN pip install -r requirements/production.txt
-COPY . .
-WORKDIR /koora/src/
-RUN chmod +x /koora/script/runserver.sh
-CMD ["/koora/script/runserver.sh"]
+WORKDIR /code
+CMD ["/scripts/runserver.sh"]

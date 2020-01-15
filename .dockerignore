@@ -4,9 +4,9 @@ temp/
 .env
 **/*.md
 *.example
-src/db.sqlite3
+db.sqlite3
 *.log
-__pycache__
+__pycache__/
 *.pyc
 *.pyo
 *.pyd

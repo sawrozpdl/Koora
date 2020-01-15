@@ -5,12 +5,15 @@
 ## Live site of Koora's `master` branch is hosted [here](http://kooora.herokuapp.com "Koora App Heroku")
 
 #### Group Info
-    Group Name : Dali's
-    Group Members : 
-        -Dipesh Lama
-        -Neha Modi
-        -Prasesh Maharjan
-        -Saroj Paudyal
+
+### Group Name : Dali's
+
+### Group Members : 
+
+- Dipesh Lama
+- Neha Modi
+- Prasesh Maharjan
+- Saroj Paudyal
 
 
 ## Project Deployment
