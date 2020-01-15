@@ -5,7 +5,7 @@ FROM python:latest
 RUN mkdir code
 RUN mkdir requirements
 RUN mkdir scripts
-RUN mkdir cache
+RUN mkdir staticfiles
 COPY requirements /requirements
 COPY src /code
 COPY script /scripts
