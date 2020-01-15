@@ -2,10 +2,12 @@ version: '3'
 
 services:
   web:
-    build: ./dockerfiles
+    build:
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile
     env_file: .env
-    command: python manage.py runserver 0.0.0.0:8000
+    command: /bin/sh -c "/scripts/runserver.sh"
     volumes:
-      - .:/koora
+      - ./src:/code
     ports:
-      - "${APP_PORT}:8000"
+      - "${APP_PORT}:${PORT}"

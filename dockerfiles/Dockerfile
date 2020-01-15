@@ -1,11 +1,13 @@
 FROM python:latest
 ENV PYTHONUNBUFFERED 1
-RUN mkdir koora
+RUN mkdir code
 RUN mkdir requirements
-WORKDIR /koora
-COPY requirements ./requirements
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-WORKDIR /koora/src/
+RUN mkdir scripts
+COPY requirements /requirements
+COPY src /code
+COPY script /scripts
+RUN chmod +x /scripts/runserver.sh
+RUN chmod +x /scripts/test.sh
+RUN pip install -r /requirements/development.txt
+WORKDIR /code
 EXPOSE 8000
