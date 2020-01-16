@@ -66,12 +66,6 @@ MIDDLEWARE = [
 ]
 
 
-
-if os.environ['PY_ENV'] != 'development':
-    MIDDLEWARE += 'whitenoise.middleware.WhiteNoiseMiddleware'
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
 ROOT_URLCONF = 'koora.urls'
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
