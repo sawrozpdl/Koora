@@ -1,16 +1,13 @@
 version: '3'
 
 services:
-  kooraApp:
-    build: .
-    environment:
-        - DEBUG=${DEBUG}
-        - SECRET_KEY=${SECRET_KEY}
-        - AWS_SECRET_KEY=${AWS_SECRET_KEY}
-        - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
-        - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
-    command: python manage.py runserver 0.0.0.0:8000
+  web:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile
+    env_file: .env
+    command: /bin/sh -c "/scripts/runserver.sh"
     volumes:
-      - .:/koora
+      - ./src:/code
     ports:
-      - "${APP_PORT}:8000"
+      - "${APP_PORT}:${PORT}"
