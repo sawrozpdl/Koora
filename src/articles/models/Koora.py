@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.utils.text import slugify
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
 from .Tag import *
-
 
 class KooraManager(models.Manager):
 
@@ -15,7 +15,7 @@ class Koora(models.Model):
     title = models.CharField(max_length=120)
     slug = models.SlugField(blank=True)
     upvotes = models.IntegerField(default=0, blank=True)
-    #comments = models.ForeignKey(Comment, blank=True, Null=True)
+    comments_count = models.IntegerField(default=0, blank=True)
     image_url = models.URLField(blank=True, null=True, max_length=300)
     content = models.TextField()
     is_drafted = models.BooleanField(default=False)
@@ -45,6 +45,12 @@ class Koora(models.Model):
             custom_slug = "%s-%s" % (slug, repetition.first().id)
             return self.get_unique_slug(text, custom_slug=custom_slug)
         return slug
+
+
+    @property
+    def content_type(self):
+        return ContentType.objects.get_for_model(self.__class__)
+
 
     def save(self, **kwargs): 
         self.slug = self.get_unique_slug(self.title) 

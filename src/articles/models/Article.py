@@ -5,6 +5,8 @@ from django.conf import settings
 from django.utils.safestring import mark_safe
 from markdown_deux import markdown
 from django.urls import reverse
+from comments.models.Comment import *
+from .Vote import *
 
 class ArticleManager(KooraManager):
 
@@ -25,6 +27,16 @@ class Article(Koora):
     @property
     def update_url(self):
         return reverse("articles:update", kwargs={"slug": self.slug})
+
+
+    @property
+    def comments(self):
+        return Comment.objects.of_instance(self)
+
+
+    @property
+    def voters(self, is_upvote):
+        return Vote.objects.of_instance(self).filter(is_upvote=is_upvote)
 
 
     #   marking the markdown safe prevents django from messing with it for protection
