@@ -1,0 +1,53 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:latest
+
+    working_directory: ~/repo
+
+    steps:
+        - checkout
+
+        - setup_remote_docker:
+            docker_layer_caching: false     
+
+        - run:
+            name: install dependencies
+            command: |
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install -r requirements.txt
+
+        - run:
+            name: run tests
+            command: |
+                . venv/bin/activate
+                cd src
+                python3 manage.py migrate
+                python3 manage.py test
+                
+        - run:
+            name: "Heroku Install"
+            command: |
+                if [[ $(command -v heroku) == "" ]]; then
+                curl https://cli-assets.heroku.com/install.sh | sh
+                else
+                echo "Heroku already exists!"
+                fi
+    
+        - run:
+            name: Login into Heroku Docker Repository
+            command: |
+                docker login --username=$HEROKU_LOGIN --password=$HEROKU_API_KEY registry.heroku.com
+        - run:
+            name: Deploy Heroku Docker Container
+            command: |
+                if [[ "${CIRCLE_BRANCH}" == "dev" ]]; then
+                heroku container:push web -a kooora
+                heroku container:release web -a kooora
+                else
+                heroku container:push web -a dev-kooora
+                heroku container:release web -a dev-kooora
+                fi
+                

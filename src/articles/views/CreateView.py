@@ -11,7 +11,12 @@ class CreateView(View):
     def get(self, request):
         return HttpResponse(loader.get_template('articles/create_article.html').render({
             "page_name" : "create_article",
-            "guide" : "Fill up your article and Click Post to publish and Draft to save it as a Draft",
+            "messages" : [
+                {
+                    "type" : "warning",
+                    "content" : "Fill up your article and Click Post to publish and Draft to save it as a Draft"
+                }
+            ],
             "categories" : settings.KOORA_CATEGORIES
         }, request))
 
@@ -35,6 +40,12 @@ class CreateView(View):
                     article.tags.create(name=tag, description='nonefeornow')
             article.save()
         return HttpResponse(loader.get_template("articles/create_article.html").render({
-            "success" : "Article creation successful!",
+            "page_name" : "create_article",
+            "messages" : [
+                {
+                    "type" : "success",
+                    "content" : "Article creation successful!"
+                }
+            ],
             "categories" : settings.KOORA_CATEGORIES
         }, request))

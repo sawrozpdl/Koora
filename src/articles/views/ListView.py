@@ -12,7 +12,7 @@ class ListView(View):
         tag = request.GET.get("tag", False)  
         category = request.GET.get("category", False)  # False is default when there"s no search
         articles = Article.objects.all()
-        required_articles = []
+        required_articles = Article.objects.all()
         query = {}
         if searchQuery:
             required_articles = list(filter(lambda article : article.contains_tag(searchQuery), Article.objects.all()))
@@ -32,7 +32,7 @@ class ListView(View):
         template = loader.get_template("articles/articles.html")
         content = {
             "page_name": "articles",
-            "title" : "Articles by Users on Koora:",
+            "title" : "Articles from Koora Users:",
             "articles" : required_articles,
             "query" : query.items(),
             "hasResults" : True if (len(required_articles) > 0) else False

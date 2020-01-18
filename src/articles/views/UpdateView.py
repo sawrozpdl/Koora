@@ -11,7 +11,12 @@ class UpdateView(View):
         article = Article.objects.get(slug=slug)
         return HttpResponse(loader.get_template('articles/update_article.html').render({
             "page_name": "articles",
-            "guide" : "Change required field and Press Update to Publish the new verson of your Article",
+            "messages" : [
+                {
+                    "type" : "warning",
+                    "content" : "Change required field and Press Update to Publish the new verson of your Article"
+                }
+            ],
             "categories" : settings.KOORA_CATEGORIES,
             "article" : article,
             "tags" : article.get_tag_string()
@@ -39,7 +44,12 @@ class UpdateView(View):
                     article.tags.create(name=tag, description='nonefeornow')
         article.save()
         return HttpResponse(loader.get_template("articles/create_article.html").render({
-            "page_name": "create_article",
-            "success" : "Article Updated!"
+            "messages" : [
+                {
+                    "type" : "success",
+                    "content" : "Article Updated!"
+                }
+            ],
+            "page_name": "create_article"
         }, request))
         

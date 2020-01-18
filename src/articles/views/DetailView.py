@@ -21,9 +21,14 @@ class DetailView(View):
         template = loader.get_template("articles/articles.html")
         content = {
             "page_name": "articles",
+            "messages" : [
+                {
+                    "type" : "success",
+                    "content" : "Article deletion successful!"
+                }
+            ],
             "title" : "Articles by Users:",
-            "articles" : articles,
-            "success" : "Article deletion successfull!"
+            "articles" : articles
         }
         return HttpResponse(template.render(content, request))
         

@@ -1,10 +1,12 @@
 .git
 docs/
 temp/
+.env
 **/*.md
 *.example
+db.sqlite3
 *.log
-__pycache__
+__pycache__/
 *.pyc
 *.pyo
 *.pyd

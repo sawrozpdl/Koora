@@ -15,9 +15,9 @@
 
     {% block css %}
         <link rel = "stylesheet" type = "text/css" href = "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        <link rel = "stylesheet" type = "text/css" href = "{% static 'css/style.css' %}">
         <link rel = "stylesheet" type = "text/css" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+        <link rel = "stylesheet" type = "text/css" href = "{% static 'css/style.css' %}">
     {% endblock css %}
 
   </head>
@@ -58,7 +58,7 @@
         <li class="nav-item dropdown">
           {% if request.user.is_authenticated %}
             <a href="#" class="nav-link dropdown-toggle d-inline" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=35x35{% endif %}" class="border border-info rounded-circle z-depth-0">
+              <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=35x35{% endif %}" class="profile rounded-circle">
               {{ request.user.username }} 
             </a>
             <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
@@ -88,26 +88,31 @@
 </nav>
 
   <body>
-
     <div class="container">
       {% if messages %}
           {% for message in messages %}
-              <div class = "alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                {{ message }}
+              <div class = "alert alert-{{ message.type }}">
+                {{ message.content }}
                 <button type = "button" class="close" data-dismiss = "alert" aria-label = "Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
               </div>
           {% endfor %}
       {% endif %}
+    </div>
+
+    {% block banner %}
+        <div class="banner text-center">
+          <h1 class="display-4 header">Welcome to Koora</h1>
+          <p class="lead footer"> Search for specific queries </p>
+        </div>
+    {% endblock banner%}
 
       {% block content %}
-      <div class="jumbotron jumbotron-fluid text-center">
-          <h1 class="display-4">Welcome to Koora</h1>
-          <p class="lead"> Search for specific queries </p>
-        </div>
+
+      <div class ="container">
       <div class="row">
-        <div class="col-md-3 text-center">
+        <div class="col-lg-2 text-center">
           <ul class="list-group">
             <div class="list-group-item bg-light">
             Categories
@@ -126,12 +131,17 @@
             {% endif %}
           </ul>
         </div>
-        <div class="col-md-6">
+
+
+        <div class="col-lg-8">
+
+        {%block midcontent%}
+
         <div class="row justify-content-center warm-flame-gradient color-block mb-3 mx-auto z-depth-1-half">
-                <form class="card card-sm bg-white" style="border:none" action = "{% url 'articles:list' %}" method="get">
-                    <div class="card-body row no-gutters align-items-center">
+                <form class="card card-sm bg-white" style="border:none;width:85%" action = "{% url 'articles:list' %}" method="get">
+                    <div class="row no-gutters align-items-center">
                         <div class="col">
-                            <input name = "searchQuery" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                            <input name = "searchQuery" class="form-control form-control-lg form-control-borderless" type="text" placeholder="Search topics or keywords" required>
                         </div>
                         <div class="col-auto">
                             <button class="btn btn-lg btn-success ml-2" type="submit">Search</button>
@@ -140,7 +150,10 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3 text-center">
+
+       {%endblock midcontent%}
+
+        <div class="col-lg-2 text-center">
           <div class="card card-fluid">
           <div class="card-header">
             Popular Tags
@@ -171,7 +184,7 @@
     
     <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top:40px">
       <div class="container d-flex justify-content-between">
-        <span>Copyright 2020 Kooa</span>
+        <span>Copyright 2020 Koora</span>
         <span>All Rights Reserved</span>
       </div>
     </div>

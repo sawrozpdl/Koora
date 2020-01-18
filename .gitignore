@@ -1,6 +1,7 @@
 bin/
 Scripts/
 tcl/
+db.sqlite3
 include/
 Scripts/
 tcl/
@@ -8,7 +9,7 @@ lib/
 *.log
 .env
 *.log
-__pycache__
+__pycache__/
 *.pyc
 *.pyo
 *.pyd

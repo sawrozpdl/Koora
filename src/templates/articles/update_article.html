@@ -1,20 +1,13 @@
 {% extends "base.html" %}
 
 
+{% block banner %}
+{% endblock banner %}
+
 
 {% block content %}
-
-                 
-
   <form class = "container" action = "{{ article.update_url }}" method = "post" enctype="multipart/form-data">
     {% csrf_token %}
-    {% if error %}
-        <div class = 'alert alert-danger'> {{error}} </div>
-    {% elif success %}
-        <div class = 'alert alert-success'> {{success}} </div>
-    {% elif guide %}
-        <div class = 'alert alert-warning'> {{guide}} </div>
-    {% endif %}
 
     <div class="card gedf-card">
         <div class="card-header">
