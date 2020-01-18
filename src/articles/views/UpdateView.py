@@ -19,7 +19,6 @@ class UpdateView(View):
                     "content" : "Change required field and Press Update to Publish the new verson of your Article"
                 }
             ],
-            "categories" : settings.KOORA_CATEGORIES,
             "article" : article,
             "tags" : article.get_tag_string()
         }, request))

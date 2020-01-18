@@ -5,7 +5,9 @@
 
 {% block content %}
 
-  <form class = "container" action = "{% url 'articles:create' %}" method = "post" enctype="multipart/form-data">
+    <div class ="row container mx-auto">
+    <div class="col-lg-6">
+        <form action = "{% url 'articles:create' %}" method = "post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="card gedf-card">
@@ -24,11 +26,11 @@
                 <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                     <div class="form-group">
                         <label class="sr-only" for="message">title</label>
-                        <textarea name = "title" required class="form-control" id="message" rows="1" placeholder="What is your Article about?"></textarea>
+                        <textarea name = "title" required class="form-control" id="title-article" rows="1" placeholder="What is your Article about?"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="message">content</label>
-                        <textarea name = "content" required class="form-control" id="message" rows="6" placeholder="Place your content here"></textarea>
+                        <textarea name = "content" required class="form-control" id="content-article" rows="6" placeholder="Place your content here"></textarea>
                     </div>
                     <select name = "category" class="form-group form-control form-control-md">
                       {% for key, value in categories %}
@@ -37,7 +39,7 @@
                     </select>
                     <div class="form-group">
                         <label class="sr-only" for="message">tags</label>
-                        <textarea name = "tags" class="form-control" id="message" rows="2" placeholder="Add tags seperated with comma e.g gooddays, summer"></textarea>
+                        <textarea name = "tags" class="form-control" id="tag-article" rows="2" placeholder="Add tags seperated with comma e.g gooddays, summer"></textarea>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
@@ -71,6 +73,14 @@
 
 
 </form>  
+    </div>
+    <div class="col-lg-6 header-container container">
+        <span class="inner-header">Live Result : </span>
+        <div id = "target-article">
+        </div>
+    </div>
+    </div>
+  
 
 {% endblock content %}
 

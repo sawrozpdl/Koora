@@ -3,14 +3,16 @@
 
 {% block banner%}
     {% if not query %}
-        <div class="banner text-center">
-            <h1 class="display-4 header">{{ title }}</h1>
-            <p class="lead footer"> Click Show to display more about the article! </p>
-        </div>
+        {% if not messages %}
+            <div class="banner text-center">
+                <h1 class="display-4 header">{{ title }}</h1>
+                <p class="lead footer"> Click Show to display more about the article! </p>
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock banner%}
 
-{% block content %}
+{% block midcontent %}
 
 <div class= 'container'>
     {% if query %}
@@ -57,7 +59,7 @@
         <div class = 'alert alert-warning'> No articles! Go to Create article to add some </div>
     {% endif %}
 </div>
-{% endblock content %}
+{% endblock midcontent %}
 
 
 

@@ -6,10 +6,8 @@ from articles.models import Tag
 def index(request):
     popular_tags = Tag.objects.all()
     return HttpResponse(loader.get_template('base.html').render({
-            "page_name" :  'home',
-            "popular_tags" : popular_tags,
-            "categories" : settings.KOORA_CATEGORIES
-        }, request))
+            "page_name" :  'home'
+    }, request))
 
 
 def csrf_fail(request, reason):

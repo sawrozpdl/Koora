@@ -4,7 +4,7 @@
 {% block banner %}
 {% endblock banner %}
 
-{% block content %}
+{% block midcontent %}
     <div class="container">
         <div class="card gedf-card">
     <div class="card-header">
@@ -25,17 +25,16 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop1">
                         {% if article.user == request.user %}
-                            <form action = "{% url 'articles:detail' article.slug %}" method='post'>
-                                {% csrf_token %}
-                                <button class = "dropdown-item" style="border:none;color:lightred"  type='submit'>Delete</button>
+                                <button class="dropdown-item" style="border:none;color:lightred" data-toggle="modal" data-target="#ConfirmDelete">
+                                    Delete
+                                </button>
                                 <a class="dropdown-item" href="{{ article.update_url }}">Update</a>
-                            </form>
+                            <div class="dropdown-divider"></div>
                         {% endif %}
 
                         {% if article.image_url %}
                             <a class="dropdown-item" href="{{ article.image_url}}">Download</a>
                         {% endif %}
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Hide</a>
                         <a class="dropdown-item" href="#">Report</a>
                     </div>
@@ -78,8 +77,40 @@
         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
     </div>
 </div>
+</div>
 
+
+
+
+
+<!-- Confirm delete dialog box  -->
+<div class="modal fade" id="ConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">You sure?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Recovery Feature is not available yet which means deleting this article is going to be permanent and you can't access it ever again!
+      </div>
+      <div class="modal-footer">
+        Press Confirm to delete and close if you don't think that's necessary
+      </div>
+      <div class="modal-footer">
+        <form class = "d-flex justify-content-between" style="width:100%" action = "{% url 'articles:detail' article.slug %}" method='post'>
+            {% csrf_token %}
+            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-danger">Confirm</button>
+        </form>
+      </div>
     </div>
-{% endblock content %}
+  </div>
+</div>
+
+
+{% endblock midcontent %}
 
 

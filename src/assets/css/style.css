@@ -95,6 +95,22 @@ body {
   margin-right: 10px;
 }
 
+.header-container {
+  border : 5px solid lightgrey;
+  border-radius: 12px;
+}
+
+.inner-header {
+  position: relative;
+  background: white;
+  top: -19px;
+  left: 20px;
+  font-size: 22px;
+  padding: 0px 14px;
+  display: inline;
+}
+
+
 @media (min-width: 992px) {
   .animate {
     animation-duration: 0.3s;

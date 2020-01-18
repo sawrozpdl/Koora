@@ -10,6 +10,7 @@ class KooraManager(models.Manager):
         return super(KooraManager, self).filter(is_drafted=False, is_private=False)
 
 
+
 class Koora(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     title = models.CharField(max_length=120)
