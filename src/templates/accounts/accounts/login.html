@@ -9,8 +9,8 @@
     {% end if %}
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
-        <input type="text" name="uname" placeholder="Username">
-        <input type="password" name="pass" placeholder="Password">
+        Username: <input type="text" name="uname" placeholder="Username">
+        Password: <input type="password" name="pass" placeholder="Password">
         <input type="submit" value="Login">
     </form>
 
