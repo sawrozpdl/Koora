@@ -42,7 +42,6 @@ class Comment(Koora):
     def children(self): 
         return Comment.objects.filter(parent=self)
     
-    @property
     def voters(self, is_upvote):
         return Vote.objects.of_instance(self).filter(is_upvote=is_upvote)
 
