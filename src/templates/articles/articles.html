@@ -47,7 +47,9 @@
                 </li>
             {% endfor %}
         </ul>
-         <ul class="pagination justify-content-center">
+
+
+        <ul class="pagination justify-content-center">
             {% if page.has_previous %}
                 <li class="page-item">
                     <a class="page-link" href="{% url 'articles:list' %}?page={{page.previous_page_number}}" tabindex="-1">Previous</a>
@@ -68,6 +70,8 @@
             </li>
             {% endif %}
         </ul>
+
+
     {% elif not query %}
         <div class = 'alert alert-warning'> No articles! Go to Create article to add some </div>
     {% endif %}

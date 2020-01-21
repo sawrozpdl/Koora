@@ -29,7 +29,7 @@ class Koora(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['updated_at']
+        ordering = ['-updated_at']
 
     def __unicode__(self):
         return self.title

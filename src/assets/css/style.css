@@ -96,7 +96,7 @@ body {
 }
 
 .header-container {
-  border : 5px solid lightgrey;
+  border: 5px solid lightgrey;
   border-radius: 12px;
 }
 
@@ -110,6 +110,30 @@ body {
   display: inline;
 }
 
+.comment-wrapper .panel-body {
+  max-height: 650px;
+  overflow: auto;
+}
+
+.comment-wrapper .media-list .media img {
+  width: 52px;
+  height: 52px;
+  border: 2px solid #e5e7e8;
+}
+
+.comment-wrapper .media-list .media {
+  border-bottom: 1px dashed #efefef;
+  margin-bottom: 25px;
+}
+
+.middle-dot {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: inline-block;
+  height: 8px;
+  margin: 0px 4px 2px 4px;
+  width: 8px;
+}
 
 @media (min-width: 992px) {
   .animate {

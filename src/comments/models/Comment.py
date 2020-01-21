@@ -30,18 +30,19 @@ class Comment(Koora):
     def __str__(self):
         return str(self.user.username)
 
-    def get_absolute_url(self):
-        return reverse("comments:detail", kwargs={"slug": self.slug})
+    # @property
+    # def absolute_url(self):
+    #     return reverse("comments:detail", kwargs={"slug": self.slug, })
 
-    def get_update_url(self):
-        return reverse("comments:update", kwargs={"slug": self.slug})
-
-    def get_delete_url(self):
+    @property
+    def delete_url(self):
         return reverse("comments:delete", kwargs={"slug": self.slug})
-        
+
+    @property  
     def children(self): 
         return Comment.objects.filter(parent=self)
     
+    @property
     def voters(self, is_upvote):
         return Vote.objects.of_instance(self).filter(is_upvote=is_upvote)
 

@@ -10,7 +10,6 @@ from utils.pages import Paginator
 class ListView(View):
 
     def get(self, request):
-        # try:
         searchQuery = request.GET.get("searchQuery", False)  # False is default when there"s no search
         tag = request.GET.get("tag", False)  
         category = request.GET.get("category", False)  # False is default when there"s no search
@@ -44,18 +43,15 @@ class ListView(View):
         except:
             size = 3
         paginator = Paginator(required_articles, size)
-        print('This is range: ', paginator.page_range())
         content = {
             "page_name": "articles",
             "title" : "Articles from Koora Users:",
-            "page" : paginator.page(page),
-            "page_range" : paginator.page_range(),
+            "page" : paginator.page(page) if required_articles else None,
+            "page_range" : paginator.page_range() if required_articles else None,
             "query" : query.items(),
             "hasResults" : True if (len(required_articles) > 0) else False
         }
         return HttpResponse(template.render(content, request))
-        # except:
-        #     return HttpResponseServerError()
 
     def post(self, request):
         pass

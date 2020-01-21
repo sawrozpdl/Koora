@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load cmt_tag %}
+{% block midcontent %}
+
+{% block title %}
+Replies to {{comment.user.username}}
+{% endblock title %}
+
+{% block banner %}
+{% endblock banner %}
+
+<div class='col-sm-6 col-sm-offset-3'>
+
+        
+          <p>{{ comment.content }}</p>
+          <footer>via {{ comment.user }} | {{ comment.published_at|naturaltime }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %} {% endif %} {% if request.user == comment.user %}<a href='#'>Delete</a> {% endif %}</footer>
+          <hr/>
+          <div>
+              {% for child_comment in comment.children %}
+                <blockquote>
+                <p>{{ child_comment.content }}</p>
+                <footer>via {{ child_comment.user }} | {{ child_comment.published_at|naturaltime }} ago | {% if request.user == child_comment.user %}<a href='#'>Delete</a>{% endif %}</footer>
+                </blockquote>
+             {% endfor %}
+             {% if request.user.is_authenticated %}
+            <form action = '{% url "comments:detail" model=comment.content_object|get_class slug=comment.slug %}' method = "POST" id="reply{{comment.id}}">
+                    {% csrf_token %}
+                    <input type="hidden" id="post_id" name="post_id" value="{{comment.post.id}}">
+                    <textarea name = "content" class="form-control mt-3" placeholder="Reply to {{comment.user}}" rows="1"></textarea>
+                    <br>
+                    <button type="submit" class="btn btn-success pull-right">Reply</button>
+            </form>
+            {% else %}
+            <p>You must login to comment </p>
+            {% endif %}
+        </div>
+
+    
+
+        <hr/>
+</div>
+
+
+{% endblock midcontent %}
