@@ -68,20 +68,26 @@
         </div>
     </div>
     <div class="card-footer d-flex justify-content-between">
-        <div>
-            <a href="#" class="card-link"><i class="fa fa-arrow-up"></i></a>
-            <span class="badge badge-secondary mx-2 px-2 py-1">{{article.upvotes}}</span>
-            <a href="#" class="card-link"><i class="fa fa-arrow-down"></i></a>
+        <div class="btn-group btn-group-toggle">
+            <label class="btn btn-secondary active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> <i style="font-size: 22px;" class="fa fa-arrow-up"></i>
+            </label>
+            <label style="font-weight:bold;" class="btn btn-info">
+                {{article.upvotes}}
+            </label>
+            <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option3" autocomplete="off"> <i style="font-size: 22px;" class="fa fa-arrow-down"></i>
+            </label>
         </div>
-        <a class="card-link" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
-            <i class="fa fa-comment"></i>
-            Comments
+        <a class="btn btn-secondary" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
+                <i class="fa fa-comment"></i>
+                Comments
         </a>
-        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+        <a href="#" class="btn btn-secondary"><i class="fa fa-mail-forward"></i> Share</a>
     </div>
 </div>
 
-<div class="collapse mt-3" id="commentSection">
+<div class="collapse show mt-3" id="commentSection">
     <div class="comment-wrapper">
             <div class="panel panel-info">
                 <div class="panel-body" style="overflow:visible">

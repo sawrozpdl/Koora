@@ -1,45 +1,55 @@
-{% extends "base.html" %}
 {% load humanize %}
 {% load cmt_tag %}
-{% block midcontent %}
 
-{% block title %}
-Replies to {{comment.user.username}}
-{% endblock title %}
-
-{% block banner %}
-{% endblock banner %}
-
-<div class='col-sm-6 col-sm-offset-3'>
-
-        
-          <p>{{ comment.content }}</p>
-          <footer>via {{ comment.user }} | {{ comment.published_at|naturaltime }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %} {% endif %} {% if request.user == comment.user %}<a href='#'>Delete</a> {% endif %}</footer>
-          <hr/>
-          <div>
-              {% for child_comment in comment.children %}
-                <blockquote>
-                <p>{{ child_comment.content }}</p>
-                <footer>via {{ child_comment.user }} | {{ child_comment.published_at|naturaltime }} ago | {% if request.user == child_comment.user %}<a href='#'>Delete</a>{% endif %}</footer>
-                </blockquote>
-             {% endfor %}
-             {% if request.user.is_authenticated %}
-            <form action = '{% url "comments:detail" model=comment.content_object|get_class slug=comment.slug %}' method = "POST" id="reply{{comment.id}}">
-                    {% csrf_token %}
-                    <input type="hidden" id="post_id" name="post_id" value="{{comment.post.id}}">
-                    <textarea name = "content" class="form-control mt-3" placeholder="Reply to {{comment.user}}" rows="1"></textarea>
-                    <br>
-                    <button type="submit" class="btn btn-success pull-right">Reply</button>
-            </form>
-            {% else %}
-            <p>You must login to comment </p>
-            {% endif %}
+<div class="bg-light" style="border-radius:15px;padding:15px">
+<div class="media">
+        <a href="#" class="pull-left">
+        <img src="{% if comment.user.has_image %} {{ comment.user.avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=35x35{% endif %}" alt="" class="profile rounded-circle mb-4">
+</a>
+<div class="media-body ml-2">
+        <strong class="lead text-secondary">
+        {{comment.user.username}}
+        </strong>
+        <span class="middle-dot"></span>
+        <small class="text-secondary">{{ comment.published_at|naturaltime }}</small>
+        <div class="pull-right dropdown">
+                <button class="btn btn-sm" type="button" id="gedf-drop2" data-toggle="dropdown">
+                <i class="fa fa-ellipsis-h"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop2">
+                {% if comment.user == request.user %}
+                        <button class="dropdown-item" style="border:none;color:lightred">
+                        Delete
+                        </button>
+                <div class="dropdown-divider"></div>
+                {% endif %}
+                <a class="dropdown-item" href="#">Report</a>
         </div>
-
-    
-
-        <hr/>
+        </div>
+        <p>
+        {{comment.content}}
+        </p>
+</div>       
 </div>
-
-
-{% endblock midcontent %}
+<div class="button-group d-flex justify-content-between">
+        <a href="#reply{{comment.id}}" class="btn btn-info" type="button" data-toggle="collapse" aria-expanded="false" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+        <a href = "{% url 'comments:detail' model=comment.content_object|get_class slug=comment.slug %}" class="btn btn-warning">
+                <span class="glyphicon glyphicon-comment"></span>
+                replies<span style="margin-left:5px" class="badge badge-light">{{comment.children.count}}</span>
+        </a>
+</div>
+<div class="collapse" id="reply{{comment.id}}">
+        {% if request.user.is_authenticated %}
+                <form style = "margin-bottom:45px" action = '{% url "comments:detail" model=comment.content_object|get_class slug=comment.slug %}' method = "POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="post_id" name="post_id" value="{{comment.post.id}}">
+                        <textarea name = "content" class="form-control mt-3" placeholder="Reply to {{comment.user}}" rows="1"></textarea>
+                        <br>
+                        <button type="submit" class="btn btn-success pull-right">Add</button>
+                </form>
+        {% else %}
+        <span class="lead">You must be logged in to add or reply to a comment!</span>
+        {% endif %}
+</div>
+</div>
+<hr>

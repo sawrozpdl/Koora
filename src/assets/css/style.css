@@ -127,12 +127,12 @@ body {
 }
 
 .middle-dot {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
   border-radius: 50%;
   display: inline-block;
-  height: 8px;
+  height: 6px;
   margin: 0px 4px 2px 4px;
-  width: 8px;
+  width: 6px;
 }
 
 @media (min-width: 992px) {

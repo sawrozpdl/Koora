@@ -10,7 +10,7 @@ class DetailView(View):
 
     def get(self, request, model, slug):
         comment = Comment.objects.get(slug=slug)
-        template = loader.get_template("comments/comment.html")
+        template = loader.get_template("comments/comment_thread.html")
         content = {
             "page_name": "articles",
             "comment": comment
@@ -25,7 +25,7 @@ class DetailView(View):
         object_id = content_object.id
         Comment.objects.create(user=request.user, content=content,content_object=content_object,
                                content_type=content_type, parent=parent, object_id=object_id)
-        template = loader.get_template("comments/comment.html")
+        template = loader.get_template("comments/comment_thread.html")
         content = {
             "page_name": "articles",
             "messages" : [
