@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate,login,logout
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 # Create your views here.
 def register_user(request):
     if request.method =="GET":
@@ -25,3 +27,10 @@ def authenticate_user(request):
             return render(request,"../templates/base.html")
         else:
             return HttpResponse("Authentication Failed")  
+
+
+def logout_user(request):
+    if (not request.user.is_authenticated):
+        return HttpResponseForbidden('You cant be here')
+    logout(request)
+    return HttpResponseRedirect(reverse('home'))

@@ -52,8 +52,8 @@
           {% if request.user.is_authenticated %}
             <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=35x35{% endif %}" class="border border-info rounded-circle z-depth-0"> {{ request.user.username }} </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-              <a class="dropdown-item" href="#">My account</a>
-              <a class="dropdown-item" href="#">Log out</a>
+              <a class="dropdown-item" href="?name=dipesh">My account</a>
+              <a class="dropdown-item" href="{% url 'accounts:logout' %}">Log out</a>
             </div>
           {% else %}
             <i class="fas fa-user"></i> Account </a>
