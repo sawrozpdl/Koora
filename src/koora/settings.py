@@ -101,8 +101,8 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-if os.environ['PY_ENV'] != 'development':
+print(os.environ['PY_ENV'])
+if os.environ['PY_ENV'] == 'production':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.' + os.environ['DB_ENGINE'],
