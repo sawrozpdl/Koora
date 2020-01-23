@@ -19,6 +19,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = os.environ['DEBUG'] == 'True'
 
+ADMIN_ENABLED = DEBUG
+
 ALLOWED_HOSTS = ['*']
 
 CSRF_FAILURE_VIEW = 'koora.views.csrf_fail'

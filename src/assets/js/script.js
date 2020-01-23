@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
 let content = document.getElementById('content-article');
 let target = document.getElementById('target-article');
 
-
-content.onkeyup = (event) => {
-  target.innerHTML = marked(event.target.value)
-}
+if (content) 
+  content.onkeyup = (event) => {
+    target.innerHTML = marked(event.target.value)
+  }
