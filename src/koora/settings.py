@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-print(os.environ['PY_ENV'])
+
 if os.environ['PY_ENV'] == 'production':
     DATABASES = {
         'default': {
