@@ -10,3 +10,10 @@ def index(request):
             "popular_tags" : popular_tags,
             "categories" : settings.KOORA_CATEGORIES
         }, request))
+
+
+def csrf_fail(request, reason):
+    return HttpResponse(loader.get_template('403.html').render({
+            "page_name" :  'home',
+            "reason" : reason
+    }, request))

@@ -15,15 +15,13 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-
 SECRET_KEY = os.environ['SECRET_KEY']
-
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_FAILURE_VIEW = 'koora.views.csrf_fail'
 
 #Settings for Article Categories
 
@@ -51,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'articles.apps.ArticlesConfig',
     'questions.apps.QuestionsConfig',
+    'comments.apps.CommentsConfig',
     'django.contrib.humanize',
     'markdown_deux',
     'boto3'
