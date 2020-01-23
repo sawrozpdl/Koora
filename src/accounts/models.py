@@ -1,20 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import User
-# # Create your models here.
+from django.contrib.auth.models import AbstractUser
 
 
-# class userAccounts(models.Model):
-#     avatar_url = models.CharField(max_length = 250)
-#     has_image = models.BooleanField()
-#     first_name = models.CharField(max_length = 30)
-#     last_name = models.CharField(max_length = 30)
-#     userAccounts = models.OneToOneField(User,on_delete=models.CASCADE)
+class User(AbstractUser):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    avatar_url = models.URLField(blank=True, null=True, max_length=300)
 
 
-# # #name
-# # #kooras
-# # #role
-
-# # #name
-# # #kooras
-# # #role
+class Profile(models.model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.CharField(max_length=250)
+    birth_date = models.DateField(null=True, blank=True)
+    

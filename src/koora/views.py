@@ -17,3 +17,5 @@ def csrf_fail(request, reason):
             "page_name" :  'home',
             "reason" : reason
     }, request))
+
+
