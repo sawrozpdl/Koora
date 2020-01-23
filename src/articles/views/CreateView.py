@@ -17,8 +17,7 @@ class CreateView(View):
                     "type" : "warning",
                     "content" : "Fill up your article and Click Post to publish and Draft to save it as a Draft"
                 }
-            ],
-            "categories" : settings.KOORA_CATEGORIES
+            ]
         }, request))
 
     def post(self, request):
@@ -50,8 +49,7 @@ class CreateView(View):
                         "type" : "success",
                         "content" : "Article creation successful!"
                     }
-                ],
-                "categories" : settings.KOORA_CATEGORIES
+                ]
             }, request))
         except:
             return HttpResponseServerError()

@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = False
+DEBUG = os.environ['DEBUG'] == 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -83,6 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'koora.context.interceptor'
             ],
         },
     },
@@ -98,8 +99,8 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-if os.environ['PY_ENV'] != 'development':
+print(os.environ['PY_ENV'])
+if os.environ['PY_ENV'] == 'production':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.' + os.environ['DB_ENGINE'],

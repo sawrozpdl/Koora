@@ -17,19 +17,24 @@
     {% block css %}
         <link rel = "stylesheet" type = "text/css" href = "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <link rel = "stylesheet" type = "text/css" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
         <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
         <link rel = "stylesheet" type = "text/css" href = "{% static 'css/style.css' %}">
     {% endblock css %}
 
   </head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom:40px">
-  <div class="container">
-    <ul class="nav navbar-nav">
-      <li class="nav-item{% ifequal page_name 'home'%} active{% endifequal %}">
-        <a class="nav-link" href="{% url 'home' %}">Koora</a>
-      </li>
-    </ul>
+  <body>
+
+<nav class="container mb-5 navbar navbar-expand-lg navbar-light bg-light info-color">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
+    aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="nav-item active">
+          <a class="navbar-brand" href="{% url 'home' %}">Koora</a>
+  </div>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -63,7 +68,7 @@
               {{ request.user.username }} 
             </a>
             <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">My Account</a>
+              <a class="dropdown-item" href="#">My Profile</a>
               <a class="dropdown-item" href="#">Settings</a>
               <div class="dropdown-divider"></div>
                 <div class="custom-control custom-switch">
@@ -78,8 +83,8 @@
               <span class="ml-1">Account</span> 
             </a>
             <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Login</a>
-              <a class="dropdown-item" href="#">Sign Up</a>
+              <a class="dropdown-item" href="{% url 'accounts:login' %}">Login</a>
+              <a class="dropdown-item" href="{% url 'accounts:register' %}">Sign Up</a>
             </div>
           {% endif %}
         </li>
@@ -134,9 +139,9 @@
         </div>
 
 
-        <div class="col-lg-8">
+      <div class="col-lg-8">
 
-        {%block midcontent%}
+        {% block midcontent %}
 
         <div class="row justify-content-center warm-flame-gradient color-block mb-3 mx-auto z-depth-1-half">
                 <form class="card card-sm bg-white" style="border:none;width:85%" action = "{% url 'articles:list' %}" method="get">
@@ -150,11 +155,14 @@
                 </form>
             </div>
           </div>
-        </div>
+        
+         {% endblock midcontent %}
+      </div>
 
-       {%endblock midcontent%}
 
-        <div class="col-lg-2 text-center">
+       
+        
+         <div class="col-lg-2 text-center">
           <div class="card card-fluid">
           <div class="card-header">
             Popular Tags
@@ -171,29 +179,30 @@
             {% endif %}
           </div>
           </div>
-        </div>
-      </div>
+       </div></div>
 
         
 
-      {% endblock content %}
+
+
+    {% endblock content %}
 
     </div> 
 
-    {% block modal %}
-    {% endblock modal %}
-    
-    <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top:40px">
-      <div class="container d-flex justify-content-between">
-        <span>Copyright 2020 Koora</span>
-        <span>All Rights Reserved</span>
+    {% block footer %}
+      <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top:40px">
+        <div class="container d-flex justify-content-between">
+          <span>Copyright 2020 Koora</span>
+          <span>All Rights Reserved</span>
+        </div>
       </div>
-    </div>
+    {% endblock footer %}
 
     {% block javascript %}
       <script src = "https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
       <script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
       <script type="text/javascript" src = "{% static 'js/script.js' %}"></script>
     {% endblock javascript%}
 
