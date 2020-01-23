@@ -1,6 +1,7 @@
 bin/
 Scripts/
 tcl/
+src/staticfiles
 *.sqlite3
 include/
 Scripts/
