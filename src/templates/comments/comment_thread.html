@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load cmt_tag %}
+
+{% block title %}
+    {{comment.user.username}}'s replies
+{% endblock title %}
+
+{% block banner %}
+{% endblock banner %}
+
+{% block midcontent %}
+
+        <span class="lead">
+            <h2 style="display:inline"><code>{{comment.user}}</code></h2 style="display:inline"> commented on 
+            <strong>
+                {% ifequal comment.user comment.content_object.user%}his{%else%}{{comment.content_object.user}}'s{%endifequal%}
+            </strong>
+            post : <h3 style="display:inline">
+                        <a href="{% url 'articles:detail' comment.content_object.slug %}">
+                        "{{comment.content_object.title|truncatechars:15}}"
+                        </a>
+                    </h3>
+        </span>
+        <hr>
+        {%include 'comments/comment.html'%}
+
+        <span class="lead">Replies on "{{comment.content|truncatechars:15}}"</span>
+        <hr>
+
+        <div style="margin-left:3%;padding-left:6%;border-left:1px solid rgba(0,0,0,.1);">
+              {% for comment in comment.children %}
+                {% include "comments/comment.html" %}
+             {% endfor %}
+        </div>
+{% endblock midcontent %}

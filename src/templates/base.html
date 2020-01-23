@@ -17,6 +17,7 @@
     {% block css %}
         <link rel = "stylesheet" type = "text/css" href = "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <link rel = "stylesheet" type = "text/css" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
         <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
         <link rel = "stylesheet" type = "text/css" href = "{% static 'css/style.css' %}">
     {% endblock css %}
@@ -62,10 +63,19 @@
         </li>
         <li class="nav-item dropdown">
           {% if request.user.is_authenticated %}
-            <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=35x35{% endif %}" class="border border-info rounded-circle z-depth-0"> {{ request.user.username }} </a>
-            <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-              <a class="dropdown-item" href="?name=dipesh">My account</a>
-              <a class="dropdown-item" href="{% url 'accounts:logout' %}">Log out</a>
+            <a href="#" class="nav-link dropdown-toggle d-inline" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=35x35{% endif %}" class="profile rounded-circle">
+              {{ request.user.username }} 
+            </a>
+            <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">My Profile</a>
+              <a class="dropdown-item" href="#">Settings</a>
+              <div class="dropdown-divider"></div>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                  <label class="custom-control-label ml-3" for="darkSwitch">Dark Mode</label>
+                </div>
+                <a class="dropdown-item" href="#">Log Out</a>
             </div>
           {% else %}
             <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -129,9 +139,9 @@
         </div>
 
 
-        <div class="col-lg-8">
+      <div class="col-lg-8">
 
-        {%block midcontent%}
+        {% block midcontent %}
 
         <div class="row justify-content-center warm-flame-gradient color-block mb-3 mx-auto z-depth-1-half">
                 <form class="card card-sm bg-white" style="border:none;width:85%" action = "{% url 'articles:list' %}" method="get">
@@ -145,9 +155,10 @@
                 </form>
             </div>
           </div>
-        </div>
+        
+         {% endblock midcontent %}
+      </div>
 
-       {%endblock midcontent%}
 
        
         
@@ -178,23 +189,20 @@
 
     </div> 
 
-    {% block modal %}
-    {% endblock modal %}
-
     {% block footer %}
-    {% endblock footer %}
-    
-    <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top:40px">
-      <div class="container d-flex justify-content-between">
-        <span>Copyright 2020 Koora</span>
-        <span>All Rights Reserved</span>
+      <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top:40px">
+        <div class="container d-flex justify-content-between">
+          <span>Copyright 2020 Koora</span>
+          <span>All Rights Reserved</span>
+        </div>
       </div>
-    </div>
+    {% endblock footer %}
 
     {% block javascript %}
       <script src = "https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
       <script src = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
       <script type="text/javascript" src = "{% static 'js/script.js' %}"></script>
     {% endblock javascript%}
 

@@ -6,7 +6,8 @@ services:
       context: .
       dockerfile: ./dockerfiles/Dockerfile
     env_file: .env
-    command: /bin/sh -c "/scripts/runserver.sh"
+    #command: /bin/sh -c "/scripts/runserver.sh"    #runserver.sh is more suitable for production
+    command: python manage.py runserver 0.0.0.0:${PORT}
     volumes:
       - ./src:/code
     ports:

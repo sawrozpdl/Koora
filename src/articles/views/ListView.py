@@ -4,6 +4,8 @@ from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpRespon
 from django.conf import settings
 from ..models import Article
 from ..models import Tag
+from utils.pages import Paginator
+
 
 class ListView(View):
 
@@ -29,11 +31,23 @@ class ListView(View):
             query = {
                 "tag" : tag
             }
+
         template = loader.get_template("articles/articles.html")
+
+        try:
+            page = int(request.GET.get("page", 1))
+        except:
+            page = 1
+        try:
+            size = int(request.GET.get("size", 3))
+        except:
+            size = 3
+        paginator = Paginator(required_articles, size)
         content = {
             "page_name": "articles",
             "title" : "Articles from Koora Users:",
-            "articles" : required_articles,
+            "page" : paginator.page(page) if required_articles else None,
+            "page_range" : paginator.page_range() if required_articles else None,
             "query" : query.items(),
             "hasResults" : True if (len(required_articles) > 0) else False
         }

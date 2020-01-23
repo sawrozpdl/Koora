@@ -10,6 +10,7 @@ class KooraManager(models.Manager):
         return super(KooraManager, self).filter(is_drafted=False, is_private=False)
 
 
+
 class Koora(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     title = models.CharField(max_length=120)
@@ -28,7 +29,7 @@ class Koora(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['updated_at']
+        ordering = ['-updated_at']
 
     def __unicode__(self):
         return self.title
@@ -53,5 +54,6 @@ class Koora(models.Model):
 
 
     def save(self, **kwargs): 
-        self.slug = self.get_unique_slug(self.title) 
+        payload = self.title if self.title else self.content
+        self.slug = self.get_unique_slug(payload) 
         super(Koora, self).save(**kwargs)

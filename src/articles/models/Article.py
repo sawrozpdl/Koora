@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from markdown_deux import markdown
+from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from comments.models.Comment import *
 from .Vote import *
@@ -38,6 +39,10 @@ class Article(Koora):
     def voters(self, is_upvote):
         return Vote.objects.of_instance(self).filter(is_upvote=is_upvote)
 
+
+    @property
+    def content_type(self):
+        return ContentType.objects.get_for_model(self.__class__)
 
     #   marking the markdown safe prevents django from messing with it for protection
 
