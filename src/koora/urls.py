@@ -9,3 +9,4 @@ urlpatterns = [
     path('', index, name='home'),
     path('accounts/', include('accounts.urls', namespace='accounts'), name='accounts')
 ]
+ 

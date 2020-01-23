@@ -12,7 +12,7 @@ def register_user(request):
         print(request.POST)
         user = User.objects.create_user(username=request.POST['uname'],password=request.POST['pass'],email=request.POST['mail'])
         user.save()
-        return HttpResponse("Signup Successful")
+        return HttpResponseRedirect(reverse('home'))
 
 
 def authenticate_user(request):

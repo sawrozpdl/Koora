@@ -12,4 +12,11 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def associated_count(self):
+        return self.article_set.all().count()
+
+    def get_associated_articles(self):
+        return self.article_set.all()
     

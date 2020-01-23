@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 {% load humanize %}
 
+{% block banner%}
+    {% if not query %}
+        <div class="banner text-center">
+            <h1 class="display-4 header">{{ title }}</h1>
+            <p class="lead footer"> Click Show to display more about the article! </p>
+        </div>
+    {% endif %}
+{% endblock banner%}
+
 {% block content %}
 
-<div class="jumbotron container">
-  <h1 class="display-4">{{ title }}</h1>
-  <p class="lead"> Click Show to display more about the article! </p>
-</div>
-
-
 <div class= 'container'>
-    {% if error %}
-        <div class = 'alert alert-danger'> {{error}} </div>
-    {% elif success %}
-        <div class = 'alert alert-success'> {{success}} </div>
-    {% elif guide %}
-        <div class = 'alert alert-warning'> {{guide}} </div>
-    {% elif searchQuery %}
+    {% if query %}
         {% if not hasResults %}
-            <div class = 'alert alert-warning'> No results found for '{{searchQuery}}' </div>
+            <div class = 'alert alert-warning'>
+                 No results found for {% for key, value in query %} {{key}} : {{value}} {% endfor %}
+            </div>
         {% else %}
-            <div class = 'alert alert-secondary'> Search results for '{{searchQuery}}' </div>
+            <div class = 'alert alert-secondary'>
+                Search Results For {% for key, value in query %} {{key}} : {{value}} {% endfor %}
+            </div>
         {% endif %}
     {% endif %}
 
@@ -32,8 +33,8 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src=" {% if article.user.has_image %} {{ article.user.avatar_url }} {% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="">
+                                <div>
+                                    <img class="rounded-circle profile" width="45" src=" {% if article.user.has_image %} {{ article.user.avatar_url }} {% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="">
                                 </div>
                                 <div class="ml-2">
                                     <div class="h5 m-0">{{article.user.username}}</div>
@@ -52,7 +53,7 @@
                 </li>
             {% endfor %}
         </ul>
-    {% elif not searchQuery %}
+    {% elif not query %}
         <div class = 'alert alert-warning'> No articles! Go to Create article to add some </div>
     {% endif %}
 </div>
