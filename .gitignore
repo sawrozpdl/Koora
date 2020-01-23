@@ -4,12 +4,7 @@ tcl/
 db.sqlite3
 include/
 Scripts/
-<<<<<<< HEAD
-=======
-tcl/
->>>>>>> 49d1579075801de42390a074f2df50f5a9ac9d35
 lib/
-tcl/
 *.log
 .env
 *.log
