@@ -6,5 +6,6 @@ from .views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('articles/', include('articles.urls', namespace='articles'), name='articles'),
+    path('questions/', include('questions.urls', namespace='questions'), name='questions'),
     path('', index, name='home')
 ]

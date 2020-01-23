@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 
-DEBUG = os.environ['DEBUG'] == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'articles.apps.ArticlesConfig',
+    'questions.apps.QuestionsConfig',
     'django.contrib.humanize',
     'markdown_deux',
     'boto3'
@@ -99,18 +100,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-if os.environ['PY_ENV'] != 'development':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.' + os.environ['DB_ENGINE'],
-            'NAME': os.environ['DB_NAME'],
-            'USER': os.environ['DB_USER'],
-            'PASSWORD': os.environ['DB_PASSWORD'],
-            'HOST': os.environ['DB_HOST'],
-            'PORT': os.environ['DB_PORT'],
-        }
-    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
