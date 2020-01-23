@@ -3,31 +3,49 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.template import loader
 
 # Create your views here.
 def register_user(request):
     if request.method =="GET":
-        return render(request,'../templates/accounts/accounts/register.html')
+        return HttpResponse(loader.get_template("accounts/register.html").render({}, request))
     else:
         print(request.POST)
-        user = User.objects.create_user(username=request.POST['uname'],password=request.POST['pass'],email=request.POST['mail'])
+        user = User.objects.create_user(username=request.POST['username'],password=request.POST['f_password'],email=request.POST['email'])
         user.save()
-        return HttpResponseRedirect(reverse('home'))
+        content = {
+            "page_name": "login",
+            "messages" : [
+                {
+                    "type" : "success",
+                    "content" : "Signup Successfull, You may now login"
+                }
+            ],
+        }
+        return HttpResponse(loader.get_template("accounts/login.html").render(content, request))
 
 
 def authenticate_user(request):
     if request.method =="GET":
-        return render (request,'../templates/accounts/accounts/login.html')
+        return HttpResponse(loader.get_template("accounts/login.html").render({}, request))
     else:
         print(request.POST)
-        user = authenticate(username=request.POST['uname'],password=request.POST['pass'])
+        user = authenticate(username=request.POST['username'],password=request.POST['password'])
         print(user)
         if user is not None:
             login(request,user)
-            return render(request,"../templates/base.html")
+            content = {
+            "page_name": "login",
+            "messages" : [
+                {
+                    "type" : "success",
+                    "content" : "Login Successfull!"
+                }
+            ],
+        }
+            return HttpResponse(loader.get_template("base.html").render(content, request))
         else:
-            return HttpResponse("Authentication Failed")  
-
+            HttpResponseForbidden()
 
 def logout_user(request):
     if (not request.user.is_authenticated):

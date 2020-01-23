@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register to Koora
+{% endblock title %}
+
+{% block banner %}
+{% endblock banner %}
+
+{% block midcontent %}
+<div class="container d-flex justify-content-center mb-5">
+      <h1 class="display-4 text-secondary">Signup For Koora</h1>
+</div>
+            
+    <div class="row">
+               <form action="{% url 'accounts:register' %}" method="post" style="margin:auto">
+               {% csrf_token %}
+                  <div class="form-group">
+                     <input type="text" name="username"  class="form-control my-input" id="name" placeholder="Username">
+                  </div>
+                  <div class="form-group">
+                     <input type="email" name="email"  class="form-control my-input" id="email" placeholder="Email">
+                  </div>
+                  <div class="form-group">
+                     <input type="password" name="f_password" id="pass"  class="form-control my-input" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                     <input type="password" name="repass" id="repass"  class="form-control my-input" placeholder="Confirm password">
+                  </div>                                
+                  <div class="text-center mt-2">
+                     <button type="submit" class="btn btn-success">Sign Up</button>
+                  </div>
+                  <div class="col-md-12 text-center">
+                     <div class="login-or mt-2 mb-2">
+                        <hr class="hr-or">
+                        <span class="span-or">or</span>
+                     </div>
+                  </div>
+                  <div class="form-group text-center mt-2">
+                     <a class="btn btn-danger" href="#">
+                     <i class="fa fa-google"></i> Sign up with Google
+                     </a>
+                  </div>
+                  <p class="small mt-3">By signing up, you are indicating that you have read and agree to the <a href="#" class="ps-hero__content__link">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+                  </p>
+               </form>
+    </div>           
+{% endblock midcontent %}
