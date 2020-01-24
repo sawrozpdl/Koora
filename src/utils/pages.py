@@ -75,6 +75,8 @@ class Paginator:
             if (end > self.count):
                 end = self.count
     
+    def page_range(self):
+        return range(1, self.last_page.page_number + 1)
 
     def page(self, index):
         page = self.first_page

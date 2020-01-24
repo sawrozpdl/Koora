@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block banner %}
+{% endblock banner %}
+
+{% block content %}
+
+  <form class = "container" action = "{% url 'questions:create' %}" method = "post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="card gedf-card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Create an Question</a>
+                </li>
+                
+            </ul>
+        </div>
+       
+
+</form>  
+
+{% endblock content %}
+
+

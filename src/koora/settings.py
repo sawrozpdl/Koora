@@ -17,7 +17,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = True
+DEBUG = os.environ['DEBUG'] == 'TRUE'
+
+ADMIN_ENABLED = DEBUG
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'koora.context.interceptor'
             ],
         },
     },
@@ -100,6 +103,21 @@ DATABASES = {
     }
 }
 
+<<<<<<< HEAD
+=======
+if os.environ['PY_ENV'] == 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.' + os.environ['DB_ENGINE'],
+            'NAME': os.environ['DB_NAME'],
+            'USER': os.environ['DB_USER'],
+            'PASSWORD': os.environ['DB_PASSWORD'],
+            'HOST': os.environ['DB_HOST'],
+            'PORT': os.environ['DB_PORT'],
+        }
+    }
+
+>>>>>>> 69aebcfddf9c30cf0aa555184ad676e5a3867301
 
 AUTH_PASSWORD_VALIDATORS = [
     {
