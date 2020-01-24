@@ -75,7 +75,7 @@
                   <input type="checkbox" class="custom-control-input" id="darkSwitch">
                   <label class="custom-control-label ml-3" for="darkSwitch">Dark Mode</label>
                 </div>
-                <a class="dropdown-item" href="#">Log Out</a>
+                <a class="dropdown-item" href="{% url 'accounts:logout' %}">Log Out</a>
             </div>
           {% else %}
             <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
