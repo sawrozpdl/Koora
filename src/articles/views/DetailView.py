@@ -10,9 +10,11 @@ class DetailView(View):
         # try:
         article = Article.objects.get(slug=slug)
         template = loader.get_template("articles/article.html")
+        print('this is vote: ', article.get_user_vote(request.user))
         content = {
             "page_name": "articles",
             "article": article,
+            "vote_type" : article.get_user_vote(request.user),
             "comments" : article.comments
         }
         return HttpResponse(template.render(content, request))
