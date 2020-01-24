@@ -19,6 +19,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = os.environ['DEBUG'] == 'True'
 
+ADMIN_ENABLED = DEBUG
+
 ALLOWED_HOSTS = ['*']
 
 CSRF_FAILURE_VIEW = 'koora.views.csrf_fail'
@@ -99,7 +101,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-print(os.environ['PY_ENV'])
+
 if os.environ['PY_ENV'] == 'production':
     DATABASES = {
         'default': {
