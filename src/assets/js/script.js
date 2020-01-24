@@ -25,3 +25,15 @@ window.addEventListener("load", () => {
       resetTheme();
     }));
 });
+
+
+
+// --------------- //
+
+let content = document.getElementById('content-article');
+let target = document.getElementById('target-article');
+
+
+content.onkeyup = (event) => {
+  target.innerHTML = marked(event.target.value)
+}

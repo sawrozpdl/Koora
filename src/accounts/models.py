@@ -10,5 +10,6 @@ class User(AbstractUser):
 class Profile(models.model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=250)
-    birth_date = models.DateField(null=True, blank=True)
+    intrests = models.CharField(max_length=250)
+    location = models.CharField(max_length=50)
     

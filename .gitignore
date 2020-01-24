@@ -1,10 +1,10 @@
 bin/
 Scripts/
 tcl/
-db.sqlite3
+src/staticfiles
+*.sqlite3
 include/
 Scripts/
-tcl/
 lib/
 *.log
 .env

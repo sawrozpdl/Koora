@@ -2,15 +2,9 @@
 {% load humanize %}
 
 {% block banner%}
-    {% if not query %}
-        <div class="banner text-center">
-            <h1 class="display-4 header">{{ title }}</h1>
-            <p class="lead footer"> Click Show to display more about the article! </p>
-        </div>
-    {% endif %}
 {% endblock banner%}
 
-{% block content %}
+{% block midcontent %}
 
 <div class= 'container'>
     {% if query %}
@@ -25,9 +19,9 @@
         {% endif %}
     {% endif %}
 
-    {%  if articles  %}
+    {%  if page.object_list  %}
         <ul class = "article-list" style="padding:0">
-            {% for article in articles %}
+            {% for article in page.object_list %}
                 <li class = "card w-75 text-align-center" style="text-align:center;margin:0px auto 40px auto">
                     <div class="card">
                     <div class="card-header">
@@ -53,11 +47,36 @@
                 </li>
             {% endfor %}
         </ul>
+
+
+        <ul class="pagination justify-content-center">
+            {% if page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'articles:list' %}?page={{page.previous_page_number}}" tabindex="-1">Previous</a>
+                </li>
+            {% endif %}
+            {% for pn in page_range %}
+                <li class="page-item {% ifequal page.page_number pn %}active{% endifequal %}">
+                    <a class="page-link" href="{% url 'articles:list' %}?page={{pn}}">{{pn}}
+                        {% if page.page_number == pn %}
+                            <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+            {% if page.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'articles:list' %}?page={{page.next_page_number}}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+
+
     {% elif not query %}
         <div class = 'alert alert-warning'> No articles! Go to Create article to add some </div>
     {% endif %}
 </div>
-{% endblock content %}
+{% endblock midcontent %}
 
 
 

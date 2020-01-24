@@ -6,7 +6,9 @@
 
 
 {% block content %}
-  <form class = "container" action = "{{ article.update_url }}" method = "post" enctype="multipart/form-data">
+    <div class ="row container mx-auto">
+    <div class="col-lg-6">
+  <form action = "{{ article.update_url }}" method = "post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="card gedf-card">
@@ -25,11 +27,11 @@
                 <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
                     <div class="form-group">
                         <label class="sr-only" for="message">title</label>
-                        <textarea name = "title" required class="form-control" id="message" rows="1" placeholder="What is your Article about?">{{article.title}}</textarea>
+                        <textarea name = "title" required class="form-control" id="title-article" rows="1" placeholder="What is your Article about?">{{article.title}}</textarea>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="message">content</label>
-                        <textarea name = "content" required class="form-control" id="message" rows="6" placeholder="Place your content here">{{ article.content}}</textarea>
+                        <textarea name = "content" required class="form-control" id="content-article" rows="6" placeholder="Place your content here">{{ article.content}}</textarea>
                     </div>
                     <select name = "category" class="form-group form-control form-control-md">
                       {% for key, value in categories %}
@@ -53,8 +55,7 @@
             </div>
             <div class="btn-toolbar justify-content-between">
                 <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <button type="submit" class="btn btn-secondary">Draft</button>
+                    <button type="submit" class="btn btn-success">Update</button>
                 </div>
                 <div class="btn-group">
                     <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -71,7 +72,14 @@
     </div>
 
 
-</form>  
+</form>
+    </div>
+    <div class="col-lg-6 header-container container">
+        <span class="inner-header">Live Result : </span>
+        <div id = "target-article">
+        </div>
+    </div>
+    </div>  
 
 {% endblock content %}
 
