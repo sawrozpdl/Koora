@@ -27,7 +27,7 @@ body {
 }
 
 .navbar-light .navbar-nav .active a::after {
-  border-bottom: 5px solid #5bc0eb;
+  border-bottom: 5px solid #5cb85c;
   bottom: -10px;
   content: " ";
   left: 0;
@@ -185,6 +185,19 @@ body {
 
 .up-vote:hover i, .down-vote:hover i {
   color : red;
+}
+
+#vote-form {
+  margin: 0px
+}
+
+.list-group-item:hover{
+  background-color: #5cb85c;
+  color : white;
+}
+
+.hover-black:hover {
+  color: black;
 }
 
 @media (min-width: 992px) {

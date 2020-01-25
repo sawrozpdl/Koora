@@ -75,18 +75,18 @@
             <button type ="submit" id="upvote-button" class="btn vote {% if vote_type != -1 and vote_type == True %}up-vote{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
-            <label style="font-weight:bold;" id="vote-count" class="btn btn-secondary">
+            <label style="font-weight:bold;" id="vote-count" class="btn btn-success">
                 {{article.vote_count}}
             </label>
             <button type = "submit" id="downvote-button" class="btn vote {% if vote_type != -1 and vote_type == False %}down-vote{%endif%}" name="vote" value="down">
                 <i class="fa fa-arrow-down"></i>
             </button>
         </form>
-        <a class="btn btn-secondary" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
+        <a class="btn btn-success" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
                 <i class="fa fa-comment"></i>
                 Comments
         </a>
-        <a href="#" class="btn btn-secondary"><i class="fa fa-mail-forward"></i> Share</a>
+        <a href="#" class="btn btn-success"><i class="fa fa-mail-forward"></i> Share</a>
     </div>
 </div>
 
@@ -181,6 +181,16 @@
         })
     }
 
+    function disableVoting() {
+        upvoteButton.disabled = true;
+        downvoteButton.disabled = true;
+    }
+
+    function enableVoting() {
+        upvoteButton.disabled = false;
+        downvoteButton.disabled = false;
+    }
+
     
     voteForm = document.getElementById('vote-form');
 
@@ -188,22 +198,21 @@
 
         event.preventDefault();
 
-        const { article_id, user_id, csrfmiddlewaretoken } = event.target
-        let url = event.target.action
+        disableVoting();
+
+        const { article_id, user_id, csrfmiddlewaretoken } = event.target;
+        let url = event.target.action;
+
         let data = {
             article_id : article_id.value,
             user_id : user_id.value,
             vote_type : vote
         }
-        upvoteButton.disabled = true;
-        downvoteButton.disabled = true;
-        post(url, data, csrfmiddlewaretoken.value).then(response => {
-            voteCount.innerHTML = response.vote_count
-            upvoteButton.disabled = false;
-            downvoteButton.disabled = false;
-        }, error => {
-            console.log(error);
-        })
+
+        post(url, data, csrfmiddlewaretoken.value)
+        .then(response => voteCount.innerHTML = response.vote_count)
+        .catch(error => console.log(error)) // TODO: show an error alert 
+        .finally(() => enableVoting())
     }
 
 
