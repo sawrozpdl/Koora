@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.template import loader
+from django.contrib import messages
 
 
 # Create your views here.
@@ -55,7 +56,9 @@ def authenticate_user(request):
         return HttpResponse(loader.get_template("accounts/login.html").render({}, request))
     else:
         print(request.POST)
-        user = authenticate(username=request.POST['username'],password=request.POST['password'])
+        username=request.POST['username']
+        password=request.POST['password']
+        user = authenticate(username=username, password=password)
         #print(user)
         if user:
             login(request,user)
@@ -64,7 +67,16 @@ def authenticate_user(request):
         }
             return HttpResponse(loader.get_template("base.html").render(content, request))
         else:
-            HttpResponseForbidden()
+            content = {
+                "page_name": "authentication fail",
+                "messages" : [
+                    {
+                        "type" : "danger",
+                        "content" : "Username or Password is not correct"
+                    }
+                ]            
+            }
+            return HttpResponse(loader.get_template("accounts/login.html").render(content, request))
 
 def logout_user(request):
     if (not request.user.is_authenticated):
