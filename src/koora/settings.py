@@ -23,6 +23,17 @@ ADMIN_ENABLED = DEBUG
 
 ALLOWED_HOSTS = ['*']
 
+
+LOGIN_URL = '/auth/login/google-oauth2/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['GOOGLE_OAUTH_CLIENT_ID']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['GOOGLE_OAUTH_CLIENT_SECRET']
+
+
 CSRF_FAILURE_VIEW = 'koora.views.csrf_fail'
 
 #Settings for Article Categories
@@ -53,7 +64,8 @@ INSTALLED_APPS = [
     'comments.apps.CommentsConfig',
     'django.contrib.humanize',
     'markdown_deux',
-    'boto3'
+    'boto3',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +77,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 
 if not DEBUG:
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
