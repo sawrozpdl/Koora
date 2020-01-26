@@ -18,9 +18,13 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop2">
                 {% if comment.user == request.user %}
-                        <button class="dropdown-item" style="border:none;color:lightred">
-                        Delete
-                        </button>
+                        <form style="margin-bottom:0px;" action="{% url 'comments:detail' model=comment.content_object|get_class slug=comment.slug %}" method="post"> 
+                                {% csrf_token %}
+                                <input type="hidden" id="delete_mode" name="delete_mode" value="{{True}}">
+                                <button type="submit" class="dropdown-item" style="border:none;color:lightred">
+                                        Delete
+                                </button>
+                        </form>
                 <div class="dropdown-divider"></div>
                 {% endif %}
                 <a class="dropdown-item" href="#">Report</a>
@@ -43,7 +47,7 @@
                 <form style = "margin-bottom:45px" action = '{% url "comments:detail" model=comment.content_object|get_class slug=comment.slug %}' method = "POST">
                         {% csrf_token %}
                         <input type="hidden" id="post_id" name="post_id" value="{{comment.post.id}}">
-                        <textarea name = "content" class="form-control mt-3" placeholder="Reply to {{comment.user}}" rows="1"></textarea>
+                        <textarea name = "content" class="form-control mt-3" placeholder="Reply to {{comment.user}}" rows="1" required></textarea>
                         <br>
                         <button type="submit" class="btn btn-success pull-right">Add</button>
                 </form>

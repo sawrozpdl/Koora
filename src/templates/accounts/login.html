@@ -15,7 +15,7 @@ login to koora
       <h1 class="display-4 text-secondary">Login For Koora</h1>
 </div>
     <div class="row">
-          <form action ="{% url 'accounts:login' %}" method="post" style="margin:auto">
+          <form action ="{% url 'accounts:login' %}" method="post" style="width:70%;margin:auto">
         {% csrf_token %}
                   <div class="form-group">
                      <input type="text" name="username"  class="form-control my-input" id="name" placeholder="Name">
@@ -23,7 +23,7 @@ login to koora
 
                   <div class="form-group">
                      <input type="password" name="password" id="password"  class="form-control my-input" placeholder="Password">
-                  </div>
+                  </div>            
                   <div class="text-center mt-2">
                      <button type="submit" class="btn btn-success">Sign In</button>
                   </div>
@@ -34,12 +34,11 @@ login to koora
                      </div>
                   </div>
                   <div class="form-group text-center">
-                     <a class="btn btn-danger" href="#">
-                     <i class="fa fa-google"></i> Sign up with Google
+                     <a class="btn btn-danger" href="{% url 'social:begin' 'google-oauth2' %}">
+                     <i class="fa fa-google"></i> Sign in with Google
                      </a>
                   </div>
-                  <p class="small mt-3">By signing up, you are indicating that you have read and agree to the <a href="#" class="ps-hero__content__link">Terms of Use</a> and <a href="#">Privacy Policy</a>.
-                  </p>
+
     </form>
 
     </div>

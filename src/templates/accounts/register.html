@@ -13,7 +13,7 @@ Register to Koora
 </div>
             
     <div class="row">
-               <form action="{% url 'accounts:register' %}" method="post" style="margin:auto">
+               <form action="{% url 'accounts:register' %}" method="post" style="width:70%;margin:auto">
                {% csrf_token %}
                   <div class="form-group">
                      <input type="text" name="username"  class="form-control my-input" id="name" placeholder="Username">
@@ -25,7 +25,7 @@ Register to Koora
                      <input type="password" name="f_password" id="pass"  class="form-control my-input" placeholder="Password">
                   </div>
                   <div class="form-group">
-                     <input type="password" name="repass" id="repass"  class="form-control my-input" placeholder="Confirm password">
+                     <input type="password" name="r_password" id="repass"  class="form-control my-input" placeholder="Confirm password">
                   </div>                                
                   <div class="text-center mt-2">
                      <button type="submit" class="btn btn-success">Sign Up</button>
@@ -37,12 +37,10 @@ Register to Koora
                      </div>
                   </div>
                   <div class="form-group text-center mt-2">
-                     <a class="btn btn-danger" href="#">
-                     <i class="fa fa-google"></i> Sign up with Google
+                     <a class="btn btn-danger" href="{% url 'social:begin' 'google-oauth2' %}">
+                     <i class="fa fa-google"></i> Sign in with Google
                      </a>
                   </div>
-                  <p class="small mt-3">By signing up, you are indicating that you have read and agree to the <a href="#" class="ps-hero__content__link">Terms of Use</a> and <a href="#">Privacy Policy</a>.
-                  </p>
                </form>
     </div>           
 {% endblock midcontent %}
