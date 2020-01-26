@@ -28,7 +28,7 @@
         <span class="lead">Replies on "{{comment.content|truncatechars:15}}"</span>
         <hr>
 
-        <div style="margin-left:3%;padding-left:6%;border-left:1px solid rgba(0,0,0,.1);">
+        <div class="comment-thread">
               {% for comment in comment.children %}
                 {% include "comments/comment.html" %}
              {% endfor %}

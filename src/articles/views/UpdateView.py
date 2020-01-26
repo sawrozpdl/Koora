@@ -4,9 +4,11 @@ from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpRespon
 from articles.models import Article
 from django.conf import settings
 from utils import uploader
+from utils.decorators import fail_safe, protected_view
 
 class UpdateView(View):
 
+    @fail_safe(for_model=Article)
     def get(self, request, slug):
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
@@ -23,6 +25,9 @@ class UpdateView(View):
             "tags" : article.get_tag_string()
         }, request))
 
+
+    @fail_safe(for_model=Article)
+    @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
     def post(self, request, slug):
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
@@ -38,14 +43,16 @@ class UpdateView(View):
                 image_url = uploader.upload(image, key)
                 article.image_url = image_url
             article.remove_tags()
-            tags = request.POST.get('tags', '').split(", ")
+            tags = request.POST.get('tags', '').strip().split(",")
             if len(tags) > 0:
                 for tag in tags:
-                    try:
-                        existing_tag = Tag.objects.get(name=tag)
-                        article.tags.add(existing_tag)
-                    except:
-                        article.tags.create(name=tag, description='nonefeornow')
+                    tag = tag.strip()
+                    if tag:
+                        try:
+                            existing_tag = Tag.objects.get(name=tag)
+                            article.tags.add(existing_tag)
+                        except:
+                            article.tags.create(name=tag, description='nonefeornow')
             article.save()
             return HttpResponse(loader.get_template("articles/create_article.html").render({
                 "messages" : [

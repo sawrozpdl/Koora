@@ -3,14 +3,14 @@ from django.template import loader
 from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpResponseServerError
 from articles.models import Article
 from comments.models import Comment
+from utils.decorators import fail_safe, protected_view
 
 class DetailView(View):
 
+    @fail_safe(for_model=Article)
     def get(self, request, slug):
-        # try:
         article = Article.objects.get(slug=slug)
         template = loader.get_template("articles/article.html")
-        print('this is vote: ', article.get_user_vote(request.user))
         content = {
             "page_name": "articles",
             "article": article,
@@ -18,13 +18,11 @@ class DetailView(View):
             "comments" : article.comments
         }
         return HttpResponse(template.render(content, request))
-        # except Article.DoesNotExist:
-        #     raise Http404()
-        # except:
-        #     return HttpResponseServerError()
 
+
+    @fail_safe(for_model=Article)
+    @protected_view(allow='logged_users', fallback='accounts/login.html', message="Login to post/delete contents")
     def post(self, request, slug):
-        # try:
         article = Article.objects.get(slug=slug)
         deleteMode = request.POST.get('deletemode', False)
         if deleteMode:
@@ -62,8 +60,3 @@ class DetailView(View):
                 "comments" : article.comments
             }
             return HttpResponse(template.render(content, request))
-        # except Article.DoesNotExist:
-        #     raise Http404()
-        # except:
-        #     return HttpResponseServerError()
-        
