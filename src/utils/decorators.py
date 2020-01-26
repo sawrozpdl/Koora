@@ -5,18 +5,19 @@ from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpRespon
 def protected_view(*main_args, **main_kwargs):
     def protected_view_decorator(callback):
         def wrapper(*args, **kwargs):
-            if args[0]["user"]["is_authenticated"]:
+            print(args[1].user)
+            if args[1].user.is_authenticated:
                 return callback(*args, **kwargs)
             else:
                 content = {
                     "messages": [
                         {
                             "type": "warning",
-                            "content": main_kwargs['message']
+                            "content": main_kwargs['message'] or 'You dont have permission for that!'
                         }
                     ],
                 }
-                return HttpResponse(loader.get_template(main_kwargs['fallback']).render(content, args[0]))
+                return HttpResponse(loader.get_template(main_kwargs['fallback']).render(content, args[1]))
         return wrapper
     return protected_view_decorator
 
@@ -26,9 +27,10 @@ def fail_safe(*main_args, **main_kwargs):
         def wrapper(*args, **kwargs):
             try:
                 return callback(*args, **kwargs)
-            except main_kwargs['for'].DoesNotExist:
+            except main_kwargs['for_model'].DoesNotExist:
                 raise Http404()
-            except:
+            except Exception as e:
+                print(e)
                 return HttpResponseServerError()
         return wrapper
     return fail_safe_decorator
