@@ -6,5 +6,8 @@ from .views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('articles/', include('articles.urls', namespace='articles'), name='articles'),
+    path('accounts/', include('accounts.urls', namespace='accounts'), name='accounts'),
+    path('comments/', include('comments.urls', namespace='comments'), name='comments'),
+    path('', include('social_django.urls', namespace='social')),
     path('', index, name='home')
 ]
