@@ -18,7 +18,7 @@
 }
 
 .dropdown-toggle::after {
-    color: #111
+    color: #777 !important;
 }
 
 body {
