@@ -5,13 +5,38 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.template import loader
 
+
 # Create your views here.
 def register_user(request):
     if request.method =="GET":
         return HttpResponse(loader.get_template("accounts/register.html").render({}, request))
     else:
         print(request.POST)
-        user = User.objects.create_user(username=request.POST['username'],password=request.POST['f_password'],email=request.POST['email'])
+        username=request.POST['username']
+        email=request.POST['email']
+        password=request.POST['f_password']
+        confirm_password=request.POST['r_password']
+
+    if User.objects.filter(username=username).exists():
+        return HttpResponse(loader.get_template("accounts/register.html").render({
+            "messages" : [
+                {
+                    "type" : "danger",
+                    "content" : "Username is already taken"
+                }
+            ],
+        }, request))
+    if password != confirm_password:
+        return HttpResponse(loader.get_template("accounts/register.html").render({
+        "messages" : [
+            {
+                "type" : "danger",
+                "content" : "Password doesn't match"
+            }
+        ],               
+        }, request))    
+    else:
+        user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
         content = {
             "page_name": "login",
@@ -31,17 +56,11 @@ def authenticate_user(request):
     else:
         print(request.POST)
         user = authenticate(username=request.POST['username'],password=request.POST['password'])
-        print(user)
-        if user is not None:
+        #print(user)
+        if user:
             login(request,user)
             content = {
-            "page_name": "login",
-            "messages" : [
-                {
-                    "type" : "success",
-                    "content" : "Login Successfull!"
-                }
-            ],
+            "page_name": "login"
         }
             return HttpResponse(loader.get_template("base.html").render(content, request))
         else:
