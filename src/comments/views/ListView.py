@@ -7,7 +7,7 @@ from comments.models import Comment
 class ListView(View):
 
     def get(self, request, article_slug, comment_slug):
-        return HttpResponse('hi')
+        pass
 
     def post(self, request, article_slug, comment_slug):
         pass
