@@ -8,8 +8,10 @@
 <div class="container">
     <div class="span3 well text-center">
         <div class ="container"> 
-        <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R" name="aboutme" width="140" height="140" class="img-circle"></a>
-        <h3>Joe Sixpack</h3>
+        <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=650x650{% endif %}" name="aboutme" width="140" height="140" class="img-circle"></a>
+        
+        <h3>{{request.user.username}}</h3>
+        
         <em>click my face for more</em>
 		</div>
     </div>
@@ -22,14 +24,17 @@
                     <h4 class="modal-title" id="myModalLabel">More About Joe</h4>
                     </div>
                 <div class="modal-body">
-                    <div class ="container"> 
-                    <img src="#" name="aboutme" width="140" height="140" border="0" class="img-circle"></a>
-                    <h3 class="media-heading">Joe Sixpack <small>USA</small></h3>
-                    <span><strong>Skills: </strong></span>
-                        <span class="label label-warning">HTML5/CSS</span>
+                    <div class ="container">
+                    <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=650x650{% endif %}" name="aboutme" width="140" height="140" class="img-circle"> 
+                    </a>
+                    <h3 class="media-heading">123 <small>USA</small></h3>
+                    <span><strong>Intrests: </strong></span>
+                    <span class="label label-info">{{request.profile.intrests}}</span>
+                        
+                        <!-- <span class="label label-warning">HTML5/CSS</span>
                         <span class="label label-info">Adobe CS 5.5</span>
                         <span class="label label-info">Microsoft Office</span>
-                        <span class="label label-success">Windows XP, Vista, 7</span>
+                        <span class="label label-success">Windows XP, Vista, 7</span> -->
                     </div>
                     <hr>
                     <div class ="container"> 
@@ -46,5 +51,9 @@
             </div>
         </div>
     </div>
+</div>
+
+<div>
+    
 </div>
 {% endblock content %}

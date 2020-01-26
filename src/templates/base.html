@@ -68,7 +68,9 @@
               {{ request.user.username }} 
             </a>
             <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">My Profile</a>
+              <!-- <div></div> -->
+              <!-- <div></div> -->
+              <a class="dropdown-item" href = "{% url 'accounts:profile' %}">My Profile</a>
               <a class="dropdown-item" href="#">Settings</a>
               <div class="dropdown-divider"></div>
                 <div class="custom-control custom-switch">
