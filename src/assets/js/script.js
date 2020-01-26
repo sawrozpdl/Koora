@@ -1,31 +1,31 @@
 const darkSwitch = document.getElementById("darkSwitch");
 
 function initTheme() {
-  const e =
-    null !== localStorage.getItem("darkSwitch") &&
-    "dark" === localStorage.getItem("darkSwitch");
-  (darkSwitch.checked = e),
+    const e =
+        null !== localStorage.getItem("darkSwitch") &&
+        "dark" === localStorage.getItem("darkSwitch");
+    (darkSwitch.checked = e),
     e
-      ? document.body.setAttribute("data-theme", "dark")
-      : document.body.removeAttribute("data-theme");
+        ?
+        document.body.setAttribute("data-theme", "dark") :
+        document.body.removeAttribute("data-theme");
 }
 
 function resetTheme() {
-  darkSwitch.checked
-    ? (document.body.setAttribute("data-theme", "dark"),
-      localStorage.setItem("darkSwitch", "dark"))
-    : (document.body.removeAttribute("data-theme"),
-      localStorage.removeItem("darkSwitch"));
+    darkSwitch.checked ?
+        (document.body.setAttribute("data-theme", "dark"),
+            localStorage.setItem("darkSwitch", "dark")) :
+        (document.body.removeAttribute("data-theme"),
+            localStorage.removeItem("darkSwitch"));
 }
 
 window.addEventListener("load", () => {
-  darkSwitch &&
-    (initTheme(),
-    darkSwitch.addEventListener("change", () => {
-      resetTheme();
-    }));
+    darkSwitch &&
+        (initTheme(),
+            darkSwitch.addEventListener("change", () => {
+                resetTheme();
+            }));
 });
-
 
 
 // --------------- //
@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
 let content = document.getElementById('content-article');
 let target = document.getElementById('target-article');
 
-if (content) 
-  content.onkeyup = (event) => {
-    target.innerHTML = marked(event.target.value)
-  }
+if (content)
+    content.onkeyup = (event) => {
+        target.innerHTML = marked(event.target.value)
+    }

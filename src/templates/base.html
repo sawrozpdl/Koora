@@ -15,7 +15,8 @@
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" /> {% endblock css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dark.css' %}" /> {% endblock css %}
 </head>
 
 <body>
@@ -186,8 +187,8 @@
         {% block footer %}
         <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top:40px">
             <div class="container d-flex justify-content-between">
-                <span>Copyright 2020 Koora</span>
-                <span>All Rights Reserved</span>
+                <span class="lead">Copyright 2020 Koora</span>
+                <span class="lead">All Rights Reserved</span>
             </div>
         </div>
         {% endblock footer %}
