@@ -16,7 +16,7 @@ Register to Koora
                <form action="{% url 'accounts:register' %}" method="post" style="width:70%;margin:auto">
                {% csrf_token %}
                   <div class="form-group">
-                     <input type="text" name="username" pattern="[a-z]{1,15}" title="Username should only contain lowercase letters. e.g. john"> class="form-control my-input" id="name" placeholder="Username" required>
+                     <input type="text" name="username" pattern="[a-z]{1,15}" title="Username should only contain lowercase letters. e.g. john" class="form-control my-input" id="name" placeholder="Username" required>
                   </div>
                   <div class="form-group">
                      <input type="email" name="email"  class="form-control my-input" id="email" placeholder="Email" required>

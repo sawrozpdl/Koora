@@ -39,6 +39,10 @@
     background-color: #444 !important;
 }
 
+[data-theme="dark"] .span-or {
+    background-color: #333 !important;
+}
+
 [data-theme="dark"] .card {
     background-color: #303030 !important;
     border: 1px solid rgba(0, 0, 0, 0.125);
