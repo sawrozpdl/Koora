@@ -6,9 +6,14 @@ from .Tag import *
 
 class KooraManager(models.Manager):
 
-    def active(self, *args, **kwargs):
-        return super(KooraManager, self).filter(is_drafted=False, is_private=False)
+    def private(self):
+        return super(KooraManager, self).filter(is_private=True, is_drafted=False)
 
+    def public(self):
+        return super(KooraManager, self).filter(is_private=False, is_drafted=False)
+
+    def active(self):
+        return super(KooraManager, self).filter(is_drafted=False)
 
 
 class Koora(models.Model):

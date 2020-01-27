@@ -14,7 +14,7 @@ class ListView(View):
         searchQuery = request.GET.get("searchQuery", False)  # False is default when there"s no search
         tag = request.GET.get("tag", False)  
         category = request.GET.get("category", False)  # False is default when there"s no search
-        articles = Article.objects.all()
+        articles = Article.objects.public()
         required_articles = articles
         query = {}
         if searchQuery:
