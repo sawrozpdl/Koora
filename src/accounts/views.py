@@ -4,8 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.template import loader
-from django.contrib import messages
-
 
 # Create your views here.
 def register_user(request):
@@ -23,7 +21,7 @@ def register_user(request):
     if User.objects.filter(username=username).exists():
         return HttpResponse(loader.get_template("accounts/register.html").render({
             "messages" : [
-                {
+                {+
                     "type" : "danger",
                     "content" : "Username is already taken"
                 }
