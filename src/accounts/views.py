@@ -9,6 +9,8 @@ from django.contrib import messages
 
 # Create your views here.
 def register_user(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('home'))
     if request.method =="GET":
         return HttpResponse(loader.get_template("accounts/register.html").render({}, request))
     else:
@@ -52,6 +54,8 @@ def register_user(request):
 
 
 def authenticate_user(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('home'))
     if request.method =="GET":
         return HttpResponse(loader.get_template("accounts/login.html").render({}, request))
     else:
