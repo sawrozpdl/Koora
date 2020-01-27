@@ -71,8 +71,8 @@ class Article(Koora):
     def get_tag_string(self):
         req = ''
         for tag in self.tags.all():
-            req += tag.name + ', '
-        return req[:(len(req) - 2)]
+            req += tag.name + ','
+        return req
 
     def remove_tags(self):
         for tag in self.tags.all():
