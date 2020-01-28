@@ -5,15 +5,16 @@ from django.conf import settings
 from ..models import Article
 from ..models import Tag
 from utils.pages import Paginator
-
+from utils.decorators import fail_safe
 
 class ListView(View):
 
+    @fail_safe(for_model=Article)
     def get(self, request):
         searchQuery = request.GET.get("searchQuery", False)  # False is default when there"s no search
         tag = request.GET.get("tag", False)  
         category = request.GET.get("category", False)  # False is default when there"s no search
-        articles = Article.objects.all()
+        articles = Article.objects.public()
         required_articles = articles
         query = {}
         if searchQuery:

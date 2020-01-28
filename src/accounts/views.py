@@ -18,6 +18,8 @@ def user_profile(request):
 
 # Create your views here.
 def register_user(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('home'))
     if request.method =="GET":
         return HttpResponse(loader.get_template("accounts/register.html").render({}, request))
         
@@ -66,6 +68,8 @@ def register_user(request):
 
 
 def authenticate_user(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('home'))
     if request.method =="GET":
         return HttpResponse(loader.get_template("accounts/login.html").render({}, request))
     else:

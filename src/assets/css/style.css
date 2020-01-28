@@ -1,210 +1,207 @@
 @keyframes slideIn {
-  0% {
-    transform: translateY(1rem);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0rem);
-    opacity: 1;
-  }
-  0% {
-    transform: translateY(1rem);
-    opacity: 0;
-  }
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
 }
 
 .slideIn {
-  animation-name: slideIn;
+    animation-name: slideIn;
+}
+
+.dropdown-toggle::after {
+    color: #777 !important;
 }
 
 body {
-  font-family: "Titillium Web", sans-serif;
+    font-family: "Titillium Web", sans-serif;
 }
 
-.navbar-nav > li {
-  float: left;
-  position: relative;
+.navbar-nav>li {
+    float: left;
+    position: relative;
 }
 
 .navbar-light .navbar-nav .active a::after {
-  border-bottom: 5px solid #5cb85c;
-  bottom: -10px;
-  content: " ";
-  left: 0;
-  position: absolute;
-  right: 0;
+    border-bottom: 5px solid #5cb85c;
+    bottom: -10px;
+    content: " ";
+    left: 0;
+    position: absolute;
+    right: 0;
 }
 
-[data-theme="dark"] {
-  background-color: #111 !important;
-  color: #eee;
-}
-
-[data-theme="dark"] .bg-light {
-  background-color: #333 !important;
-}
-
-[data-theme="dark"] .bg-white {
-  background-color: #000 !important;
-}
-
-[data-theme="dark"] .bg-black {
-  background-color: #eee !important;
+.navbar-light .navbar-nav a {
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 .banner {
-  background: #5cb85c;
-  color: white;
-  box-shadow: inset 0 8px 8px -8px rgba(0, 0, 0, 0.3),
-    inset 0 -8px 8px -8px rgba(0, 0, 0, 0.3);
-  padding: 2rem;
-  margin-bottom: 2rem;
+    background: #5cb85c;
+    color: white;
+    box-shadow: inset 0 8px 8px -8px rgba(0, 0, 0, 0.3), inset 0 -8px 8px -8px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
 
 .header {
-  color: #fff;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-  font-weight: 700;
+    color: #fff;
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+    font-weight: 700;
 }
 
 .footer {
-  font-weight: 300;
+    font-weight: 300;
 }
 
 .profile {
-  border: 2px solid #eee;
-  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
-  margin-right: 5px;
-  transition: 0.3s ease;
+    border: 2px solid #eee;
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+    margin-right: 5px;
+    transition: 0.3s ease;
 }
 
 .profile:hover {
-  transition: 0.3s ease;
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
+    transition: 0.3s ease;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .error-template {
-  padding: 40px 15px;
-  text-align: center;
+    padding: 40px 15px;
+    text-align: center;
 }
+
 .error-actions {
-  margin-top: 15px;
-  margin-bottom: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
+
 .error-actions .btn {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .login-or {
-  position: relative;
-  color: #aaa;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  }
-  .span-or {
-  display: block;
-  position: absolute;
-  left: 50%;
-  top: -2px;
-  margin-left: -25px;
-  background-color: #fff;
-  width: 50px;
-  text-align: center;
-  }
-  .hr-or {
-  height: 1px;
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
-  }
+    position: relative;
+    color: #aaa;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.span-or {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -2px;
+    margin-left: -25px;
+    background-color: #fff;
+    width: 50px;
+    text-align: center;
+}
+
+.hr-or {
+    height: 1px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
 .header-container {
-  border: 5px solid lightgrey;
-  border-radius: 12px;
+    border: 5px solid lightgrey;
+    border-radius: 12px;
 }
 
 .inner-header {
-  position: relative;
-  background: white;
-  top: -19px;
-  left: 20px;
-  font-size: 22px;
-  padding: 0px 14px;
-  display: inline;
+    position: relative;
+    background: white;
+    top: -19px;
+    left: 20px;
+    font-size: 22px;
+    padding: 0px 14px;
+    display: inline;
 }
 
 .comment-wrapper .panel-body {
-  max-height: 650px;
-  overflow: auto;
+    max-height: 650px;
+    overflow: auto;
 }
 
 .comment-wrapper .media-list .media img {
-  width: 52px;
-  height: 52px;
-  border: 2px solid #e5e7e8;
+    width: 52px;
+    height: 52px;
+    border: 2px solid #e5e7e8;
 }
 
 .comment-wrapper .media-list .media {
-  border-bottom: 1px dashed #efefef;
-  margin-bottom: 25px;
+    border-bottom: 1px dashed #efefef;
+    margin-bottom: 25px;
+}
+
+.comment-thread {
+    margin-left: 3%;
+    padding-left: 6%;
+    border-left: 1px solid rgba(0, 0, 0, .1);
 }
 
 .middle-dot {
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 50%;
-  display: inline-block;
-  height: 6px;
-  margin: 0px 4px 2px 4px;
-  width: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    display: inline-block;
+    height: 6px;
+    margin: 0px 4px 2px 4px;
+    width: 6px;
 }
 
 .vote {
-  font-size: 18px;
-  background: rgba(0,0,0,0.2);
-  color:white;
-  transition: 0.3s;
-}
-
-.vote:hover i {
-  transform: scale(1.2);
-  transition: 0.3s;
-  color: white
+    font-size: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    transition: 0.3s;
 }
 
 .up-vote {
-  font-size: 22px;
-  color:red;
-  transition: 0.3s;
+    color: red;
+    transition: 0.3s;
 }
 
 .down-vote {
-  font-size: 22px;
-  color:red;
-  transition: 0.3s;
+    color: red;
+    transition: 0.3s;
 }
 
-.up-vote:hover i, .down-vote:hover i {
-  color : red;
+.up-vote:hover i,
+.down-vote:hover i {
+    color: red;
 }
 
 #vote-form {
-  margin: 0px
+    margin: 0px
 }
 
-.list-group-item:hover{
-  background-color: #5cb85c;
-  color : white;
+.list-group-item:hover {
+    background-color: #5cb85c;
+    color: white;
 }
 
 .hover-black:hover {
-  color: black;
+    color: black;
 }
 
+
+
 @media (min-width: 992px) {
-  .animate {
-    animation-duration: 0.3s;
-    -webkit-animation-duration: 0.3s;
-    animation-fill-mode: both;
-    -webkit-animation-fill-mode: both;
-  }
+    .animate {
+        animation-duration: 0.3s;
+        -webkit-animation-duration: 0.3s;
+        animation-fill-mode: both;
+        -webkit-animation-fill-mode: both;
+    }
 }

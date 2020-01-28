@@ -3,7 +3,7 @@ from django.db import models
 class Tag(models.Model):
 
     name = models.CharField(max_length=60)
-    description = models.CharField(max_length=320)
+    description = models.CharField(max_length=320, blank=True)
     created_at = models.DateField(auto_now=False, auto_now_add=True)
     is_active = models.BooleanField(default=True, blank=True)
 

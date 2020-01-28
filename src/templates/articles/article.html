@@ -75,7 +75,7 @@
             <button type ="submit" id="upvote-button" class="btn vote {% if vote_type != -1 and vote_type == True %}up-vote{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
-            <label style="font-weight:bold;" id="vote-count" class="btn btn-success">
+            <label style="font-weight:bold;" id="vote-count" class="btn btn-success article-vote-count">
                 {{article.vote_count}}
             </label>
             <button type = "submit" id="downvote-button" class="btn vote {% if vote_type != -1 and vote_type == False %}down-vote{%endif%}" name="vote" value="down">
@@ -149,56 +149,73 @@
 
 <script>
 
-    var vote = null
 
+    let vote = null
+
+    let voteForm = document.getElementById('vote-form');
+    let voteCount = document.getElementById('vote-count');
     let upvoteButton = document.getElementById('upvote-button');
     let downvoteButton = document.getElementById('downvote-button');
-    let voteCount = document.getElementById('vote-count');
-
-    upvoteButton.onclick = event => {
-        upvoteButton.classList.toggle('up-vote');
-        downvoteButton.classList.remove('down-vote');
-        vote = 'up'
-    }
-    downvoteButton.onclick = event => {
-        downvoteButton.classList.toggle('down-vote');
-        upvoteButton.classList.remove('up-vote');
-        vote = 'down'
-    }
 
 
-    function post(url, data, csrf_token) {
-        
-        return new Promise((resolve, reject) => {
-            let request = new XMLHttpRequest();
-            request.open("POST", url, true);
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.setRequestHeader("X-CSRFToken", csrf_token);
-            request.onload = function() {
-                resolve(JSON.parse(this.response));
-            } 
-            request.send(JSON.stringify(data));  
-        })
-    }
+    upvoteButton.onclick = () => vote = 'up'
 
-    function disableVoting() {
+    downvoteButton.onclick = () => vote = 'down'
+
+
+    const disableVoting = () => {
         upvoteButton.disabled = true;
         downvoteButton.disabled = true;
     }
 
-    function enableVoting() {
+    const enableVoting = () => {
         upvoteButton.disabled = false;
         downvoteButton.disabled = false;
     }
 
-    
-    voteForm = document.getElementById('vote-form');
+    const upvoteClientSide = () => {
+        upvoteButton.classList.toggle('up-vote');
+        downvoteButton.classList.remove('down-vote');
+    }
+
+    const downvoteClientSide = () => {
+        downvoteButton.classList.toggle('down-vote');
+        upvoteButton.classList.remove('up-vote');
+    }
+
+    const updateClientSide = ({ vote_count }) => {
+        voteCount.innerHTML = vote_count
+        return (vote === 'up') ? upvoteClientSide() : downvoteClientSide()
+    }
+
+    const handleError = error => $('.article-vote-count').notify("Error! Please log in to vote", "error");
+
+
+    const postVote = (url, data, csrf_token) => {
+        
+        return new Promise((resolve, reject) => {
+
+            let request = new XMLHttpRequest();
+            request.open("POST", url, true);
+
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.setRequestHeader("X-CSRFToken", csrf_token);
+
+            request.onload = function() {
+                let response = JSON.parse(this.response);
+                if (response.status === 200)
+                    return resolve(response)
+                reject(response)
+            }
+
+            request.send(JSON.stringify(data));  
+        })
+    }
+
 
     voteForm.onsubmit = event => {
 
         event.preventDefault();
-
-        disableVoting();
 
         const { article_id, user_id, csrfmiddlewaretoken } = event.target;
         let url = event.target.action;
@@ -209,10 +226,12 @@
             vote_type : vote
         }
 
-        post(url, data, csrfmiddlewaretoken.value)
-        .then(response => voteCount.innerHTML = response.vote_count)
-        .catch(error => console.log(error)) // TODO: show an error alert 
-        .finally(() => enableVoting())
+        disableVoting();
+            
+        postVote(url, data, csrfmiddlewaretoken.value)
+            .then(response => updateClientSide(response))
+            .catch(error => handleError(error)) 
+            .finally(() => enableVoting())
     }
 
 
