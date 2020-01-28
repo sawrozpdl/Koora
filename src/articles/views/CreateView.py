@@ -2,21 +2,22 @@ from django.views import View
 from django.conf import settings
 from django.template import loader
 from articles.models import Article
-from utils.koora import setTagsFor, uploadImageFor
 from utils.decorators import protected_view, fail_safe
 from django.http import HttpResponse, HttpResponseRedirect
+from utils.koora import setTagsFor, uploadImageFor, get_message_or_default, generate_url_for
 
 class CreateView(View):
 
     def get(self, request):
+
+        message = get_message_or_default(request, {
+            "type" : "warning",
+            "content" : "Fill up your article and Click Post to publish and Draft to save it as a Draft"
+        })
+
         return HttpResponse(loader.get_template('articles/post_article.html').render({
             "page_name" : "create_article",
-            "messages" : [
-                {
-                    "type" : "warning",
-                    "content" : "Fill up your article and Click Post to publish and Draft to save it as a Draft"
-                }
-            ]
+            "message" : message
         }, request))
 
 
@@ -49,12 +50,7 @@ class CreateView(View):
         if not is_drafted:
             return HttpResponseRedirect(article.absolute_url)
         else:
-            return HttpResponse(loader.get_template('articles/post_article.html').render({
-                "page_name" : "create_article",
-                "messages" : [
-                    {
-                        "type" : "success",
-                        "content" : "Article Drafted, to publish it, go to your profile"
-                    }
-                ]
-            }, request))
+            return HttpResponseRedirect(generate_url_for('articles:create', query = {
+                "type" : "success",
+                "content" : "Article Drafted, to publish it, go to your profile"
+            }))

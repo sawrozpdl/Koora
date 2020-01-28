@@ -2,19 +2,24 @@ from django.views import View
 from django.template import loader
 from articles.models import Article
 from comments.models import Comment
-from utils.koora import deleteImageFor
+from utils.koora import deleteImageFor, get_message_or_default, generate_url_for
 from utils.decorators import fail_safe, protected_view
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 class DetailView(View):
 
     @fail_safe(for_model=Article)
     def get(self, request, slug):
+
         article = Article.objects.get(slug=slug)
+
+        message = get_message_or_default(request, {})
+
         template = loader.get_template("articles/article.html")
         content = {
             "page_name": "articles",
             "article": article,
+            "message" : message,
             "vote_type" : article.get_user_vote(request.user),
             "comments" : article.comments
         }
@@ -34,20 +39,10 @@ class DetailView(View):
                 deleteImageFor(article)
             article.delete()
 
-            articles = Article.objects.all()
-            template = loader.get_template("articles/articles.html")
-            content = {
-                "page_name": "articles",
-                "messages" : [
-                    {
-                        "type" : "success",
-                        "content" : "Article deletion successful!"
-                    }
-                ],
-                "title" : "Articles by Users:",
-                "articles" : articles
-            }
-            return HttpResponse(template.render(content, request))
+            return HttpResponseRedirect(generate_url_for("articles:list", query={
+                "type" : "success",
+                "content" : "Article deletion successful!"
+            }))
 
         else:
             user = request.user
@@ -58,16 +53,9 @@ class DetailView(View):
 
             Comment.objects.create(user=user, content=content,object_id=object_id,content_type=content_type)
 
-            template = loader.get_template("articles/article.html")
-            content = {
-                "page_name": "articles",
-                "article": article,
-                "messages" : [
-                    {
-                        "type" : "success",
-                        "content" : "Comment Added!"
-                    }
-                ],
-                "comments" : article.comments
-            }
-            return HttpResponse(template.render(content, request))
+            return HttpResponseRedirect(generate_url_for("articles:detail", kwargs={
+                "slug" : slug
+            }, query={
+                "type" : "success",
+                "content" : "Comment Added!"
+            }))

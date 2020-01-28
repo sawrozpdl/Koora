@@ -1,7 +1,9 @@
 from utils import uploader
 from datetime import datetime
+from django.urls import reverse
 from articles.models import Tag
-
+from django.conf import settings
+from django.utils.http import urlencode
 
 def setTagsFor(model, tags):
     if len(tags) > 0:
@@ -15,7 +17,7 @@ def setTagsFor(model, tags):
                     model.tags.create(name=legit_tag)
 
 def uploadImageFor(model, image, key):
-    key = "%s_%s.jpg" % (key, datetime.now())
+    key = "{}_{}.jpg".format(key, datetime.now())
     image_url = uploader.upload(image, key)
     model.image_url = image_url
 
@@ -26,3 +28,24 @@ def getKeyFromUrl(url):
 
 def deleteImageFor(model):
     uploader.delete(getKeyFromUrl(model.image_url))
+
+
+def getValueFor(reqKey, choices=settings.KOORA_CATEGORIES):
+    values = {key : value for key, value in choices}
+    return values[reqKey]
+
+
+def get_message_or_default(request, default):
+
+    message_type = request.GET.get("type", False)
+    message_content = request.GET.get("content", '')
+    print(message_type, message_content)
+    return {
+        "type" : message_type,
+        "content" : message_content
+    } if message_type else default
+
+
+def generate_url_for(*args, **kwargs):
+    query = kwargs.pop('query', False)
+    return reverse(*args, **kwargs) + (('?' + urlencode(query)) if query else '')
