@@ -29,8 +29,12 @@
         <hr>
 
         <div class="comment-thread">
-              {% for comment in comment.children %}
-                {% include "comments/comment.html" %}
-             {% endfor %}
+            {% if comment.children %}
+                {% for comment in comment.children %}
+                    {% include "comments/comment.html" %}
+                {% endfor %}
+            {% else %}
+                <span class="lead">No replies on this thread yet!</span> 
+            {% endif %}
         </div>
 {% endblock midcontent %}
