@@ -5,7 +5,7 @@ from django.template import loader
 from articles.models import Article
 from utils.decorators import fail_safe, protected_view
 from django.http import HttpResponse, HttpResponseRedirect
-from utils.koora import setTagsFor, uploadImageFor, deleteImageFor
+from utils.koora import setTagsFor, uploadImageFor, deleteImageFor, get_message_or_default, generate_url_for
 class UpdateView(View):
 
     @fail_safe(for_model=Article)
@@ -14,16 +14,16 @@ class UpdateView(View):
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
 
+        message = get_message_or_default(request, {
+            "type" : "warning",
+            "content" : "Change required field and Press Update to Publish the new verson of your Article"
+        })
+
         article = Article.objects.get(slug=slug)
 
         return HttpResponse(loader.get_template('articles/post_article.html').render({
             "page_name": "articles",
-            "messages" : [
-                {
-                    "type" : "warning",
-                    "content" : "Change required field and Press Update to Publish the new verson of your Article"
-                }
-            ],
+            "message" : message,
             "article" : article,
             "update_mode" : True,
             "tags" : article.get_tag_string()

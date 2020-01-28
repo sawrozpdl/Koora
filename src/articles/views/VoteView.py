@@ -1,18 +1,18 @@
-from django.http import JsonResponse
+import json
 from django.views import View
-from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpResponseServerError
+from django.http import JsonResponse
+from django.http import HttpResponse
+from utils.decorators import fail_safe
+from django.contrib.auth.models import User
 from articles.models import Article, Tag, Vote
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
-import json
-from utils.decorators import fail_safe
 
 class VoteView(View):
 
     def get(self, request):
-        return HttpResponse('What you up to ?')
+        return Http404()
 
-    fail_safe(for_model=User)
+    @fail_safe(for_model=User)
     def post(self, request):
         data = json.loads(request.body)
         user_id = data['user_id']
@@ -34,16 +34,12 @@ class VoteView(View):
             vote = False
 
         if vote:
-            print('Has a vote already ', vote_type)
             if (vote.is_upvote and vote_type == 'up') or (not vote.is_upvote and vote_type == 'down'):
-                print('conflict vote lol')
                 vote.delete()
             elif vote.is_upvote:
-                print('remove up')
                 vote.is_upvote = False
                 vote.save()
             else:
-                print('remove down')
                 vote.is_upvote = True
                 vote.save()
         else:
