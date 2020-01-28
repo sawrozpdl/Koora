@@ -7,18 +7,12 @@ from django.template import loader
 from django.contrib import messages
 
 
+
+
 # from accounts.models import Profile
 
 def user_profile(request):
     return render(request,'../templates/profile/profile.html')
-    if user.object.type() == 'premium':
-        
-
-
-# def get(delf,request):
-#     pro = profile.objects.all()
-#     required_articles = list(filter(lambda article : article.contains_user(searchQuery), Article.objects.all()))
-
 
 
 
@@ -26,12 +20,15 @@ def user_profile(request):
 def register_user(request):
     if request.method =="GET":
         return HttpResponse(loader.get_template("accounts/register.html").render({}, request))
+        
+
     else:
         print(request.POST)
         username=request.POST['username']
         email=request.POST['email']
         password=request.POST['f_password']
         confirm_password=request.POST['r_password']
+
 
     if User.objects.filter(username=username).exists():
         return HttpResponse(loader.get_template("accounts/register.html").render({
@@ -54,6 +51,8 @@ def register_user(request):
     else:
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
+
+
         content = {
             "page_name": "login",
             "messages" : [

@@ -27,19 +27,14 @@
                     <div class ="container">
                     <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=650x650{% endif %}" name="aboutme" width="140" height="140" class="img-circle"> 
                     </a>
-                    <h3 class="media-heading">123 <small>USA</small></h3>
+                    <h3 class="media-heading">{{request.user.username}}    <small>{{request.user.profile.location}}</small></h3>
                     <span><strong>Intrests: </strong></span>
-                    <span class="label label-info">{{request.profile.intrests}}</span>
-                        
-                        <!-- <span class="label label-warning">HTML5/CSS</span>
-                        <span class="label label-info">Adobe CS 5.5</span>
-                        <span class="label label-info">Microsoft Office</span>
-                        <span class="label label-success">Windows XP, Vista, 7</span> -->
+                    <span class="label label-info">{{request.user.profile.intrests}}</span>
                     </div>
                     <hr>
                     <div class ="container"> 
                     <p class="text-left"><strong>Bio: </strong><br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem dui, tempor sit amet commodo a, vulputate vel tellus.</p>
+                        {{request.user.profile.bio}}</p>
                     <br>
                     </div>
                 </div>

@@ -61,11 +61,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'articles.apps.ArticlesConfig',
+    'accounts.apps.AccountsConfig',
     'comments.apps.CommentsConfig',
     'django.contrib.humanize',
     'markdown_deux',
     'boto3',
-    'social_django'
+    'social_django',
 ]
 
 MIDDLEWARE = [
