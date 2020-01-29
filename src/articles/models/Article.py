@@ -68,11 +68,17 @@ class Article(Koora):
     def contains_tag(self, tag):
         return (tag.lower() in self.title.lower()) | (tag.lower() in self.content.lower())
 
+    def has_tag(self, tag_name):
+        for local_tag in self.tags.all():
+            if local_tag.name == tag_name:
+                return True
+        return False
+
     def get_tag_string(self):
         req = ''
         for tag in self.tags.all():
-            req += tag.name + ', '
-        return req[:(len(req) - 2)]
+            req += tag.name + ','
+        return req
 
     def remove_tags(self):
         for tag in self.tags.all():
