@@ -36,10 +36,8 @@ def getValueFor(reqKey, choices=settings.KOORA_CATEGORIES):
 
 
 def get_message_or_default(request, default):
-
     message_type = request.GET.get("type", False)
     message_content = request.GET.get("content", '')
-    print(message_type, message_content)
     return {
         "type" : message_type,
         "content" : message_content
