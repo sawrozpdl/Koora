@@ -4,7 +4,6 @@ from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpRespon
 def protected_view(*main_args, **main_kwargs):
     def protected_view_decorator(callback):
         def wrapper(*args, **kwargs):
-            print(args[1].user)
             if args[1].user.is_authenticated:
                 return callback(*args, **kwargs)
             else:

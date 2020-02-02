@@ -27,7 +27,7 @@
                         </form>
                 <div class="dropdown-divider"></div>
                 {% endif %}
-                <a class="dropdown-item" href="#">Report</a>
+                <a href="#" name = "{{comment.content|truncatechars:10}}${{comment.user.username}}" class="dropdown-item report-button">Report</a>
         </div>
         </div>
         <p>

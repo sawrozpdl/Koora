@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load social_share %}
+
 
 {% block banner %}
 {% endblock banner %}
@@ -35,8 +37,7 @@
                         {% if article.image_url %}
                             <a class="dropdown-item" href="{{ article.image_url}}">Download</a>
                         {% endif %}
-                        <a class="dropdown-item" href="#">Hide</a>
-                        <a class="dropdown-item" href="#">Report</a>
+                            <a name = "{{article.title}}${{article.user.username}}" class="dropdown-item report-button" href="#">Report</a>
                     </div>
                 </div>
             </div>
@@ -84,9 +85,20 @@
         </form>
         <a class="btn btn-success" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
                 <i class="fa fa-comment"></i>
-                Comments
+                    Comments
         </a>
-        <a href="#" class="btn btn-success"><i class="fa fa-mail-forward"></i> Share</a>
+        <div class="dropdown">
+            <a class="btn btn-success" role="button" id="gedf-drop3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color : white;">
+                <i class="fa fa-share-alt"></i>
+                    Share
+            </a>
+            <div class="dropdown-menu dropdown-menu-right animate slideIn" id="share-section" aria-labelledby="gedf-drop3">
+                <div class="dropdown-item">{% post_to_facebook article.absolute_url "<i class='fa fa-facebook'>  facebook</i>" %}</div>
+                <div class="dropdown-item">{% post_to_twitter "Check this out: '{{article.title}}' :" article.absolute_url "<i class='fa fa-twitter'>  twitter</i>" %}</div>
+                <div class="dropdown-item">{% post_to_linkedin article.title article.absolute_url "<i class='fa fa-linkedin'>  LinkedIn</i>" %}</div>
+                <div class="dropdown-item">{% post_to_reddit "Check this out: {{article.title}}" article.absolute_url  "<i class='fa fa-reddit'>  reddit</i>"%}</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -188,7 +200,7 @@
         return (vote === 'up') ? upvoteClientSide() : downvoteClientSide()
     }
 
-    const handleError = error => $('.article-vote-count').notify("Error! Please log in to vote", "error");
+    const handleError = error => $('.article-vote-count').notify("Please log in to vote", "error");
 
 
     const postVote = (url, data, csrf_token) => {
