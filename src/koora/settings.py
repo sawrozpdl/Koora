@@ -24,10 +24,10 @@ ADMIN_ENABLED = DEBUG
 ALLOWED_HOSTS = ['*']
 
 
-LOGIN_URL = '/auth/login/google-oauth2/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+LOGIN_URL = '/auth/login/google-oauth2/'
 
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['GOOGLE_OAUTH_CLIENT_ID']
@@ -39,33 +39,34 @@ CSRF_FAILURE_VIEW = 'koora.views.csrf_fail'
 #Settings for Article Categories
 
 KOORA_CATEGORIES = [
+    ('AR', 'ART'),
+    ('FD', 'FOOD'),
+    ('GM', 'GAMES'),
     ('RN', 'RANDOM'),
     ('SC', 'SCIENCE'),
+    ('TS', 'TVSERIES'),
     ('TG', 'TECHNOLOGY'),
-    ('FD', 'FOOD'),
-    ('AR', 'ART'),
     ('LT', 'LITERATURE'),
     ('PH', 'PHILOSOPHY'),
     ('MM', 'MUSIC&MOVIES'),
-    ('TS', 'TVSERIES'),
-    ('GM', 'GAMES')
 ]
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'boto3',
+    'markdown_deux',
+    'social_django',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django_social_share',
+    'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.humanize',
     'django.contrib.staticfiles',
+    'django.contrib.contenttypes',
     'articles.apps.ArticlesConfig',
     'comments.apps.CommentsConfig',
-    'django.contrib.humanize',
-    'markdown_deux',
-    'boto3',
-    'social_django'
 ]
 
 MIDDLEWARE = [
