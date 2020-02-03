@@ -167,20 +167,15 @@ body {
     transition: 0.3s;
 }
 
-.up-vote {
+.up-vote.active, .btn.up-vote:hover, .up-vote:hover i {
     color: red;
-    transition: 0.3s;
 }
 
-.down-vote {
-    color: red;
-    transition: 0.3s;
+.down-vote.active, .btn.down-vote:hover, .down-vote:hover i {
+    color: dodgerblue;
 }
 
-.up-vote:hover i,
-.down-vote:hover i {
-    color: red;
-}
+
 
 #vote-form {
     margin: 0px
@@ -192,10 +187,6 @@ body {
 }
 
 .hover-black:hover {
-    color: black;
-}
-
-#share-section div div a i {
     color: black;
 }
 
