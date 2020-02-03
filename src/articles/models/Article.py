@@ -34,6 +34,10 @@ class Article(Koora):
     def comments(self):
         return Comment.objects.of_instance(self)
 
+    @property
+    def all_comments(self):
+        return Comment.objects.all_of_instance(self)
+
 
     @property
     def up_votes(self):

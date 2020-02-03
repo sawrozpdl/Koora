@@ -12,10 +12,13 @@ class CommentManager(KooraManager):
     def parents(self):
         return super(CommentManager, self).filter(parent=None)
 
-    def of_instance(self, instance):
+    def all_of_instance(self, instance):
         content_type = ContentType.objects.get_for_model(instance.__class__)
         object_id = instance.id
-        return super(CommentManager, self).filter(content_type=content_type, object_id= object_id).filter(parent=None)
+        return super(CommentManager, self).filter(content_type=content_type, object_id= object_id)
+
+    def of_instance(self, instance):
+        return self.all_of_instance(instance).filter(parent=None)
 
 
 class Comment(Koora):

@@ -73,19 +73,19 @@
             {% csrf_token %}
             <input type="hidden" id="article_id" name="article_id" value="{{article.id}}">
             <input type="hidden" id="user_id" name="user_id" value="{{request.user.id}}">
-            <button type ="submit" id="upvote-button" class="btn vote {% if vote_type != -1 and vote_type == True %}up-vote{%endif%}" name="vote" value="up">
+            <button type ="submit" id="upvote-button" class="btn vote up-vote {% if vote_type != -1 and vote_type == True %}active{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
             <label style="font-weight:bold;" id="vote-count" class="btn btn-success article-vote-count">
                 {{article.vote_count}}
             </label>
-            <button type = "submit" id="downvote-button" class="btn vote {% if vote_type != -1 and vote_type == False %}down-vote{%endif%}" name="vote" value="down">
+            <button type = "submit" id="downvote-button" class="btn vote down-vote {% if vote_type != -1 and vote_type == False %}active{%endif%}" name="vote" value="down">
                 <i class="fa fa-arrow-down"></i>
             </button>
         </form>
         <a class="btn btn-success" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
                 <i class="fa fa-comment"></i>
-                    Comments
+                    Comments<span style="margin-left:8px" class="badge badge-light">{{article.all_comments.count}}</span>
         </a>
         <div class="dropdown">
             <a class="btn btn-success" role="button" id="gedf-drop3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color : white;">
@@ -104,19 +104,17 @@
 
 <div class="collapse show mt-3" id="commentSection">
     <div class="comment-wrapper">
-            <div class="panel panel-info">
-                <div class="panel-body" style="overflow:visible">
-                    <form action = "{{ article.absolute_url }}" method = "POST">
-                        {% csrf_token %}
-                        <input type="hidden" id="object_id" name="object_id" value="{{article.id}}">
-                        <textarea name = "content" class="form-control mt-3" placeholder="write a comment..." rows="3" required></textarea>
-                        <br>
-                        <button type="submit" class="btn btn-success pull-right">Post</button>
-                    </form>
+        <div class="panel panel-info">
+            <form action = "{{ article.absolute_url }}" method = "POST">
+                {% csrf_token %}
+                <input type="hidden" id="object_id" name="object_id" value="{{article.id}}">
+                <textarea name = "content" class="form-control mt-3" placeholder="write a comment..." rows="3" required></textarea>
+                <br>
+                <button type="submit" class="btn btn-success pull-right">Post</button>
+            </form>
 
-                    {% include "comments/comments.html" %} 
+            {% include "comments/comments.html" %} 
 
-            </div>
         </div>
     </div>
 </div>
@@ -164,10 +162,10 @@
 
     let vote = null
 
-    let voteForm = document.getElementById('vote-form');
-    let voteCount = document.getElementById('vote-count');
-    let upvoteButton = document.getElementById('upvote-button');
-    let downvoteButton = document.getElementById('downvote-button');
+    const voteForm = document.getElementById('vote-form');
+    const voteCount = document.getElementById('vote-count');
+    const upvoteButton = document.getElementById('upvote-button');
+    const downvoteButton = document.getElementById('downvote-button');
 
 
     upvoteButton.onclick = () => vote = 'up'
@@ -186,13 +184,13 @@
     }
 
     const upvoteClientSide = () => {
-        upvoteButton.classList.toggle('up-vote');
-        downvoteButton.classList.remove('down-vote');
+        upvoteButton.classList.toggle('active');
+        downvoteButton.classList.remove('active');
     }
 
     const downvoteClientSide = () => {
-        downvoteButton.classList.toggle('down-vote');
-        upvoteButton.classList.remove('up-vote');
+        downvoteButton.classList.toggle('active');
+        upvoteButton.classList.remove('active');
     }
 
     const updateClientSide = ({ vote_count }) => {
