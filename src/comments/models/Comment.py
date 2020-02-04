@@ -33,10 +33,6 @@ class Comment(Koora):
     def __str__(self):
         return str(self.user.username)
 
-    # @property
-    # def absolute_url(self):
-    #     return reverse("comments:detail", kwargs={"slug": self.slug, })
-
     @property
     def delete_url(self):
         return reverse("comments:delete", kwargs={"slug": self.slug})
