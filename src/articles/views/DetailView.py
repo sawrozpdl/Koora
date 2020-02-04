@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 class DetailView(View):
 
-    #@fail_safe(for_model=Article)
+    @fail_safe(for_model=Article)
     def get(self, request, slug):
 
         article = Article.objects.get(slug=slug)

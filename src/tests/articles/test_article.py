@@ -24,6 +24,7 @@ class ArticleTestCase(TestCase):
         Article.objects.create(user=self.admin, title='t4', content='c4', category='GM')
         Article.objects.create(user=self.admin, title='t5', content='c5', category='PH')
 
+        # create one article with same title 't5'
         Article.objects.create(user=self.admin, title='t5', content='c6', category='RN')
 
 

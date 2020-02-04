@@ -9,7 +9,7 @@ from utils.decorators import fail_safe
 
 class ListView(View):
 
-    #@fail_safe(for_model=Article)
+    @fail_safe(for_model=Article)
     def get(self, request):
 
         searchQuery = request.GET.get("searchQuery", False)

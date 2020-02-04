@@ -1,12 +1,14 @@
 from django.views import View
 from django.template import loader
-from django.http import HttpResponse, HttpResponseRedirect
 from comments.models import Comment
+from utils.decorators import fail_safe
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.contenttypes.models import ContentType
 from utils.koora import generate_url_for, get_message_or_default
 
 class DetailView(View):
 
+    @fail_safe(for_model=Comment)
     def get(self, request, model, slug):
         comment = Comment.objects.get(slug=slug)
 
@@ -20,6 +22,8 @@ class DetailView(View):
         }
         return HttpResponse(template.render(content, request))
 
+
+    @fail_safe(for_model=Comment)
     def post(self, request, model, slug):
 
         delete_mode = request.POST.get('delete_mode', False)
