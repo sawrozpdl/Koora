@@ -25,19 +25,27 @@ class Page:
         return self.has_next() or self.has_previous()
     
     def next_page_number(self):
-        if self.has_next():
-            return self.next_page.page_number
-        else:
-            raise Exception('No such page')
+        return self.next_page.page_number if self.has_next() else -1
     
     def previous_page_number(self):
-        if self.has_previous():
-            return self.previous_page.page_number
-        else:
-            raise Exception('No such page')
+        return self.previous_page.page_number if self.has_previous() else -1
 
     def __str__(self):
         return "Page : {}, Data: {}".format(self.page_number, str(self.object_list))
+
+    @property
+    def __dict__(self):
+        return {
+            "object_list" : self.object_list,
+            "page_number" : self.page_number,
+            "start_index" : self.start_index,
+            "end_index" : self.end_index,
+            "has_next" : self.has_next(),
+            "has_previous" : self.has_previous(),
+            "has_other_pages" : self.has_other_pages(),
+            "next_page_number" : self.next_page_number(),
+            "previous_page_number" : self.previous_page_number(),
+        }
     
 
 class Paginator:

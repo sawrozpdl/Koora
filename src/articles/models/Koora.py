@@ -59,6 +59,7 @@ class Koora(models.Model):
 
 
     def save(self, **kwargs): 
-        payload = self.title if self.title else self.content
-        self.slug = self.get_unique_slug(payload) 
+        if not self.slug:
+            payload = self.title if self.title else self.content
+            self.slug = self.get_unique_slug(payload) 
         super(Koora, self).save(**kwargs)
