@@ -77,10 +77,12 @@ class ListAPIView(View):
 
         content = {
             "status" : 200,
-            "page" : nested_model_to_dict(required_page),
-            "page_range" : list(paginator.page_range()) if required_articles else None,
-            "query" : query,
-            "hasResults" : (articles_count > 0),
+            "data" : {
+                "page" : nested_model_to_dict(required_page),
+                "page_range" : list(paginator.page_range()) if required_articles else None,
+                "query" : query,
+                "hasResults" : (articles_count > 0)
+            },
             "meta" : {
                 "count" : articles_count
             }

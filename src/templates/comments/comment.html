@@ -17,7 +17,7 @@
                 <i class="fa fa-ellipsis-h"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop2">
-                {% if comment.user == request.user %}
+                {% if comment.user.username == request.user.username %}
                         <form style="margin-bottom:0px;" action="{% url 'comments:detail' model=comment.content_object|get_class slug=comment.slug %}" method="post"> 
                                 {% csrf_token %}
                                 <input type="hidden" id="delete_mode" name="delete_mode" value="{{True}}">

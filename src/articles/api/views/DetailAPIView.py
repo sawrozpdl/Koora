@@ -38,8 +38,7 @@ class DetailAPIView(View):
             "status": 200,
             "data": {
                 "article": nested_model_to_dict(article),
-                "vote_type": article.get_user_vote(request.user),
-                "comments": nested_model_to_dict(comments)
+                "vote_type": article.get_user_vote(request.user)
             },
             "meta": {
                 "article_count": 1,
@@ -76,7 +75,9 @@ class DetailAPIView(View):
 
         return JsonResponse({
           "status" : 200,
-          "data" : nested_model_to_dict(article),
+          "data" : {
+              "article" : nested_model_to_dict(article)
+          },
           "message" : "article updated"
         })
 

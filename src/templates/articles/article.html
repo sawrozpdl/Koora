@@ -26,7 +26,7 @@
                         <i class="fa fa-cog"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop1">
-                        {% if article.user == request.user %}
+                        {% if article.user.username == request.user.username %}
                                 <button class="dropdown-item" style="border:none;color:lightred" data-toggle="modal" data-target="#ConfirmDelete">
                                     Delete
                                 </button>
@@ -60,7 +60,7 @@
             {% if article.tags %}
                 <hr>
                 <i class="fa fa-tags"></i> Tags:
-                {% for tag in article.tags.all %}
+                {% for tag in article.tags %}
                     <h5 class = "mx-1" style="display:inline">
                         <a href="{% url 'articles:list'%}?tag={{tag.name}}" class="badge badge-pill badge-success">{{tag.name}}</a>
                     </h5>

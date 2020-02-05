@@ -79,7 +79,8 @@ class Article(Koora):
                 return True
         return False
 
-    def get_tag_string(self):
+    @property
+    def tag_string(self):
         req = ''
         for tag in self.tags.all():
             req += tag.name + ','

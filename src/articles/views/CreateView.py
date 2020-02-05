@@ -49,8 +49,8 @@ class CreateView(View):
                 return HttpResponseRedirect(response['data']['article']['absolute_url'])
         else:
             return HttpResponseRedirect(generate_url_for('articles:create', query = {
-                    "type" : "danger",
-                    "content" : response['message']
-                }))
+                "type" : "danger",
+                "content" : response['message']
+            }))
         
         
