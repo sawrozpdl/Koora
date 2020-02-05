@@ -92,7 +92,7 @@ class Paginator:
             if index == page.page_number:
                 return page
             page = page.next_page
-        raise Exception('No such page')
+        return None
 
         
     
