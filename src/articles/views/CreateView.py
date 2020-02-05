@@ -46,7 +46,7 @@ class CreateView(View):
                     "content" : "Article Drafted, to publish it, go to your profile"
                 }))
             else:
-                return HttpResponseRedirect(response['data']['absolute_url'])
+                return HttpResponseRedirect(response['data']['article']['absolute_url'])
         else:
             return HttpResponseRedirect(generate_url_for('articles:create', query = {
                     "type" : "danger",

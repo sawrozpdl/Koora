@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from comments.models.Comment import *
 from .Vote import *
+from django.forms.models import model_to_dict
 
 class ArticleManager(KooraManager):
 
@@ -36,7 +37,7 @@ class Article(Koora):
 
     @property
     def all_comments(self):
-        return Comment.objects.all_of_instance(self)
+        return Comment.objects.all_of_instance(self).count()
 
 
     @property
@@ -66,7 +67,7 @@ class Article(Koora):
     #   marking the markdown safe prevents django from messing with it for protection
 
     @property
-    def get_markdown(self):
+    def markdown(self):
         return mark_safe(markdown(self.content))
 
     def contains_tag(self, tag):
@@ -87,5 +88,12 @@ class Article(Koora):
     def remove_tags(self):
         for tag in self.tags.all():
             self.tags.remove(tag)
+
+    def to_dict(self):
+        db_dict = model_to_dict(self)
+        for attr in dir(self):
+             if not attr.startswith('_') and not attr == 'objects' and not callable(getattr(self, attr)) and not attr in dir(db_dict):
+                db_dict[attr] = getattr(self, attr)
+        return db_dict
         
 

@@ -117,10 +117,8 @@ class ListAPIView(View):
         content = {
             "status": 200,
             "message" : "article {}".format('drafted' if is_drafted else 'created'),
-            "is_drafted" : is_drafted,
             "data": {
                 "article": nested_model_to_dict(article),
-                "absolute_url" : article.absolute_url
             },
             "meta": {
                 "count": 1,

@@ -4,7 +4,10 @@ from django.forms.models import model_to_dict
 
 def nested_model_to_dict(model):
 
-    if isinstance(model, list):
+    if hasattr(model, 'to_dict'):
+        dict_obj = model.to_dict()
+
+    elif isinstance(model, list):
         return list(map(lambda item : nested_model_to_dict(item), model))
     
     elif isinstance(model, QuerySet):

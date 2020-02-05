@@ -43,7 +43,7 @@
                             <span> <i class="fa fa-clock-o"></i> {{ article.published_at|naturaltime }} </span>
                         </div>
                         <h2 class="card-title">{{article.title}}</h2>
-                        <span>{{article.all_comments.count}} Comments</span>
+                        <span>{{article.all_comments}} Comments</span>
                         </div>
                     </div>
                     <a class = 'btn btn-primary' href = "{{ article.absolute_url }}">Open</a>
