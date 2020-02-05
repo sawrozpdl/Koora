@@ -5,7 +5,7 @@ from comments.models import Comment
 from django.http import JsonResponse
 from utils.request import parse_body, set_user
 from utils.models import nested_model_to_dict
-from utils.decorators import fail_safe_api, protected_view_api
+from utils.decorators import fail_safe_api
 from utils.koora import deleteImageFor, generate_url_for, uploadImageFor, setTagsFor
 
 
@@ -28,7 +28,7 @@ class DetailAPIView(View):
         return super(DetailAPIView, self).dispatch(request, *args, **kwargs)
 
 
-    #@fail_safe_api(for_model=Article)
+    @fail_safe_api(for_model=Article)
     def get(self, request, slug):
 
         article = Article.objects.get(slug=slug)
@@ -49,8 +49,7 @@ class DetailAPIView(View):
 
         return JsonResponse(content)
 
-    #@fail_safe_api(for_model=Article)
-    #@protected_view_api(allow='logged_users')
+    @fail_safe_api(for_model=Article)
     def put(self, request, slug):
 
         article = Article.objects.get(slug=slug)        
@@ -82,8 +81,7 @@ class DetailAPIView(View):
         })
 
 
-    #@fail_safe_api(for_model=Article)
-    #@protected_view_api(allow='logged_users')
+    @fail_safe_api(for_model=Article)
     def post(self, request, slug):
 
         article = Article.objects.get(slug=slug)
@@ -109,8 +107,7 @@ class DetailAPIView(View):
 
 
 
-    #@fail_safe_api(for_model=Article)
-    #@protected_view_api(allow='logged_users')
+    @fail_safe_api(for_model=Article)
     def delete(self, request, slug):
 
         article = Article.objects.get(slug=slug)

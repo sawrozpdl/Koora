@@ -88,3 +88,4 @@ class Article(Koora):
         for tag in self.tags.all():
             self.tags.remove(tag)
         
+

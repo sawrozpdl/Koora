@@ -20,23 +20,6 @@ def protected_view(*main_args, **main_kwargs):
     return protected_view_decorator
 
 
-def protected_view_api(*main_args, **main_kwargs):
-    def protected_view_decorator(callback):
-        def wrapper(*args, **kwargs):
-            request_body = json.loads(args[1].body)
-            if request_body.user.is_authenticated:
-                return callback(*args, **kwargs)
-            else:
-                content = {
-                    "status" : 403,
-                    "data" : 'unauthorized',
-                    "meta" : {}
-                }
-                return JsonResponse(content)
-        return wrapper
-    return protected_view_decorator
-
-
 def fail_safe(*main_args, **main_kwargs):
     def fail_safe_decorator(callback):
         def wrapper(*args, **kwargs):
@@ -55,10 +38,12 @@ def fail_safe_api(*main_args, **main_kwargs):
         def wrapper(*args, **kwargs):
             try:
                 response = callback(*args, **kwargs)
-            except:
+            except Exception as e:
+                print(e)
                 content = {
                     "status" : 404,
-                    "data" : 'not found',
+                    "data" : {},
+                    "message" : 'Not found',
                     "meta" : {}
                 }
                 response = JsonResponse(content)

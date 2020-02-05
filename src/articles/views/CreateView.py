@@ -1,3 +1,5 @@
+import json
+import requests
 from django.views import View
 from django.conf import settings
 from django.template import loader
@@ -21,36 +23,34 @@ class CreateView(View):
         }, request))
 
 
-    @fail_safe(for_model=Article)
+    #@fail_safe(for_model=Article)
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You need to be logged in to create an article")
     def post(self, request):
 
-        title = request.POST['title']
-        content = request.POST['content']
-        category = request.POST['category']
-        image = request.FILES.get('article_image', False)
+        headers = {
+            'X-CSRFToken' : request.POST.get('csrfmiddlewaretoken', ''),
+            'Token' : str(request.user.id)
+        }
 
-        post_type=request.POST.get('post_type', 'public')
-        post_mode=request.POST.get('post_mode', 'publish')
+        data = request.POST.dict()
+        image = request.FILES.dict()
 
-        is_private = post_type == 'private'
-        is_drafted = post_mode == 'draft'
-
-        article = Article.objects.create(user=request.user, title=title, content=content, category=category, is_drafted = is_drafted, is_private=is_private)
-
-        if (image):
-            uploadImageFor(article, image, request.user.username)
-            
-        tags = request.POST.get('tags', '').strip().split(",")
+        response = requests.post(url = request.build_absolute_uri(generate_url_for('articles-api:list')), data=data, files=image, headers=headers,  verify=False)
         
-        setTagsFor(article, tags)
-            
-        article.save()
-        
-        if not is_drafted:
-            return HttpResponseRedirect(article.absolute_url)
+        response = response.json()
+
+        if response['status'] == 200:
+            if response['data']['article']['is_drafted']:
+                return HttpResponseRedirect(generate_url_for('articles:create', query = {
+                    "type" : "success",
+                    "content" : "Article Drafted, to publish it, go to your profile"
+                }))
+            else:
+                return HttpResponseRedirect(response['data']['absolute_url'])
         else:
             return HttpResponseRedirect(generate_url_for('articles:create', query = {
-                "type" : "success",
-                "content" : "Article Drafted, to publish it, go to your profile"
-            }))
+                    "type" : "danger",
+                    "content" : response['message']
+                }))
+        
+        

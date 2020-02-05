@@ -6,7 +6,7 @@ def parse_body(request, for_method="PUT"):
 
     if (request.method == "POST"):
         return
-
+    print('extraaaa')
     # set post temporarily to access _load_post_and_files method
     request.method = "POST"
     request._load_post_and_files()

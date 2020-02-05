@@ -29,7 +29,7 @@ class ListAPIView(View):
 
 
 
-    #@fail_safe_api(for_model=Article)
+    @fail_safe_api(for_model=Article)
     def get(self, request):
 
         searchQuery = request.GET.get("searchQuery", False)
@@ -90,8 +90,8 @@ class ListAPIView(View):
 
 
     #@fail_safe_api(for_model=Article)
-    #@protected_view_api(allow='logged_users')
     def post(self, request):
+        print('i got this lol: ', request.POST, request.FILES)
         title = request.POST['title']
         content = request.POST['content']
         category = request.POST['category']
@@ -117,8 +117,10 @@ class ListAPIView(View):
         content = {
             "status": 200,
             "message" : "article {}".format('drafted' if is_drafted else 'created'),
+            "is_drafted" : is_drafted,
             "data": {
-                "article": nested_model_to_dict(article)
+                "article": nested_model_to_dict(article),
+                "absolute_url" : article.absolute_url
             },
             "meta": {
                 "count": 1,

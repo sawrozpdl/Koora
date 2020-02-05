@@ -19,14 +19,15 @@ class DetailAPIView(View):
             set_user(request)
         except Exception:
             return JsonResponse({
-                'status': 403
+                'status': 403,
+                "message" : 'Not allowed'
             })
         parse_body(request, for_method=request.method)
         return super(DetailAPIView, self).dispatch(request, *args, **kwargs)
 
 
 
-    # @fail_safe_api(for_model=Comment)
+    @fail_safe_api(for_model=Comment)
     def get(self, request, slug):
 
         comment = Comment.objects.get(slug=slug)
@@ -44,7 +45,7 @@ class DetailAPIView(View):
         return JsonResponse(content)
 
 
-    # @fail_safe_api(for_model=Comment)
+    @fail_safe_api(for_model=Comment)
     def post(self, request, slug):
         parent = Comment.objects.get(slug=slug)
 
@@ -72,7 +73,7 @@ class DetailAPIView(View):
         return JsonResponse(content)
 
 
-    # @fail_safe_api(for_model=Comment)
+    @fail_safe_api(for_model=Comment)
     def delete(self, request, slug):
 
         comment = Comment.objects.get(slug=slug)
