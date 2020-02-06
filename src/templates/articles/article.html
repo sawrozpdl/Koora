@@ -53,9 +53,7 @@
             </div>
         {% endif %}
 
-        <p class="card-text">
-            {{article.get_markdown}}
-        </p>
+        <p class="card-text to-markdown" style="white-space: pre-wrap;">{{article.content}}</p>
         <div>
             {% if article.tags %}
                 <hr>

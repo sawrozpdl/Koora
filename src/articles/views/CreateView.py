@@ -4,10 +4,10 @@ from django.views import View
 from django.conf import settings
 from django.template import loader
 from articles.models import Article
-from utils.decorators import protected_view, fail_safe
+from utils.decorators import protected_view
 from django.http import HttpResponse, HttpResponseRedirect
 from utils.koora import setTagsFor, uploadImageFor, get_message_or_default, generate_url_for
-
+from utils.request import api_call
 class CreateView(View):
 
     def get(self, request):
@@ -23,21 +23,16 @@ class CreateView(View):
         }, request))
 
 
-    #@fail_safe(for_model=Article)
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You need to be logged in to create an article")
     def post(self, request):
 
-        headers = {
-            'X-CSRFToken' : request.POST.get('csrfmiddlewaretoken', ''),
-            'Token' : str(request.user.id)
-        }
-
-        data = request.POST.dict()
-        image = request.FILES.dict()
-
-        response = requests.post(url = request.build_absolute_uri(generate_url_for('articles-api:list')), data=data, files=image, headers=headers,  verify=False)
-        
-        response = response.json()
+        response = api_call(
+            method='post',
+            request=request,
+            reverse_for="articles-api:list",
+            data = request.POST.dict(),
+            files = request.FILES.dict()
+        ).json()
 
         if response['status'] == 200:
             if response['data']['article']['is_drafted']:

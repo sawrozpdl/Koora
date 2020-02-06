@@ -9,22 +9,13 @@ from utils.decorators import fail_safe_api
 from utils.koora import deleteImageFor, generate_url_for, uploadImageFor, setTagsFor
 
 
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-
-
 class DetailAPIView(View):
 
 
-    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        try:
-            set_user(request)
-        except Exception:
-            return JsonResponse({
-                'status' : 403
-            })
-        parse_body(request, for_method=request.method)
+        set_user(request)
+        if request.user.is_authenticated:
+            parse_body(request, for_method=request.method)
         return super(DetailAPIView, self).dispatch(request, *args, **kwargs)
 
 
@@ -80,9 +71,9 @@ class DetailAPIView(View):
         })
 
 
-    @fail_safe_api(for_model=Article)
+    #@fail_safe_api(for_model=Article)
     def post(self, request, slug):
-
+        print('i am her')
         article = Article.objects.get(slug=slug)
 
         user = request.user
@@ -90,6 +81,8 @@ class DetailAPIView(View):
         content = request.POST.get('content', '')
         object_id = request.POST.get('object_id', 1)
         content_type = article.content_type
+
+        print('i got this post : ', request.POST)
 
         created_comment = Comment.objects.create(
             user=user, content=content, object_id=object_id, content_type=content_type)

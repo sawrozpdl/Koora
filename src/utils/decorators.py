@@ -20,22 +20,15 @@ def protected_view(*main_args, **main_kwargs):
     return protected_view_decorator
 
 
-def fail_safe(*main_args, **main_kwargs):
-    def fail_safe_decorator(callback):
-        def wrapper(*args, **kwargs):
-            try:
-                response = callback(*args, **kwargs)
-            except:
-                raise Http404('Such {} not found'.format(
-                    main_kwargs['for_model'].__class__.__name__))
-            return response
-        return wrapper
-    return fail_safe_decorator
-
-
 def fail_safe_api(*main_args, **main_kwargs):
     def fail_safe_decorator(callback):
         def wrapper(*args, **kwargs):
+            request = args[0]
+            if hasattr(main_kwargs, 'needs_authentication') and main_kwargs['needs_authentication'] and not request.user.is_authenticated:
+                return JsonResponse({
+                    "status" : 403,
+                    "message" : 'Not authorized'
+                })
             try:
                 response = callback(*args, **kwargs)
             except Exception as e:

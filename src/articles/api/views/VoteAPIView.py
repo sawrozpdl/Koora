@@ -11,20 +11,14 @@ from django.contrib.contenttypes.models import ContentType
 class VoteAPIView(View):
 
     def dispatch(self, request, *args, **kwargs):
-        try:
-            set_user(request)
-        except Exception:
-            return JsonResponse({
-                'status' : 403
-            })
-        parse_body(request, for_method=request.method)
+        set_user(request)
+        if request.user.is_authenticated:
+            parse_body(request, for_method=request.method)
         return super(VoteAPIView, self).dispatch(request, *args, **kwargs)
-
 
 
     def get(self, request):
         return Http404()
-
 
 
     @fail_safe_api(for_model=User)

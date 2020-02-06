@@ -35,6 +35,15 @@ if (content)
         target.innerHTML = marked(event.target.value);
     };
 
+
+let markdown_items = document.getElementsByClassName('to-markdown')
+
+for (let item of markdown_items) {
+    item.innerHTML = marked(item.innerText)
+}
+
+
+
 let shareButtons = document.getElementsByClassName('report-button');
 
 for (let button of shareButtons) {

@@ -1,14 +1,12 @@
 from . import Koora
+from .Vote import *
 from . import KooraManager
 from django.db import models
-from django.conf import settings
-from django.utils.safestring import mark_safe
-from markdown_deux import markdown
-from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
+from django.conf import settings
 from comments.models.Comment import *
-from .Vote import *
 from django.forms.models import model_to_dict
+from django.contrib.contenttypes.models import ContentType
 
 class ArticleManager(KooraManager):
 
@@ -65,10 +63,6 @@ class Article(Koora):
         return ContentType.objects.get_for_model(self.__class__)
 
     #   marking the markdown safe prevents django from messing with it for protection
-
-    @property
-    def markdown(self):
-        return mark_safe(markdown(self.content))
 
     def contains_tag(self, tag):
         return (tag.lower() in self.title.lower()) | (tag.lower() in self.content.lower())

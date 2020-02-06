@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
-from articles.models import Vote
 from django.forms.models import model_to_dict
 from articles.models import Koora, KooraManager
 from django.contrib.contenttypes.models import ContentType
@@ -36,9 +35,6 @@ class Comment(Koora):
     @property  
     def children(self): 
         return Comment.objects.filter(parent=self)
-    
-    def voters(self, is_upvote):
-        return Vote.objects.of_instance(self).filter(is_upvote=is_upvote)
 
     @property
     def is_parent(self):
@@ -52,9 +48,9 @@ class Comment(Koora):
     def parent_content_type(self):
         return ContentType.objects.get_for_model(self.content_object.__class__)
 
-    @property
-    def parent_content_slug(self):
-        return self.content_object.slug
+    # @property
+    # def parent_content_slug(self):
+    #     return self.content_object.slug
 
 
     def to_dict(self):

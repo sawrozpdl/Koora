@@ -9,27 +9,20 @@ from utils.request import parse_body, set_user
 from utils.models import nested_model_to_dict
 from utils.koora import getValueFor, get_message_or_default, setTagsFor
 
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-
 
 class ListAPIView(View):
 
 
-    @method_decorator(csrf_exempt)
+
     def dispatch(self, request, *args, **kwargs):
-        try:
-            set_user(request)
-        except Exception:
-            return JsonResponse({
-                'status' : 403
-            })
-        parse_body(request, for_method=request.method)
+        set_user(request)
+        if request.user.is_authenticated:
+            parse_body(request, for_method=request.method)
         return super(ListAPIView, self).dispatch(request, *args, **kwargs)
 
 
 
-    @fail_safe_api(for_model=Article)
+    #@fail_safe_api(for_model=Article)
     def get(self, request):
 
         searchQuery = request.GET.get("searchQuery", False)
@@ -91,7 +84,7 @@ class ListAPIView(View):
         return JsonResponse(content)
 
 
-    #@fail_safe_api(for_model=Article)
+    @fail_safe_api(for_model=Article)
     def post(self, request):
         print('i got this lol: ', request.POST, request.FILES)
         title = request.POST['title']

@@ -1,25 +1,22 @@
-import requests
 from django.views import View
 from django.template import loader
+from utils.request import api_call
 from comments.models import Comment
-from utils.decorators import fail_safe
+from utils.decorators import protected_view
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.contrib.contenttypes.models import ContentType
 from utils.koora import generate_url_for, get_message_or_default
 
 class DetailView(View):
 
-    #@fail_safe(for_model=Comment)
     def get(self, request, model, slug):
 
-        headers = {
-            'X-CSRFToken' : request.POST.get('csrfmiddlewaretoken', ''),
-            'Token' : str(request.user.id)
-        }
-
-        response = requests.get(url = request.build_absolute_uri(generate_url_for('comments-api:detail', kwargs={'slug' : slug})), headers=headers,  verify=False)
-        
-        response = response.json()
+        response = api_call(
+            method='get',
+            request=request,
+            reverse_for="comments-api:detail",
+            reverse_kwargs={'slug' : slug}
+        ).json()
 
         message = get_message_or_default(request, {})
 
@@ -35,25 +32,20 @@ class DetailView(View):
         else:
             return HttpResponseServerError()
 
-
-    #@fail_safe(for_model=Comment)
+    @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
     def post(self, request, model, slug):
 
         delete_mode = request.POST.get('delete_mode', False)
 
-        headers = {
-            'X-CSRFToken' : request.POST.get('csrfmiddlewaretoken', ''),
-            'Token' : str(request.user.id)
-        }
-
         if not delete_mode:
 
-            data = request.POST.dict()
-
-            response = requests.post(url = request.build_absolute_uri(generate_url_for('comments-api:detail', kwargs={'slug' : slug})), headers=headers, data=data,  verify=False)
-        
-            response = response.json()
-
+            response = api_call(
+                method='post',
+                request=request,
+                reverse_for="comments-api:detail",
+                reverse_kwargs={'slug' : slug},
+                data=request.POST.dict()
+            ).json()
 
             if response['status'] == 200:
                 return HttpResponseRedirect(generate_url_for("comments:detail", kwargs={
@@ -69,9 +61,12 @@ class DetailView(View):
 
         else:
 
-            response = requests.delete(url = request.build_absolute_uri(generate_url_for('comments-api:detail', kwargs={'slug' : slug})), headers=headers,  verify=False)
-        
-            response = response.json()
+            response = api_call(
+                method='delete',
+                request=request,
+                reverse_for="comments-api:detail",
+                reverse_kwargs={'slug' : slug}
+            ).json()
 
             togo = model
 

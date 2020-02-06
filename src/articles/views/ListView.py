@@ -1,25 +1,21 @@
-import requests
 from django.views import View
 from django.template import loader
-from django.http import HttpResponse, HttpResponseServerError
+from utils.request import api_call
 from utils.koora import get_message_or_default
-from utils.decorators import fail_safe
-from utils.koora import generate_url_for
-
+from django.http import HttpResponse, HttpResponseServerError
 class ListView(View):
 
     def get(self, request):
 
-        headers = {
-            'X-CSRFToken' : request.POST.get('csrfmiddlewaretoken', ''),
-            'Token' : str(request.user.id)
-        }
-
         params = request.GET.dict()
 
-        response = requests.get(url = request.build_absolute_uri(generate_url_for('articles-api:list')), params=params, headers=headers,  verify=False)
-        
-        response = response.json()
+        response = api_call(
+            method='get',
+            request=request,
+            reverse_for="articles-api:list",
+            reverse_params=params,
+            data = request.GET.dict()
+        ).json()
 
         message = get_message_or_default(request, {})
 
