@@ -4,11 +4,9 @@ botocore==1.14.0
 certifi==2019.11.28
 chardet==3.0.4
 Django==3.0.2
-django-markdown-deux==1.0.5
 docutils==0.15.2
 idna==2.8
 jmespath==0.9.4
-markdown2==2.3.8
 PyJWT==1.7.1
 python-dateutil==2.8.1
 pytz==2019.3
