@@ -32,7 +32,6 @@ class DetailAPIView(View):
     def get(self, request, slug):
 
         article = Article.objects.get(slug=slug)
-        comments = article.comments
 
         content = {
             "status": 200,
@@ -41,8 +40,7 @@ class DetailAPIView(View):
                 "vote_type": article.get_user_vote(request.user)
             },
             "meta": {
-                "article_count": 1,
-                "comment_count": len(comments)
+                "article_count": 1
             }
         }
 

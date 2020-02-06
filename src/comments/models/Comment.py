@@ -44,6 +44,18 @@ class Comment(Koora):
     def is_parent(self):
         return self.parent is None
 
+    @property
+    def c_type(self):
+        return ContentType.objects.get_for_model(self.__class__)
+
+    @property
+    def parent_content_type(self):
+        return ContentType.objects.get_for_model(self.content_object.__class__)
+
+    @property
+    def parent_content_slug(self):
+        return self.content_object.slug
+
 
     def to_dict(self):
         db_dict = model_to_dict(self)

@@ -32,10 +32,15 @@ class DetailAPIView(View):
 
         comment = Comment.objects.get(slug=slug)
 
+        comment_dict = nested_model_to_dict(comment)
+
+        comment_dict['content_object'] = nested_model_to_dict(comment.content_object)
+
         content = {
             "status": 200,
             "data" : {
-                "comment": nested_model_to_dict(comment)
+                "comment": comment_dict
+
             },
             "meta": {
                 "count" : 1
@@ -80,14 +85,15 @@ class DetailAPIView(View):
 
         is_parent = comment.is_parent
 
-        parent = comment.content_object if comment.is_parent else comment.parent
+        parent = comment.content_object if is_parent else comment.parent
 
         comment.delete()
 
         content = {
             "status" : 200,
             "data" : {
-                "parent_slug" : parent.slug
+                "is_parent" : is_parent,
+                "parent_slug" : parent.slug,
             },
             "message" : "comment deleted"
         }
