@@ -4,7 +4,6 @@ from django.http import JsonResponse
 from utils.decorators import fail_safe_api
 from utils.models import nested_model_to_dict
 from utils.request import parse_body, set_user
-from utils.koora import getValueFor, setTagsFor
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -41,7 +40,7 @@ class DetailAPIView(View):
         return JsonResponse(content)
 
 
-    @fail_safe_api(for_model=Comment)
+    @fail_safe_api(for_model=Comment, needs_authentication=True)
     def post(self, request, slug):
         parent = Comment.objects.get(slug=slug)
 
@@ -69,7 +68,7 @@ class DetailAPIView(View):
         return JsonResponse(content)
 
 
-    @fail_safe_api(for_model=Comment)
+    @fail_safe_api(for_model=Comment, needs_authentication=True)
     def delete(self, request, slug):
 
         comment = Comment.objects.get(slug=slug)

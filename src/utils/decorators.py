@@ -23,14 +23,18 @@ def protected_view(*main_args, **main_kwargs):
 def fail_safe_api(*main_args, **main_kwargs):
     def fail_safe_decorator(callback):
         def wrapper(*args, **kwargs):
-            request = args[0]
-            if hasattr(main_kwargs, 'needs_authentication') and main_kwargs['needs_authentication'] and not request.user.is_authenticated:
+
+            request = args[1]
+            
+            if main_kwargs.get('needs_authentication', False) and not request.user.is_authenticated:
                 return JsonResponse({
                     "status" : 403,
                     "message" : 'Not authorized'
                 })
+
             try:
                 response = callback(*args, **kwargs)
+
             except Exception as e:
                 print(e)
                 content = {
@@ -40,6 +44,7 @@ def fail_safe_api(*main_args, **main_kwargs):
                     "meta" : {}
                 }
                 response = JsonResponse(content)
+
             return response
         return wrapper
     return fail_safe_decorator

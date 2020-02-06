@@ -11,7 +11,7 @@
         {{comment.user.username}}
         </strong>
         <span class="middle-dot"></span>
-        <small class="text-secondary">{{ comment.published_at|naturaltime }}</small>
+        <small class="text-secondary">{{ comment.published_at|to_date|naturaltime }}</small>
         <div class="pull-right dropdown">
                 <button class="btn btn-sm" type="button" id="gedf-drop2" data-toggle="dropdown">
                 <i class="fa fa-ellipsis-h"></i>

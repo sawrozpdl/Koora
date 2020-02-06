@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% load social_share %}
+{% load cmt_tag %}
 
 
 {% block banner %}
@@ -45,7 +46,7 @@
 
     </div>
     <div class="card-body">
-        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ article.published_at|naturaltime }} </div>
+        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o" style="margin-right:5px"></i> {{ article.published_at|to_date|naturaltime }} </div>
         <h5 class="card-title">{{article.title}}</h5>
         {% if article.image_url %}
             <div class="cardbox-item">

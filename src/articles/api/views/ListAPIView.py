@@ -5,9 +5,9 @@ from django.template import loader
 from articles.models import Article
 from django.http import JsonResponse
 from utils.decorators import fail_safe_api
-from utils.request import parse_body, set_user
 from utils.models import nested_model_to_dict
-from utils.koora import getValueFor, get_message_or_default, setTagsFor
+from utils.request import parse_body, set_user
+from utils.koora import getValueFor, setTagsFor
 
 
 class ListAPIView(View):
@@ -22,7 +22,7 @@ class ListAPIView(View):
 
 
 
-    #@fail_safe_api(for_model=Article)
+    @fail_safe_api(for_model=Article)
     def get(self, request):
 
         searchQuery = request.GET.get("searchQuery", False)
@@ -84,9 +84,8 @@ class ListAPIView(View):
         return JsonResponse(content)
 
 
-    @fail_safe_api(for_model=Article)
+    @fail_safe_api(for_model=Article, needs_authentication=True)
     def post(self, request):
-        print('i got this lol: ', request.POST, request.FILES)
         title = request.POST['title']
         content = request.POST['content']
         category = request.POST['category']

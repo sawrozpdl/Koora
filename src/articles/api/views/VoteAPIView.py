@@ -1,7 +1,7 @@
 import json
 from django.views import View
+from django.http import Http404
 from django.http import JsonResponse
-from django.http import HttpResponse
 from utils.decorators import fail_safe_api
 from django.contrib.auth.models import User
 from utils.request import parse_body, set_user
@@ -21,7 +21,7 @@ class VoteAPIView(View):
         return Http404()
 
 
-    @fail_safe_api(for_model=User)
+    @fail_safe_api(for_model=User, needs_authentication=True)
     def post(self, request):
         data = json.loads(request.body)
         article_id = data['article_id']
