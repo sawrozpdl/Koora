@@ -32,7 +32,9 @@ class UpdateView(View):
                 "tags" : response['data']['article']['tag_string']
             }, request))
         else:
-            return HttHttpResponseServerError()
+            return suitableRedirect(response=response, reverse_name="articles:update", reverse_kwargs={
+                "slug" : slug
+            })
 
 
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
@@ -50,8 +52,7 @@ class UpdateView(View):
         if response['status'] == 200:
             return HttpResponseRedirect(response['data']['article']['absolute_url'])
         else:
-            return HttpResponseRedirect(generate_url_for('articles:update'), kwargs={slug : slug}, query = {
-                "type" : "danger",
-                "content" : response['message']
+            return suitableRedirect(response=response, reverse_name="articles:update", reverse_kwargs={
+                "slug" : slug
             })
     

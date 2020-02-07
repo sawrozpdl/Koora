@@ -33,5 +33,5 @@ class ListView(View):
 
             return HttpResponse(template.render(content, request))
         else:
-            return HttpResponseServerError()
+            return suitableRedirect(response=response, reverse_name="articles:list")
             

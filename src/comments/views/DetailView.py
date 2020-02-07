@@ -30,7 +30,12 @@ class DetailView(View):
             }
             return HttpResponse(template.render(content, request))
         else:
-            return HttpResponseServerError()
+            return suitableRedirect(response=response, reverse_name="comments:detail", reverse_kwargs={
+                "slug" : slug,
+                "model" : model
+            })
+
+
 
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
     def post(self, request, model, slug):
@@ -56,7 +61,10 @@ class DetailView(View):
                         'content' : 'Reply Added!'
                 }))
             else:
-                return HttpResponseServerError()
+                return suitableRedirect(response=response, reverse_name="comments:detail", reverse_kwargs={
+                    "slug" : slug,
+                    "model" : model
+                })
 
 
         else:
@@ -85,7 +93,10 @@ class DetailView(View):
                         'type': 'success',
                         'content' : 'Reply Removed!'
                     }
-                print('fjdk',togo, kwargs)
                 return HttpResponseRedirect(generate_url_for("{}:detail".format(togo), kwargs=kwargs, query=query))
             else:
-                return HttpResponseServerError()
+                return suitableRedirect(response=response, reverse_name="comments:detail", reverse_kwargs={
+                    "slug" : slug,
+                    "model" : model
+                })
+

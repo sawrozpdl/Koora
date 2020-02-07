@@ -1,10 +1,11 @@
 import requests
 from django.views import View
 from django.template import loader
-from utils.koora import get_message_or_default, generate_url_for
-from utils.decorators import protected_view
 from utils.request import api_call
+from utils.request import suitableRedirect
+from utils.decorators import protected_view
 from django.http import HttpResponse, HttpResponseRedirect
+from utils.koora import get_message_or_default, generate_url_for
 
 
 class DetailView(View):
@@ -32,12 +33,10 @@ class DetailView(View):
             }
             return HttpResponse(template.render(content, request))
         else:
-            return HttpResponseRedirect(generate_url_for("articles:detail", kwargs={
+            return suitableRedirect(response=response, reverse_name="articles:detail", reverse_kwargs={
                 "slug" : slug
-            }, query={
-                "type" : "danger",
-                "content" : response['message']
-            }))
+            })
+
 
 
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="Login to post/delete contents")
@@ -62,10 +61,7 @@ class DetailView(View):
                     "content" : "Article deletion successful!"
                 }))
             else :
-                return HttpResponseRedirect(generate_url_for("articles:detail", query={
-                    "type" : "danger",
-                    "content" : response['message']
-                }))
+                return suitableRedirect(response=response, reverse_name="articles:list")
 
         else:
 
@@ -85,9 +81,6 @@ class DetailView(View):
                     "content" : "Comment Added!"
                 }))
             else:
-                return HttpResponseRedirect(generate_url_for("articles:detail",kwargs={
+                return suitableRedirect(response=response, reverse_name="articles:detail", reverse_kwargs={
                     "slug" : slug
-                }, query={
-                    "type" : "danger",
-                    "content" : response['message']
-                }))
+                })

@@ -38,9 +38,7 @@ def fail_safe_api(*main_args, **main_kwargs):
             except Exception as e:
                 content = {
                     "status" : 404,
-                    "data" : {},
-                    "message" : 'Not found',
-                    "meta" : {}
+                    "message" : 'Not found'
                 }
                 response = JsonResponse(content)
 
