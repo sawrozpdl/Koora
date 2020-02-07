@@ -95,20 +95,20 @@
             </nav>
         </header>
         <div class="container">
-            {% if messages %} {% for message in messages %}
-            <div class="alert alert-{{ message.type }}">
-                {{ message.content }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            {% endfor %} {% endif %}
+            {% if message %}
+                <div class="alert alert-{{ message.type }}">
+                    {{ message.content }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
         </div>
 
         {% block banner %}
         <div class="banner text-center">
             <h1 class="display-4 header">Welcome to Koora</h1>
-            <p class="lead footer">Search for specific queries</p>
+            <p class="lead footer">Search your queries below</p>
         </div>
         {% endblock banner%} {% block content %}
 

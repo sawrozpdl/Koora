@@ -15,7 +15,12 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 SECRET_KEY = os.environ['SECRET_KEY']
+
+JWT_ALGORITHM = 'HS256'
+JWT_EXP_DELTA_SECONDS = 86400
+
 
 DEBUG = os.environ['DEBUG'] == 'TRUE'
 
@@ -24,10 +29,10 @@ ADMIN_ENABLED = DEBUG
 ALLOWED_HOSTS = ['*']
 
 
-LOGIN_URL = '/auth/login/google-oauth2/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+LOGIN_URL = '/auth/login/google-oauth2/'
 
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['GOOGLE_OAUTH_CLIENT_ID']
@@ -39,33 +44,34 @@ CSRF_FAILURE_VIEW = 'koora.views.csrf_fail'
 #Settings for Article Categories
 
 KOORA_CATEGORIES = [
+    ('AR', 'ART'),
+    ('FD', 'FOOD'),
+    ('GM', 'GAMES'),
     ('RN', 'RANDOM'),
     ('SC', 'SCIENCE'),
+    ('TS', 'TVSERIES'),
     ('TG', 'TECHNOLOGY'),
-    ('FD', 'FOOD'),
-    ('AR', 'ART'),
     ('LT', 'LITERATURE'),
     ('PH', 'PHILOSOPHY'),
     ('MM', 'MUSIC&MOVIES'),
-    ('TS', 'TVSERIES'),
-    ('GM', 'GAMES')
 ]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'boto3',
+    'social_django',
+    'django_social_share',
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.humanize',
     'django.contrib.staticfiles',
+    'django.contrib.contenttypes',
     'articles.apps.ArticlesConfig',
     'comments.apps.CommentsConfig',
-    'django.contrib.humanize',
-    'markdown_deux',
-    'boto3',
-    'social_django'
+    'django.contrib.auth',
+    'authentication.apps.AuthenticationConfig',
 ]
 
 MIDDLEWARE = [
@@ -74,8 +80,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'authentication.middlewares.AuthMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -84,7 +92,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-if not DEBUG:
+if not DEBUG:  # adding after the security middleware
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 

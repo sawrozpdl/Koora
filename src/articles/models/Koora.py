@@ -6,9 +6,14 @@ from .Tag import *
 
 class KooraManager(models.Manager):
 
-    def active(self, *args, **kwargs):
-        return super(KooraManager, self).filter(is_drafted=False, is_private=False)
+    def private(self):
+        return super(KooraManager, self).filter(is_private=True)
 
+    def public(self):
+        return super(KooraManager, self).filter(is_private=False, is_drafted=False)
+
+    def active(self):
+        return super(KooraManager, self).filter(is_drafted=False)
 
 
 class Koora(models.Model):
@@ -54,6 +59,7 @@ class Koora(models.Model):
 
 
     def save(self, **kwargs): 
-        payload = self.title if self.title else self.content
-        self.slug = self.get_unique_slug(payload) 
+        if not self.slug:
+            payload = self.title if self.title else self.content
+            self.slug = self.get_unique_slug(payload) 
         super(Koora, self).save(**kwargs)

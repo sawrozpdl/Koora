@@ -1,0 +1,1 @@
+from .DetailAPIView import *

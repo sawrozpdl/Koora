@@ -12,9 +12,9 @@
 {% block midcontent %}
 
         <span class="lead">
-            <h2 style="display:inline"><code>{{comment.user}}</code></h2 style="display:inline"> commented on 
+            <h2 style="display:inline"><code>{{comment.user.username}}</code></h2 style="display:inline"> commented on 
             <strong>
-                {% ifequal comment.user comment.content_object.user%}his{%else%}{{comment.content_object.user}}'s{%endifequal%}
+                {% ifequal comment.user.username comment.content_object.user.username%}his{%else%}{{comment.content_object.user.username}}'s{%endifequal%}
             </strong>
             post : <h3 style="display:inline">
                         <a href="{% url 'articles:detail' comment.content_object.slug %}">
@@ -29,8 +29,12 @@
         <hr>
 
         <div class="comment-thread">
-              {% for comment in comment.children %}
-                {% include "comments/comment.html" %}
-             {% endfor %}
+            {% if comment.children %}
+                {% for comment in comment.children %}
+                    {% include "comments/comment.html" %}
+                {% endfor %}
+            {% else %}
+                <span class="lead">No replies on this thread yet!</span> 
+            {% endif %}
         </div>
 {% endblock midcontent %}

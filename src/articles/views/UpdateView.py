@@ -1,70 +1,64 @@
 from django.views import View
-from django.template import loader
-from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpResponseServerError
-from articles.models import Article
+from django.urls import reverse
 from django.conf import settings
-from utils import uploader
-from utils.decorators import fail_safe, protected_view
-
+from django.template import loader
+from articles.models import Article
+from utils.decorators import protected_view
+from utils.request import api_call, suitableRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
+from utils.koora import setTagsFor, uploadImageFor, deleteImageFor, get_message_or_default, generate_url_for
 class UpdateView(View):
 
-    @fail_safe(for_model=Article)
     def get(self, request, slug):
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
-        article = Article.objects.get(slug=slug)
-        return HttpResponse(loader.get_template('articles/update_article.html').render({
-            "page_name": "articles",
-            "messages" : [
-                {
-                    "type" : "warning",
-                    "content" : "Change required field and Press Update to Publish the new verson of your Article"
-                }
-            ],
-            "article" : article,
-            "tags" : article.get_tag_string()
-        }, request))
+
+        raw_response = api_call(
+            method='get',
+            request=request,
+            reverse_for="articles-api:detail",
+            reverse_kwargs={'slug' : slug}
+        )
+
+        response = raw_response.json()
 
 
-    @fail_safe(for_model=Article)
+        message = get_message_or_default(request, {
+            "type" : "warning",
+            "content" : "Change required field and Press Update to Publish the new verson of your Article"
+        })
+
+        if response['status'] == 200:
+            return HttpResponse(loader.get_template('articles/post_article.html').render({
+                "page_name": "articles",
+                "message" : message,
+                "article" : response['data']['article'],
+                "update_mode" : True,
+                "tags" : response['data']['article']['tag_string']
+            }, request))
+        else:
+            return suitableRedirect(response=raw_response, reverse_name="articles:update", reverse_kwargs={
+                "slug" : slug
+            })
+
+
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
     def post(self, request, slug):
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
-        try:
-            article = Article.objects.get(slug=slug)
-            article.title = request.POST['title']
-            article.content = request.POST['content']
-            article.category = request.POST['category']
-            image = request.FILES.get('article_image', False)
-            image_url = ''
-            if (image):
-                key = "%s_%s.jpg" % (request.user.username, article.title)
-                image_url = uploader.upload(image, key)
-                article.image_url = image_url
-            article.remove_tags()
-            tags = request.POST.get('tags', '').strip().split(",")
-            if len(tags) > 0:
-                for tag in tags:
-                    tag = tag.strip()
-                    if tag:
-                        try:
-                            existing_tag = Tag.objects.get(name=tag)
-                            article.tags.add(existing_tag)
-                        except:
-                            article.tags.create(name=tag, description='nonefeornow')
-            article.save()
-            return HttpResponse(loader.get_template("articles/create_article.html").render({
-                "messages" : [
-                    {
-                        "type" : "success",
-                        "content" : "Article Updated!"
-                    }
-                ],
-                "page_name": "create_article"
-            }, request))
-        except Article.DoesNotExist:
-            raise Http404()
-        except:
-            return HttpResponseServerError()
-        
+
+        raw_response = api_call(
+            method='put',
+            request=request,
+            reverse_for="articles-api:detail",
+            reverse_kwargs={'slug' : slug},
+            data = request.POST.dict(),
+            files = request.FILES.dict()
+        )
+
+        response = raw_response.json()
+
+
+        if response['status'] == 200:
+            return HttpResponseRedirect(response['data']['article']['absolute_url'])
+        else:
+            return suitableRedirect(response=raw_response, reverse_name="articles:update", reverse_kwargs={
+                "slug" : slug
+            })
+    

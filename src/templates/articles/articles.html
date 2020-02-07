@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load cmt_tag %}
 
 {% block banner%}
 {% endblock banner%}
@@ -39,11 +40,14 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ article.published_at|naturaltime }} </div>
+                        <div class="text-muted h7 mb-2">
+                            <span> <i class="fa fa-clock-o" style="margin-right:5px;"></i> {{ article.published_at|to_date|naturaltime }} </span>
+                        </div>
                         <h2 class="card-title">{{article.title}}</h2>
+                        <span>{{article.all_comments}} Comments</span>
                         </div>
                     </div>
-                    <a class = 'btn btn-primary' href = "{{ article.absolute_url }}">Show</a>
+                    <a class = 'btn btn-primary' href = "{{ article.absolute_url }}">Open</a>
                 </li>
             {% endfor %}
         </ul>

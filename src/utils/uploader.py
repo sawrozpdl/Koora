@@ -17,17 +17,16 @@ s3 = boto3.resource(
     config=Config(signature_version='s3v4')
 )
 
+s3_bucket = s3.Bucket(BUCKET_NAME)
+
 # Directly upload the given file
 
 
 def upload(file, fileName):
-    s3.Bucket(BUCKET_NAME).put_object(
+
+    s3_bucket.put_object(
         Key=fileName, Body=file, ACL='public-read')
 
-    # file_url = "https://s3-{0}.amazonaws.com/{1}/{2}".format(
-    #     BUCKET_LOCATION['LocationConstraint'],
-    #     BUCKET_NAME,
-    #     fileName)
     file_url = "https://s3.amazonaws.com/{0}/{1}".format(BUCKET_NAME, fileName)
     return file_url
 
@@ -41,3 +40,7 @@ def findAndUpload(directory, fileName, binaryMode):
     file = open(directory, readMode)
     s3.Bucket(BUCKET_NAME).put_object(
         Key=fileName, Body=file, ACL='public-read')
+
+
+def delete(key):
+    s3.Object(BUCKET_NAME, key).delete()

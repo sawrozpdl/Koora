@@ -1,76 +1,105 @@
 from django.views import View
 from django.template import loader
-from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpResponseServerError
+from utils.request import api_call, suitableRedirect
 from comments.models import Comment
+from utils.decorators import protected_view
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.contrib.contenttypes.models import ContentType
-
+from utils.koora import generate_url_for, get_message_or_default
 
 class DetailView(View):
 
     def get(self, request, model, slug):
-        comment = Comment.objects.get(slug=slug)
-        template = loader.get_template("comments/comment_thread.html")
-        content = {
-            "page_name": model,
-            "comment": comment
-        }
-        return HttpResponse(template.render(content, request))
 
-    def post(self, request, model, slug):
-        delete_mode = request.POST.get('delete_mode', False)
-        if not delete_mode:
-            parent = Comment.objects.get(slug=slug)
-            content_object = parent.content_object
-            content_type = parent.content_type
-            content = request.POST.get('content', '')
-            object_id = content_object.id
-            Comment.objects.create(user=request.user, content=content,content_object=content_object,
-                                content_type=content_type, parent=parent, object_id=object_id)
-            template = loader.get_template("comments/comment_thread.html")
+        raw_response = api_call(
+            method='get',
+            request=request,
+            reverse_for="comments-api:detail",
+            reverse_kwargs={'slug' : slug}
+        )
+
+        response = raw_response.json()
+
+
+        message = get_message_or_default(request, {})
+
+        template = loader.get_template("comments/comment_thread.html")
+
+        if response['status'] == 200:
             content = {
                 "page_name": model,
-                "messages" : [
-                    {
-                        'type': 'success',
-                        'content' : 'Reply Added!'
-                    }
-                ],
-                "comment": parent
+                "comment": response['data']['comment'],
+                "message" : message
             }
             return HttpResponse(template.render(content, request))
         else:
-            comment = Comment.objects.get(slug=slug)
-            is_parent = comment.is_parent
-            if comment.is_parent:
-                content_object = comment.content_object
-                comment.delete()
-                content_name = model[:len(model) - 1]
-                template = loader.get_template("{}/{}.html".format(model, content_name))
-                content = {
-                    "page_name": model,
-                    content_name: content_object,
-                    "vote_type" : content_object.get_user_vote(request.user),
-                    "messages" : [
-                        {
-                            'type': 'success',
-                            'content' : 'Comment Removed!'
-                        }
-                    ],
-                    "comments" : content_object.comments
-                }
-                return HttpResponse(template.render(content, request))
+            return suitableRedirect(response=raw_response, reverse_name="comments:detail", reverse_kwargs={
+                "slug" : slug,
+                "model" : model
+            })
+
+
+
+    @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
+    def post(self, request, model, slug):
+
+        delete_mode = request.POST.get('delete_mode', False)
+
+        if not delete_mode:
+
+            response = api_call(
+                method='post',
+                request=request,
+                reverse_for="comments-api:detail",
+                reverse_kwargs={'slug' : slug},
+                data=request.POST.dict()
+            ).json()
+
+            if response['status'] == 200:
+                return HttpResponseRedirect(generate_url_for("comments:detail", kwargs={
+                        "model" : model,
+                        "slug" : slug
+                    }, query={
+                        'type': 'success',
+                        'content' : 'Reply Added!'
+                }))
             else:
-                parent = comment.parent
-                comment.delete()
-                template = loader.get_template("comments/comment_thread.html")
-                content = {
-                    "page_name": model,
-                    "messages" : [
-                        {
-                            'type': 'success',
-                            'content' : 'Reply Removed!'
-                        }
-                    ],
-                    "comment": parent
+                return suitableRedirect(response=response, reverse_name="comments:detail", reverse_kwargs={
+                    "slug" : slug,
+                    "model" : model
+                })
+
+
+        else:
+
+            response = api_call(
+                method='delete',
+                request=request,
+                reverse_for="comments-api:detail",
+                reverse_kwargs={'slug' : slug}
+            ).json()
+
+            togo = model
+
+            if response['status'] == 200:
+                kwargs = {
+                    'slug' : response['data']['parent_slug']
                 }
-                return HttpResponse(template.render(content, request))
+                query = {
+                    'type': 'success',
+                    'content' : 'Comment Removed!'
+                }
+                if not response['data']['is_parent']:
+                    togo = "comments"
+                    kwargs['model'] = model
+                    query = {
+                        'type': 'success',
+                        'content' : 'Reply Removed!'
+                    }
+                return HttpResponseRedirect(generate_url_for("{}:detail".format(togo), kwargs=kwargs, query=query))
+            else:
+                return suitableRedirect(response=response, reverse_name="comments:detail", reverse_kwargs={
+                    "slug" : slug,
+                    "model" : model
+                })
+
