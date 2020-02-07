@@ -13,6 +13,7 @@ urlpatterns = [
 
 
     path('api/articles/', include('articles.api.urls', namespace='articles-api'), name='aritcles-api'),
-    path('api/comments/', include('comments.api.urls', namespace='comments-api'), name='comments-api')
+    path('api/comments/', include('comments.api.urls', namespace='comments-api'), name='comments-api'),
+    path('api/auth/', include('authentication.urls', namespace='auth-api'), name='auth-api')
 
 ]

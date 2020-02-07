@@ -1,7 +1,7 @@
 import requests
 from django.views import View
 from django.template import loader
-from utils.request import api_call
+from utils.request import api_call, suitableRedirect
 from utils.request import suitableRedirect
 from utils.decorators import protected_view
 from django.http import HttpResponse, HttpResponseRedirect
@@ -12,12 +12,15 @@ class DetailView(View):
 
     def get(self, request, slug):
 
-        response = api_call(
+        raw_response = api_call(
             method='get',
             request=request,
             reverse_for="articles-api:detail",
             reverse_kwargs={'slug' : slug}
-        ).json()
+        )
+
+        response = raw_response.json()
+
 
         message = get_message_or_default(request, {})
 
@@ -33,7 +36,7 @@ class DetailView(View):
             }
             return HttpResponse(template.render(content, request))
         else:
-            return suitableRedirect(response=response, reverse_name="articles:detail", reverse_kwargs={
+            return suitableRedirect(response=raw_response, reverse_name="articles:detail", reverse_kwargs={
                 "slug" : slug
             })
 
@@ -47,13 +50,14 @@ class DetailView(View):
 
         if deleteMode:
 
-            response = api_call(
+            raw_response = api_call(
                 method='delete',
                 request=request,
                 reverse_for="articles-api:detail",
                 reverse_kwargs={'slug' : slug}
-            ).json()
-            
+            )
+
+            response = raw_response.json() 
 
             if response['status'] == 200:
                 return HttpResponseRedirect(generate_url_for("articles:list", query={
@@ -61,17 +65,19 @@ class DetailView(View):
                     "content" : "Article deletion successful!"
                 }))
             else :
-                return suitableRedirect(response=response, reverse_name="articles:list")
+                return suitableRedirect(response=raw_response, reverse_name="articles:list")
 
         else:
 
-            response = api_call(
+            raw_response = api_call(
                 method='post',
                 request=request,
                 reverse_for="articles-api:detail",
                 reverse_kwargs={'slug' : slug},
                 data=request.POST.dict()
-            ).json()
+            )
+
+            response = raw_response.json()
 
             if response['status'] == 200:
                 return HttpResponseRedirect(generate_url_for("articles:detail", kwargs={
@@ -81,6 +87,6 @@ class DetailView(View):
                     "content" : "Comment Added!"
                 }))
             else:
-                return suitableRedirect(response=response, reverse_name="articles:detail", reverse_kwargs={
+                return suitableRedirect(response=raw_response, reverse_name="articles:detail", reverse_kwargs={
                     "slug" : slug
                 })

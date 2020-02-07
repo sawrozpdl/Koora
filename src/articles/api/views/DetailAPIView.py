@@ -49,9 +49,9 @@ class DetailAPIView(View):
         post_type = request.PUT.get('post_type', 'public')
         article.is_private = post_type == 'private'
 
-        # if image:
-        #     deleteImageFor(article)
-        #     uploadImageFor(article, image, article.title)
+        if image:
+            deleteImageFor(article)
+            uploadImageFor(article, image, article.slug)
 
         article.remove_tags()
 
@@ -72,7 +72,6 @@ class DetailAPIView(View):
 
     @fail_safe_api(for_model=Article, needs_authentication=True)
     def post(self, request, slug):
-        print('i am her')
         article = Article.objects.get(slug=slug)
 
         user = request.user
@@ -81,7 +80,6 @@ class DetailAPIView(View):
         object_id = request.POST.get('object_id', 1)
         content_type = article.content_type
 
-        print('i got this post : ', request.POST)
 
         created_comment = Comment.objects.create(
             user=user, content=content, object_id=object_id, content_type=content_type)
@@ -103,8 +101,8 @@ class DetailAPIView(View):
 
         article = Article.objects.get(slug=slug)
 
-        # if article.image_url:
-        #     deleteImageFor(article)
+        if article.image_url:
+            deleteImageFor(article)
         article.delete()
 
         return JsonResponse({

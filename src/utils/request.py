@@ -80,23 +80,33 @@ def api_call(*args, **kwargs):
 
 def suitableRedirect(*args, **kwargs):
 
-    response = kwargs.get('response', None)
+    raw_response = kwargs.get('response', None)
     reverse_kwargs = kwargs.get('reverse_kwargs', None)
     reverse_name = kwargs.get('reverse_name', None)
+
+    response = raw_response.json()
 
     togo = reverse_name
     message = response['message']
 
-    if not response or response['status'] == 404:
-        return Http404()
-    elif response['status'] == 403:
-        togo = "accounts:login"
-        message = "Please login to continue"
-
-
-    return HttpResponseRedirect(generate_url_for(togo, kwargs=reverse_kwargs, query={
+    query={
         "type" : "danger",
         "content" : message
-    }))
+    }
+
+    print('this is it: ', response)
+
+
+    if not response or response['status'] == 404:
+        return Http404()
+        
+    elif response['status'] == 403:
+        togo = "auth-api:logout"
+        message = "Please login to continue"
+        reverse_kwargs = None
+        query['next'] = response['from']
+
+
+    return HttpResponseRedirect(generate_url_for(togo, kwargs=reverse_kwargs, query=query))
 
 
