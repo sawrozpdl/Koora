@@ -17,13 +17,11 @@ function resetTheme() {
         : (document.body.removeAttribute('data-theme'), localStorage.removeItem('darkSwitch'));
 }
 
-window.addEventListener('load', () => {
-    darkSwitch &&
+darkSwitch &&
         (initTheme(),
         darkSwitch.addEventListener('change', () => {
             resetTheme();
         }));
-});
 
 // --------------- //
 
