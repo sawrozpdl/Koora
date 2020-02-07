@@ -1,11 +1,10 @@
-from articles.models import Koora, KooraManager
 from django.db import models
-from django.conf import settings
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
-from articles.models import Vote
-
+from django.conf import settings
+from django.forms.models import model_to_dict
+from articles.models import Koora, KooraManager
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 class CommentManager(KooraManager):
 
@@ -33,18 +32,30 @@ class Comment(Koora):
     def __str__(self):
         return str(self.user.username)
 
-    @property
-    def delete_url(self):
-        return reverse("comments:delete", kwargs={"slug": self.slug})
-
     @property  
     def children(self): 
         return Comment.objects.filter(parent=self)
-    
-    @property
-    def voters(self, is_upvote):
-        return Vote.objects.of_instance(self).filter(is_upvote=is_upvote)
 
     @property
     def is_parent(self):
         return self.parent is None
+
+    @property
+    def c_type(self):
+        return ContentType.objects.get_for_model(self.__class__)
+
+    @property
+    def parent_content_type(self):
+        return ContentType.objects.get_for_model(self.content_object.__class__)
+
+    # @property
+    # def parent_content_slug(self):
+    #     return self.content_object.slug
+
+
+    def to_dict(self):
+        db_dict = model_to_dict(self)
+        for attr in dir(self):
+             if not attr.startswith('_') and not attr in ['objects', 'content_object', 'parent'] and not callable(getattr(self, attr)) and not attr in dir(db_dict):
+                db_dict[attr] = getattr(self, attr)
+        return db_dict

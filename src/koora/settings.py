@@ -15,7 +15,12 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 SECRET_KEY = os.environ['SECRET_KEY']
+
+JWT_ALGORITHM = 'HS256'
+JWT_EXP_DELTA_SECONDS = 86400
+
 
 DEBUG = os.environ['DEBUG'] == 'TRUE'
 
@@ -55,9 +60,7 @@ KOORA_CATEGORIES = [
 
 INSTALLED_APPS = [
     'boto3',
-    'markdown_deux',
     'social_django',
-    'django.contrib.auth',
     'django_social_share',
     'django.contrib.admin',
     'django.contrib.sessions',
@@ -67,6 +70,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'articles.apps.ArticlesConfig',
     'comments.apps.CommentsConfig',
+    'django.contrib.auth',
+    'authentication.apps.AuthenticationConfig',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +80,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'authentication.middlewares.AuthMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -85,7 +92,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-if not DEBUG:
+if not DEBUG:  # adding after the security middleware
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 

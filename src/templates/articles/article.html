@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% load social_share %}
+{% load cmt_tag %}
 
 
 {% block banner %}
@@ -26,7 +27,7 @@
                         <i class="fa fa-cog"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop1">
-                        {% if article.user == request.user %}
+                        {% if article.user.username == request.user.username %}
                                 <button class="dropdown-item" style="border:none;color:lightred" data-toggle="modal" data-target="#ConfirmDelete">
                                     Delete
                                 </button>
@@ -45,7 +46,7 @@
 
     </div>
     <div class="card-body">
-        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ article.published_at|naturaltime }} </div>
+        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o" style="margin-right:5px"></i> {{ article.published_at|to_date|naturaltime }} </div>
         <h5 class="card-title">{{article.title}}</h5>
         {% if article.image_url %}
             <div class="cardbox-item">
@@ -53,14 +54,12 @@
             </div>
         {% endif %}
 
-        <p class="card-text">
-            {{article.get_markdown}}
-        </p>
+        <p class="card-text to-markdown" style="white-space: pre-wrap;">{{article.content}}</p>
         <div>
             {% if article.tags %}
                 <hr>
                 <i class="fa fa-tags"></i> Tags:
-                {% for tag in article.tags.all %}
+                {% for tag in article.tags %}
                     <h5 class = "mx-1" style="display:inline">
                         <a href="{% url 'articles:list'%}?tag={{tag.name}}" class="badge badge-pill badge-success">{{tag.name}}</a>
                     </h5>
@@ -69,10 +68,10 @@
         </div>
     </div>
     <div class="card-footer bg-white d-flex justify-content-between">
-        <form id="vote-form" action = "{% url 'articles:vote' %}" method="post" class="btn-group btn-group-toggle">
+        <form id="vote-form" action = "{% url 'articles-api:vote' %}" method="post" class="btn-group btn-group-toggle">
             {% csrf_token %}
+            <input type="hidden" id="access_token" name="access_token" value="{{request.COOKIES.accessToken}}">
             <input type="hidden" id="article_id" name="article_id" value="{{article.id}}">
-            <input type="hidden" id="user_id" name="user_id" value="{{request.user.id}}">
             <button type ="submit" id="upvote-button" class="btn vote up-vote {% if vote_type != -1 and vote_type == True %}active{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
@@ -85,7 +84,7 @@
         </form>
         <a class="btn btn-success" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
                 <i class="fa fa-comment"></i>
-                    Comments<span style="margin-left:8px" class="badge badge-light">{{article.all_comments.count}}</span>
+                    Comments<span style="margin-left:8px" class="badge badge-light">{{article.all_comments}}</span>
         </a>
         <div class="dropdown">
             <a class="btn btn-success" role="button" id="gedf-drop3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color : white;">
@@ -200,16 +199,17 @@
 
     const handleError = error => $('.article-vote-count').notify("Please log in to vote", "error");
 
-
-    const postVote = (url, data, csrf_token) => {
+    const request = (url, data, headers, method="GET") => {
         
         return new Promise((resolve, reject) => {
 
             let request = new XMLHttpRequest();
-            request.open("POST", url, true);
+            request.open(method, url, true);
 
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.setRequestHeader("X-CSRFToken", csrf_token);
+
+            for (let key in headers) {
+                request.setRequestHeader(key, headers[key])
+            }
 
             request.onload = function() {
                 let response = JSON.parse(this.response);
@@ -227,18 +227,25 @@
 
         event.preventDefault();
 
-        const { article_id, user_id, csrfmiddlewaretoken } = event.target;
+        const { article_id, csrfmiddlewaretoken, access_token } = event.target;
         let url = event.target.action;
 
         let data = {
             article_id : article_id.value,
-            user_id : user_id.value,
             vote_type : vote
+        }
+
+        let csrf_token = csrfmiddlewaretoken.value
+        let token = access_token.value
+        let headers= {
+            'X-CSRFToken' : csrf_token,
+            'Content-Type' : 'application/json',
+            'Token' : token
         }
 
         disableVoting();
             
-        postVote(url, data, csrfmiddlewaretoken.value)
+        request(url, data, headers, "POST")
             .then(response => updateClientSide(response))
             .catch(error => handleError(error)) 
             .finally(() => enableVoting())

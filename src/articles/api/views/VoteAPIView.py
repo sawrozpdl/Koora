@@ -1,29 +1,36 @@
 import json
 from django.views import View
+from django.http import Http404
 from django.http import JsonResponse
-from django.http import HttpResponse
-from utils.decorators import fail_safe
+from utils.decorators import fail_safe_api
 from django.contrib.auth.models import User
+from utils.request import parse_body, set_user
 from articles.models import Article, Tag, Vote
 from django.contrib.contenttypes.models import ContentType
 
-class VoteView(View):
+class VoteAPIView(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        set_user(request)
+        if request.user.is_authenticated:
+            parse_body(request, for_method=request.method)
+        return super(VoteAPIView, self).dispatch(request, *args, **kwargs)
+
 
     def get(self, request):
         return Http404()
 
-    @fail_safe(for_model=User)
+
+    @fail_safe_api(for_model=User, needs_authentication=True)
     def post(self, request):
         data = json.loads(request.body)
-        user_id = data['user_id']
         article_id = data['article_id']
         vote_type = data['vote_type']
-
+        user = request.user
         try:
             content_type = ContentType.objects.get_for_model(Article)
             article = Article.objects.get(id=article_id)
-            user = User.objects.get(id=user_id)
-        except:
+        except Exception as ex:
             return JsonResponse({
                 'status' : 500
             })
