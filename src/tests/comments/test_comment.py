@@ -42,7 +42,7 @@ class CommentTestCase(TestCase):
 
         a1 = Article.objects.get(title='a1')
 
-        a1_total_comments = a1.all_comments.count()
+        a1_total_comments = a1.all_comments
 
         a1_comments = a1.comments.count()
 
