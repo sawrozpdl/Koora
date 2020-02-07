@@ -56,6 +56,7 @@ def register_user(request):
 def authenticate_user(request):
 
     if request.user.is_authenticated:
+        response = HttpResponseRedirect(reverse('home'))
         return HttpResponseRedirect(reverse('home'))
 
     if request.method =="GET":
@@ -86,13 +87,6 @@ def authenticate_user(request):
 
 def logout_user(request):
 
-    if (not request.user.is_authenticated):
-        return HttpResponseForbidden('You cant be here')
-
     logout(request)
 
-    response = HttpResponseRedirect(reverse('home'))
-
-    response.delete_cookie('accessToken')
-
-    return response
+    return HttpResponseRedirect(reverse('auth-api:logout'))

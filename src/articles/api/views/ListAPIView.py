@@ -7,8 +7,7 @@ from django.http import JsonResponse
 from utils.decorators import fail_safe_api
 from utils.models import nested_model_to_dict
 from utils.request import parse_body, set_user
-from utils.koora import getValueFor, setTagsFor
-
+from utils.koora import getValueFor, setTagsFor, uploadImageFor
 
 class ListAPIView(View):
 
@@ -99,8 +98,8 @@ class ListAPIView(View):
 
         article = Article.objects.create(user=request.user, title=title, content=content, category=category, is_drafted = is_drafted, is_private=is_private)
 
-        # if (image):
-        #     uploadImageFor(article, image, request.user.username)
+        if (image):
+            uploadImageFor(article, image, article.slug)
             
         tags = request.POST.get('tags', '').strip().split(",")
         

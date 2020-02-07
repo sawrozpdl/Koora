@@ -1,10 +1,10 @@
 import jwt
 import requests
+from django.conf import settings
+from utils.koora import generate_url_for
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AnonymousUser 
-from utils.koora import generate_url_for
-from django.conf import settings
-
+from django.http import HttpResponseRedirect, Http404
 
 
 JWT_SECRET = settings.SECRET_KEY
@@ -43,7 +43,7 @@ def set_user(request):
         access_token = request.COOKIES.get('accessToken', None) if 'accessToken' in request.COOKIES.keys() else request.headers.get('Token', None)
         decoded = jwt.decode(access_token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         active_user = User.objects.get(id=decoded['user_id'])
-    except Exception as ee:
+    except Exception:
         pass
 
     request.user = active_user
@@ -75,4 +75,38 @@ def api_call(*args, **kwargs):
     files = kwargs.get('files', None)
     
     return getattr(requests, kwargs.get('method', 'get'))(url = request.build_absolute_uri(generate_url_for(reverse_for, kwargs=reverse_kwargs, query=reverse_params)), headers=headers, cookies=cookies, data=data, files=files)
+
+
+
+def suitableRedirect(*args, **kwargs):
+
+    raw_response = kwargs.get('response', None)
+    reverse_kwargs = kwargs.get('reverse_kwargs', None)
+    reverse_name = kwargs.get('reverse_name', None)
+
+    response = raw_response.json()
+
+    togo = reverse_name
+    message = response['message']
+
+    query={
+        "type" : "danger",
+        "content" : message
+    }
+
+    print('this is it: ', response)
+
+
+    if not response or response['status'] == 404:
+        return Http404()
+        
+    elif response['status'] == 403:
+        togo = "auth-api:logout"
+        message = "Please login to continue"
+        reverse_kwargs = None
+        query['next'] = response['from']
+
+
+    return HttpResponseRedirect(generate_url_for(togo, kwargs=reverse_kwargs, query=query))
+
 

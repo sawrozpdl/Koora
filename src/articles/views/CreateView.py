@@ -7,7 +7,7 @@ from articles.models import Article
 from utils.decorators import protected_view
 from django.http import HttpResponse, HttpResponseRedirect
 from utils.koora import setTagsFor, uploadImageFor, get_message_or_default, generate_url_for
-from utils.request import api_call
+from utils.request import api_call, suitableRedirect
 class CreateView(View):
 
     def get(self, request):
@@ -26,13 +26,16 @@ class CreateView(View):
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You need to be logged in to create an article")
     def post(self, request):
 
-        response = api_call(
+        raw_response = api_call(
             method='post',
             request=request,
             reverse_for="articles-api:list",
             data = request.POST.dict(),
             files = request.FILES.dict()
-        ).json()
+        )
+
+        response = raw_response.json()
+
 
         if response['status'] == 200:
             if response['data']['article']['is_drafted']:
@@ -43,9 +46,6 @@ class CreateView(View):
             else:
                 return HttpResponseRedirect(response['data']['article']['absolute_url'])
         else:
-            return HttpResponseRedirect(generate_url_for('articles:create', query = {
-                "type" : "danger",
-                "content" : response['message']
-            }))
+            return suitableRedirect(response=raw_response, reverse_name="articles:create")
         
         

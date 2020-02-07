@@ -17,7 +17,8 @@ class AuthMiddleware(object):
     def __call__(self, request):
 
 
-        if request.user.is_authenticated: 
+        if request.user.is_authenticated and not 'accessToken' in request.COOKIES.keys(): 
+            
             payload = {
                 'user_id': request.user.id,
                 'exp': datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
@@ -31,6 +32,12 @@ class AuthMiddleware(object):
 
             response.set_cookie('accessToken', accessToken, expires=expires.utctimetuple())
 
+            return response
+
+        elif not request.user.is_authenticated and 'accessToken' in request.COOKIES.keys(): 
+
+            response = self.get_response(request)
+            response.delete_cookie('accessToken')
             return response
 
         return self.get_response(request)

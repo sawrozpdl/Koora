@@ -4,19 +4,22 @@ from django.conf import settings
 from django.template import loader
 from articles.models import Article
 from utils.decorators import protected_view
-from utils.request import api_call
+from utils.request import api_call, suitableRedirect
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from utils.koora import setTagsFor, uploadImageFor, deleteImageFor, get_message_or_default, generate_url_for
 class UpdateView(View):
 
     def get(self, request, slug):
 
-        response = api_call(
+        raw_response = api_call(
             method='get',
             request=request,
             reverse_for="articles-api:detail",
             reverse_kwargs={'slug' : slug}
-        ).json()
+        )
+
+        response = raw_response.json()
+
 
         message = get_message_or_default(request, {
             "type" : "warning",
@@ -32,26 +35,30 @@ class UpdateView(View):
                 "tags" : response['data']['article']['tag_string']
             }, request))
         else:
-            return HttHttpResponseServerError()
+            return suitableRedirect(response=raw_response, reverse_name="articles:update", reverse_kwargs={
+                "slug" : slug
+            })
 
 
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
     def post(self, request, slug):
 
-        response = api_call(
+        raw_response = api_call(
             method='put',
             request=request,
             reverse_for="articles-api:detail",
             reverse_kwargs={'slug' : slug},
             data = request.POST.dict(),
             files = request.FILES.dict()
-        ).json()
+        )
+
+        response = raw_response.json()
+
 
         if response['status'] == 200:
             return HttpResponseRedirect(response['data']['article']['absolute_url'])
         else:
-            return HttpResponseRedirect(generate_url_for('articles:update'), kwargs={slug : slug}, query = {
-                "type" : "danger",
-                "content" : response['message']
+            return suitableRedirect(response=raw_response, reverse_name="articles:update", reverse_kwargs={
+                "slug" : slug
             })
     

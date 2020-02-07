@@ -1,6 +1,6 @@
 from django.views import View
 from django.template import loader
-from utils.request import api_call
+from utils.request import api_call, suitableRedirect
 from comments.models import Comment
 from utils.decorators import protected_view
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
@@ -11,12 +11,15 @@ class DetailView(View):
 
     def get(self, request, model, slug):
 
-        response = api_call(
+        raw_response = api_call(
             method='get',
             request=request,
             reverse_for="comments-api:detail",
             reverse_kwargs={'slug' : slug}
-        ).json()
+        )
+
+        response = raw_response.json()
+
 
         message = get_message_or_default(request, {})
 
@@ -30,7 +33,12 @@ class DetailView(View):
             }
             return HttpResponse(template.render(content, request))
         else:
-            return HttpResponseServerError()
+            return suitableRedirect(response=raw_response, reverse_name="comments:detail", reverse_kwargs={
+                "slug" : slug,
+                "model" : model
+            })
+
+
 
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
     def post(self, request, model, slug):
@@ -56,7 +64,10 @@ class DetailView(View):
                         'content' : 'Reply Added!'
                 }))
             else:
-                return HttpResponseServerError()
+                return suitableRedirect(response=response, reverse_name="comments:detail", reverse_kwargs={
+                    "slug" : slug,
+                    "model" : model
+                })
 
 
         else:
@@ -85,7 +96,10 @@ class DetailView(View):
                         'type': 'success',
                         'content' : 'Reply Removed!'
                     }
-                print('fjdk',togo, kwargs)
                 return HttpResponseRedirect(generate_url_for("{}:detail".format(togo), kwargs=kwargs, query=query))
             else:
-                return HttpResponseServerError()
+                return suitableRedirect(response=response, reverse_name="comments:detail", reverse_kwargs={
+                    "slug" : slug,
+                    "model" : model
+                })
+
