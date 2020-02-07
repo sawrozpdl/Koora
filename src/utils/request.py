@@ -36,24 +36,15 @@ def parse_body(request, for_method="PUT"):
 
 
 def set_user(request):
-    # user_id = request.headers.get('Token', None)
-    # try:
-    #     request.user = User.objects.get(id=user_id)
-    # except Exception:
-    #     request.user = AnonymousUser()
-
 
     active_user = AnonymousUser()
 
     try:
-        access_token = request.META['Token']
-        print('you bring me : ', access_token)  
+        access_token = request.COOKIES.get('accessToken', None) if 'accessToken' in request.COOKIES.keys() else request.headers.get('Token', None)
         decoded = jwt.decode(access_token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         active_user = User.objects.get(id=decoded['user_id'])
-        print('HI : ', active_user)
     except Exception as ee:
-        print('invalid token', ee)
-
+        pass
 
     request.user = active_user
 
@@ -68,11 +59,12 @@ def api_call(*args, **kwargs):
 
     headers = {
         'X-CSRFToken' : csrftoken,
-        'Token' : request.META['Token']
+        'Token' : request.headers.get('Token', None)
     }
 
     cookies = {
-        'csrftoken' : csrftoken
+        'csrftoken' : csrftoken,
+        'accessToken' : request.COOKIES.get('accessToken', None) 
     }
 
     reverse_kwargs = kwargs.get('reverse_kwargs', None)

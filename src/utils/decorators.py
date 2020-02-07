@@ -36,7 +36,6 @@ def fail_safe_api(*main_args, **main_kwargs):
                 response = callback(*args, **kwargs)
 
             except Exception as e:
-                print(e)
                 content = {
                     "status" : 404,
                     "data" : {},

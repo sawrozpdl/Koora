@@ -26,12 +26,11 @@ class VoteAPIView(View):
         data = json.loads(request.body)
         article_id = data['article_id']
         vote_type = data['vote_type']
-
+        user = request.user
         try:
             content_type = ContentType.objects.get_for_model(Article)
             article = Article.objects.get(id=article_id)
-            user = request.user
-        except:
+        except Exception as ex:
             return JsonResponse({
                 'status' : 500
             })

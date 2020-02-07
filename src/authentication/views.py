@@ -1,3 +1,16 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def authorize(request):
+  pass
+
+
+def refresh(request):
+  pass
+
+
+def logout(request):
+  pass
+
+
+

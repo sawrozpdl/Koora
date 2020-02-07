@@ -16,17 +16,8 @@ class AuthMiddleware(object):
 
     def __call__(self, request):
 
-        print('you are : ', request.user)
-        
-        accessToken = request.COOKIES.get('accessToken', None) 
-        if accessToken: # continue with the token
-            print('old one here')
-            request.META['Token'] = accessToken
-            return self.get_response(request)
 
-
-        if request.user.is_authenticated: # login backend
-            print('you are all set in ')
+        if request.user.is_authenticated: 
             payload = {
                 'user_id': request.user.id,
                 'exp': datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
@@ -42,12 +33,7 @@ class AuthMiddleware(object):
 
             return response
 
-          # logout backend
-        print('wait thats illegal')
         return self.get_response(request)
-        # request.META['Token'] = None
-        # response = self.get_response(request)
-        # response.delete_cookie('accessToken')
-        # return response
+
             
             

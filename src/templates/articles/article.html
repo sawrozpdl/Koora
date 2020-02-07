@@ -70,8 +70,8 @@
     <div class="card-footer bg-white d-flex justify-content-between">
         <form id="vote-form" action = "{% url 'articles-api:vote' %}" method="post" class="btn-group btn-group-toggle">
             {% csrf_token %}
+            <input type="hidden" id="access_token" name="access_token" value="{{request.COOKIES.accessToken}}">
             <input type="hidden" id="article_id" name="article_id" value="{{article.id}}">
-            <input type="hidden" id="user_id" name="user_id" value="{{request.user.id}}">
             <button type ="submit" id="upvote-button" class="btn vote up-vote {% if vote_type != -1 and vote_type == True %}active{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
@@ -199,7 +199,6 @@
 
     const handleError = error => $('.article-vote-count').notify("Please log in to vote", "error");
 
-
     const request = (url, data, headers, method="GET") => {
         
         return new Promise((resolve, reject) => {
@@ -228,7 +227,7 @@
 
         event.preventDefault();
 
-        const { article_id, user_id, csrfmiddlewaretoken } = event.target;
+        const { article_id, csrfmiddlewaretoken, access_token } = event.target;
         let url = event.target.action;
 
         let data = {
@@ -237,8 +236,7 @@
         }
 
         let csrf_token = csrfmiddlewaretoken.value
-        let token = user_id.value
-
+        let token = access_token.value
         let headers= {
             'X-CSRFToken' : csrf_token,
             'Content-Type' : 'application/json',
