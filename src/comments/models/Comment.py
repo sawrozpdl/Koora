@@ -1,8 +1,10 @@
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+
 from django.forms.models import model_to_dict
 from articles.models import Koora, KooraManager
+from articles.models.Vote import Vote
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
@@ -53,9 +55,37 @@ class Comment(Koora):
     #     return self.content_object.slug
 
 
+    @property
+    def all_votes(self):
+        return Vote.objects.of_instance(self)
+
+    @property
+    def up_votes(self):
+        return Vote.objects.of_instance(self).filter(is_upvote=True)
+    
+    @property
+    def down_votes(self):
+        return Vote.objects.of_instance(self).filter(is_upvote=False)
+
+
+    def get_user_vote(self, user):
+        votes = Vote.objects.of_instance(self)
+        for vote in votes:
+            vote_type = vote.vote_type_for(user)
+            if vote_type != -1:
+                return vote_type
+        return None
+
+
+    @property
+    def vote_count(self):
+        return self.up_votes.count() - self.down_votes.count()
+        
+
     def to_dict(self):
+        ignore_fields = ['objects', 'up_votes', 'down_votes', 'content_object', 'parent']
         db_dict = model_to_dict(self)
         for attr in dir(self):
-             if not attr.startswith('_') and not attr in ['objects', 'content_object', 'parent'] and not callable(getattr(self, attr)) and not attr in dir(db_dict):
+             if not attr.startswith('_') and not attr in ignore_fields and not callable(getattr(self, attr)) and not attr in dir(db_dict):
                 db_dict[attr] = getattr(self, attr)
         return db_dict

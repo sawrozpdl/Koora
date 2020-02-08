@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from utils.decorators import fail_safe_api
 from django.contrib.auth.models import User
 from utils.request import parse_body, set_user
-from articles.models import Article, Tag, Vote
+from articles.models import Article, Comment, Tag, Vote
 from django.contrib.contenttypes.models import ContentType
 
 class VoteAPIView(View):
@@ -24,19 +24,19 @@ class VoteAPIView(View):
     @fail_safe_api(for_model=User, needs_authentication=True)
     def post(self, request):
         data = json.loads(request.body)
-        article_id = data['article_id']
+        object_id = data['object_id']
+        model_name = data['model_name']
         vote_type = data['vote_type']
+
+        content_type = ContentType.objects.get(model=model_name)
+        model_class = content_type.model_class()
+
         user = request.user
-        try:
-            content_type = ContentType.objects.get_for_model(Article)
-            article = Article.objects.get(id=article_id)
-        except Exception as ex:
-            return JsonResponse({
-                'status' : 500
-            })
+
+        voted_object = model_class.objects.get(id=object_id)
         
         try:
-            vote = Vote.objects.of_instance(article).get(user=user)
+            vote = Vote.objects.of_instance(voted_object).get(user=user)
         except Vote.DoesNotExist:
             vote = False
 
@@ -51,12 +51,12 @@ class VoteAPIView(View):
                 vote.save()
         else:
             is_upvote = True if vote_type == 'up' else False
-            vote = Vote.objects.create(object_id=article_id, user=user, content_type=content_type, is_upvote=is_upvote)
+            vote = Vote.objects.create(object_id=object_id, user=user, content_type=content_type, is_upvote=is_upvote)
             vote.save()
 
         data = {
             'status' : 200,
-            'vote_count' : article.vote_count
+            'vote_count' : voted_object.vote_count
         }
         return JsonResponse(data)
     

@@ -209,7 +209,16 @@
         ></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
-        <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+
+        <script type="module" src="{% static 'js/request.js' %}"></script>
+        <script type="module" src="{% static 'js/vote.js' %}"></script>
+        <script type="module" src="{% static 'js/voter.js' %}"></script>
+
+        <script type="module" src="{% static 'js/dark.js' %}"></script>
+        <script type="module" src="{% static 'js/markdown.js' %}"></script>
+        <script type="module" src="{% static 'js/share.js' %}"></script>
+
 
         {% block javascript %} {% endblock javascript%}
     </body>

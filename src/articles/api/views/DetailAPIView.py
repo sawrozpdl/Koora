@@ -26,8 +26,7 @@ class DetailAPIView(View):
         content = {
             "status": 200,
             "data": {
-                "article": nested_model_to_dict(article),
-                "vote_type": article.get_user_vote(request.user)
+                "article": nested_model_to_dict(article)
             },
             "meta": {
                 "article_count": 1

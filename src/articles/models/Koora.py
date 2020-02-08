@@ -20,8 +20,6 @@ class Koora(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     title = models.CharField(max_length=120)
     slug = models.SlugField(blank=True)
-    upvotes = models.IntegerField(default=0, blank=True)
-    comments_count = models.IntegerField(default=0, blank=True)
     image_url = models.URLField(blank=True, null=True, max_length=300)
     content = models.TextField()
     is_drafted = models.BooleanField(default=False)
