@@ -103,8 +103,6 @@ DATABASES = {
     }
 }
 
-<<<<<<< HEAD
-=======
 if os.environ['PY_ENV'] == 'production':
     DATABASES = {
         'default': {
@@ -117,7 +115,6 @@ if os.environ['PY_ENV'] == 'production':
         }
     }
 
->>>>>>> 69aebcfddf9c30cf0aa555184ad676e5a3867301
 
 AUTH_PASSWORD_VALIDATORS = [
     {
