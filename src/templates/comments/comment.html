@@ -11,48 +11,66 @@
         {{comment.user.username}}
         </strong>
         <span class="middle-dot"></span>
-        <small class="text-secondary">{{ comment.published_at|naturaltime }}</small>
+        <small class="text-secondary">{{ comment.published_at|to_date|naturaltime }}</small>
         <div class="pull-right dropdown">
                 <button class="btn btn-sm" type="button" id="gedf-drop2" data-toggle="dropdown">
                 <i class="fa fa-ellipsis-h"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop2">
-                {% if comment.user == request.user %}
-                        <form style="margin-bottom:0px;" action="{% url 'comments:detail' model=comment.content_object|get_class slug=comment.slug %}" method="post"> 
+                {% if comment.user.username == request.user.username %}
+                        <form style="margin-bottom:0px;" action="{% url 'comments:detail' model=comment|get_parent_class slug=comment.slug %}" method="post"> 
                                 {% csrf_token %}
                                 <input type="hidden" id="delete_mode" name="delete_mode" value="{{True}}">
                                 <button type="submit" class="dropdown-item" style="border:none;color:lightred">
                                         Delete
                                 </button>
                         </form>
-                <div class="dropdown-divider"></div>
                 {% endif %}
-                <a class="dropdown-item" href="#">Report</a>
+                {% if comment.user.username != request.user.username %}
+                        <div class="dropdown-divider"></div>
+                        <a href="#" name = "{{comment.content|truncatechars:10}}${{comment.user.username}}" class="dropdown-item report-button">Report</a>
+                {% endif %}
         </div>
         </div>
-        <p>
-        {{comment.content}}
-        </p>
+        <p class="to-markdown" style="margin: 15px 0px -15px 0px">{{comment.content}}</p>
 </div>       
 </div>
+<hr>
 <div class="button-group d-flex justify-content-between">
-        <a href="#reply{{comment.id}}" class="btn btn-info" type="button" data-toggle="collapse" aria-expanded="false" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
-        <a href = "{% url 'comments:detail' model=comment.content_object|get_class slug=comment.slug %}" class="btn btn-warning">
+        <form action = "{% url 'articles-api:vote' %}" method="post" class="btn-group btn-group-toggle vote-form">
+            {% csrf_token %}
+            {% with vote_type=comment|vote_type_for:request.user.id %} 
+            <input type="hidden" name="access_token" value="{{request.COOKIES.accessToken}}">
+            <input type="hidden" name="object_id" value="{{comment.id}}">
+            <input type="hidden" name="model_name" value="{{comment.c_type.model}}">
+            <button type ="submit" class="upvote-button btn vote up-vote {% if vote_type != -1 and vote_type == True %}active{%endif%}" name="vote" value="up">
+                <i class = "fa fa-arrow-up"></i>
+            </button>
+            <label style="font-weight:bold;" id="cmt-vote-{{comment.id}}" class="vote-count btn btn-secondary article-vote-count">
+                {{comment.vote_count}}
+            </label>
+            <button type = "submit" class="downvote-button btn vote down-vote {% if vote_type != -1 and vote_type == False %}active{%endif%}" name="vote" value="down">
+                <i class="fa fa-arrow-down"></i>
+            </button>
+            {% endwith %}
+        </form>
+        <a href = "{% url 'comments:detail' model=comment|get_parent_class slug=comment.slug %}" class="btn btn-warning">
                 <span class="glyphicon glyphicon-comment"></span>
-                replies<span style="margin-left:5px" class="badge badge-light">{{comment.children.count}}</span>
+                replies<span style="margin-left:5px" class="badge badge-light">{{comment.children|length}}</span>
         </a>
+        <a href="#reply{{comment.id}}" class="btn btn-info" type="button" data-toggle="collapse" aria-expanded="false" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
 </div>
 <div class="collapse" id="reply{{comment.id}}">
         {% if request.user.is_authenticated %}
-                <form style = "margin-bottom:45px" action = '{% url "comments:detail" model=comment.content_object|get_class slug=comment.slug %}' method = "POST">
+                <form style = "margin-bottom:45px" action = '{% url "comments:detail" model=comment|get_parent_class slug=comment.slug %}' method = "POST">
                         {% csrf_token %}
                         <input type="hidden" id="post_id" name="post_id" value="{{comment.post.id}}">
-                        <textarea name = "content" class="form-control mt-3" placeholder="Reply to {{comment.user}}" rows="1" required></textarea>
+                        <textarea name = "content" class="form-control mt-3" placeholder="Reply to {{comment.user.username}}" rows="1" required></textarea>
                         <br>
                         <button type="submit" class="btn btn-success pull-right">Add</button>
                 </form>
         {% else %}
-        <span class="lead">You must be logged in to add or reply to a comment!</span>
+        <span class="lead" style="line-height : 4.2;">You must be logged in to add or reply to a comment!</span>
         {% endif %}
 </div>
 </div>

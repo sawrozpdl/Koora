@@ -58,17 +58,17 @@
             </div>
             <div class="btn-toolbar justify-content-between">
                 <div class="btn-group">
-                    <button type="submit" name = "post_mode" value="publish" class="btn btn-success">{% if update_mode and not article.is_drafted %}Update{% else %}Publish{% endif %}</button>
+                    <button type="submit" name = "post_mode" value="publish" class="btn btn-success post-btn">{% if update_mode and not article.is_drafted %}Update{% else %}Publish{% endif %}</button>
                     {% if not update_mode and not article.is_drafted %}
-                        <button type="submit" name = "post_mode" value="draft" class="btn btn-primary">Draft</button>
+                        <button type="submit" name = "post_mode" value="draft" class="btn btn-primary post-btn">Draft</button>
                     {% endif %}
                 </div>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary active">
-                        <input type="radio" name="post_type" value = "public" id="public"{% if not article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-globe"></i>
+                        <input type="radio" id="post_type" name="post_type" value = "public" id="public"{% if not article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-globe"></i>
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="radio" name="post_type" value = "private" id="private"{% if article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-lock"></i>
+                        <input type="radio" id="post_type" name="post_type" value = "private" id="private"{% if article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-lock"></i>
                     </label>
                 </div>
             </div>

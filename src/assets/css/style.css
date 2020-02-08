@@ -80,8 +80,8 @@ body {
 }
 
 .error-actions {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .error-actions .btn {
@@ -167,22 +167,19 @@ body {
     transition: 0.3s;
 }
 
-.up-vote {
+.up-vote.active,
+.btn.up-vote:hover,
+.up-vote:hover i {
     color: red;
-    transition: 0.3s;
 }
 
-.down-vote {
-    color: red;
-    transition: 0.3s;
-}
-
-.up-vote:hover i,
+.down-vote.active,
+.btn.down-vote:hover,
 .down-vote:hover i {
-    color: red;
+    color: dodgerblue;
 }
 
-#vote-form {
+.vote-form {
     margin: 0px
 }
 
@@ -195,7 +192,9 @@ body {
     color: black;
 }
 
-
+#post_type:checked {
+    color : green
+}
 
 @media (min-width: 992px) {
     .animate {

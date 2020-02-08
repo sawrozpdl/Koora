@@ -1,13 +1,12 @@
 from . import Koora
+from .Vote import *
 from . import KooraManager
 from django.db import models
-from django.conf import settings
-from django.utils.safestring import mark_safe
-from markdown_deux import markdown
-from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
+from django.conf import settings
 from comments.models.Comment import *
-from .Vote import *
+from django.forms.models import model_to_dict
+from django.contrib.contenttypes.models import ContentType
 
 class ArticleManager(KooraManager):
 
@@ -34,6 +33,13 @@ class Article(Koora):
     def comments(self):
         return Comment.objects.of_instance(self)
 
+    @property
+    def all_comments(self):
+        return Comment.objects.all_of_instance(self).count()
+
+    @property
+    def all_votes(self):
+        return Vote.objects.of_instance(self)
 
     @property
     def up_votes(self):
@@ -59,11 +65,12 @@ class Article(Koora):
     def content_type(self):
         return ContentType.objects.get_for_model(self.__class__)
 
-    #   marking the markdown safe prevents django from messing with it for protection
-
     @property
-    def get_markdown(self):
-        return mark_safe(markdown(self.content))
+    def c_type(self):
+        return ContentType.objects.get_for_model(self.__class__)
+        
+
+    #   marking the markdown safe prevents django from messing with it for protection
 
     def contains_tag(self, tag):
         return (tag.lower() in self.title.lower()) | (tag.lower() in self.content.lower())
@@ -74,7 +81,8 @@ class Article(Koora):
                 return True
         return False
 
-    def get_tag_string(self):
+    @property
+    def tag_string(self):
         req = ''
         for tag in self.tags.all():
             req += tag.name + ','
@@ -83,4 +91,14 @@ class Article(Koora):
     def remove_tags(self):
         for tag in self.tags.all():
             self.tags.remove(tag)
+
+
+    def to_dict(self):
+        ignore_fields = ['objects', 'up_votes', 'down_votes']
+        db_dict = model_to_dict(self)
+        for attr in dir(self):
+             if not attr.startswith('_') and not attr in ignore_fields and not callable(getattr(self, attr)) and not attr in dir(db_dict):
+                db_dict[attr] = getattr(self, attr)
+        return db_dict
         
+

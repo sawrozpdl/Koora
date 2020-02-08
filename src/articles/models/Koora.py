@@ -7,7 +7,7 @@ from .Tag import *
 class KooraManager(models.Manager):
 
     def private(self):
-        return super(KooraManager, self).filter(is_private=True, is_drafted=False)
+        return super(KooraManager, self).filter(is_private=True)
 
     def public(self):
         return super(KooraManager, self).filter(is_private=False, is_drafted=False)
@@ -20,8 +20,6 @@ class Koora(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     title = models.CharField(max_length=120)
     slug = models.SlugField(blank=True)
-    upvotes = models.IntegerField(default=0, blank=True)
-    comments_count = models.IntegerField(default=0, blank=True)
     image_url = models.URLField(blank=True, null=True, max_length=300)
     content = models.TextField()
     is_drafted = models.BooleanField(default=False)
@@ -59,6 +57,7 @@ class Koora(models.Model):
 
 
     def save(self, **kwargs): 
-        payload = self.title if self.title else self.content
-        self.slug = self.get_unique_slug(payload) 
+        if not self.slug:
+            payload = self.title if self.title else self.content
+            self.slug = self.get_unique_slug(payload) 
         super(Koora, self).save(**kwargs)

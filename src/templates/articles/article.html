@@ -1,11 +1,34 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load social_share %}
+{% load cmt_tag %}
+
 
 {% block banner %}
 {% endblock banner %}
 
 {% block midcontent %}
-    <div class="container">
+    
+    {% if article.user.username != request.user.username and article.is_private %}
+        <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="error-template">
+                    <h1 class="display-4">Private Article!</h1>
+                    <h2 class="error-details">
+                        You are not allowed to view this article
+                    </h2>
+                    <div class="error-actions">
+                        <a href="{% url 'articles:list' %}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
+                        Go Back 
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <div class="container">
         <div class="card gedf-card">
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
@@ -24,19 +47,27 @@
                         <i class="fa fa-cog"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop1">
-                        {% if article.user == request.user %}
+                        
+                        {% if article.user.username == request.user.username %}
                                 <button class="dropdown-item" style="border:none;color:lightred" data-toggle="modal" data-target="#ConfirmDelete">
                                     Delete
                                 </button>
                                 <a class="dropdown-item" href="{{ article.update_url }}">Update</a>
-                            <div class="dropdown-divider"></div>
                         {% endif %}
 
+                        {% if article.user.username == reqest.user.username %}
+                            <div class="dropdown-divider"></div>
+                        {% endif %}
+                            
                         {% if article.image_url %}
                             <a class="dropdown-item" href="{{ article.image_url}}">Download</a>
                         {% endif %}
-                        <a class="dropdown-item" href="#">Hide</a>
-                        <a class="dropdown-item" href="#">Report</a>
+
+                        {% if article.user.username != request.user.username %}
+                            <div class="dropdown-divider"></div>
+                            <a name = "{{article.title}}${{article.user.username}}" class="dropdown-item report-button" href="#">Report</a>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
@@ -44,7 +75,13 @@
 
     </div>
     <div class="card-body">
-        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ article.published_at|naturaltime }} </div>
+        <div class="d-flex justify-content-between">
+            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o" style="margin-right:5px"></i> {{ article.published_at|to_date|naturaltime }} </div>
+            <span class="">
+                <i  style="font-size:22px" title="This Article is {% if article.is_private %}Private{% else %}Public{% endif %}" class="fa fa-{% if article.is_private %}lock{% else %}globe{% endif %}"></i>
+            </span>
+        </div>
+        <hr>
         <h5 class="card-title">{{article.title}}</h5>
         {% if article.image_url %}
             <div class="cardbox-item">
@@ -52,14 +89,12 @@
             </div>
         {% endif %}
 
-        <p class="card-text">
-            {{article.get_markdown}}
-        </p>
+        <div class="card-text to-markdown">{{article.content}}</div>
         <div>
             {% if article.tags %}
                 <hr>
                 <i class="fa fa-tags"></i> Tags:
-                {% for tag in article.tags.all %}
+                {% for tag in article.tags %}
                     <h5 class = "mx-1" style="display:inline">
                         <a href="{% url 'articles:list'%}?tag={{tag.name}}" class="badge badge-pill badge-success">{{tag.name}}</a>
                     </h5>
@@ -68,43 +103,55 @@
         </div>
     </div>
     <div class="card-footer bg-white d-flex justify-content-between">
-        <form id="vote-form" action = "{% url 'articles:vote' %}" method="post" class="btn-group btn-group-toggle">
+        <form action = "{% url 'articles-api:vote' %}" method="post" class="btn-group btn-group-toggle vote-form">
             {% csrf_token %}
-            <input type="hidden" id="article_id" name="article_id" value="{{article.id}}">
-            <input type="hidden" id="user_id" name="user_id" value="{{request.user.id}}">
-            <button type ="submit" id="upvote-button" class="btn vote {% if vote_type != -1 and vote_type == True %}up-vote{%endif%}" name="vote" value="up">
+            {% with vote_type=article|vote_type_for:request.user.id %} 
+            <input type="hidden" name="access_token" value="{{request.COOKIES.accessToken}}">
+            <input type="hidden" name="object_id" value="{{article.id}}">
+            <input type="hidden" name="model_name" value="{{article.c_type.model}}">
+            <button type ="submit" class="upvote-button btn vote up-vote {% if vote_type != -1 and vote_type == True %}active{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
-            <label style="font-weight:bold;" id="vote-count" class="btn btn-success article-vote-count">
+            <label style="font-weight:bold;"  id="article-vote-{{article.id}}" class="vote-count btn btn-secondary article-vote-count">
                 {{article.vote_count}}
             </label>
-            <button type = "submit" id="downvote-button" class="btn vote {% if vote_type != -1 and vote_type == False %}down-vote{%endif%}" name="vote" value="down">
+            <button type = "submit" class="downvote-button btn vote down-vote {% if vote_type != -1 and vote_type == False %}active{%endif%}" name="vote" value="down">
                 <i class="fa fa-arrow-down"></i>
             </button>
+            {% endwith %}
         </form>
         <a class="btn btn-success" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
                 <i class="fa fa-comment"></i>
-                Comments
+                    Comments<span style="margin-left:8px" class="badge badge-light">{{article.all_comments}}</span>
         </a>
-        <a href="#" class="btn btn-success"><i class="fa fa-mail-forward"></i> Share</a>
+        <div class="dropdown">
+            <a class="btn btn-success" role="button" id="gedf-drop3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color : white;">
+                <i class="fa fa-share-alt"></i>
+                    Share
+            </a>
+            <div class="dropdown-menu dropdown-menu-right animate slideIn" id="share-section" aria-labelledby="gedf-drop3">
+                <div class="dropdown-item">{% post_to_facebook article.absolute_url "<i class='fa fa-facebook'>  facebook</i>" %}</div>
+                <div class="dropdown-item">{% post_to_twitter "Check this out: '{{article.title}}' :" article.absolute_url "<i class='fa fa-twitter'>  twitter</i>" %}</div>
+                <div class="dropdown-item">{% post_to_linkedin article.title article.absolute_url "<i class='fa fa-linkedin'>  LinkedIn</i>" %}</div>
+                <div class="dropdown-item">{% post_to_reddit "Check this out: {{article.title}}" article.absolute_url  "<i class='fa fa-reddit'>  reddit</i>"%}</div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="collapse show mt-3" id="commentSection">
     <div class="comment-wrapper">
-            <div class="panel panel-info">
-                <div class="panel-body" style="overflow:visible">
-                    <form action = "{{ article.absolute_url }}" method = "POST">
-                        {% csrf_token %}
-                        <input type="hidden" id="object_id" name="object_id" value="{{article.id}}">
-                        <textarea name = "content" class="form-control mt-3" placeholder="write a comment..." rows="3" required></textarea>
-                        <br>
-                        <button type="submit" class="btn btn-success pull-right">Post</button>
-                    </form>
+        <div class="panel panel-info">
+            <form action = "{{ article.absolute_url }}" method = "POST">
+                {% csrf_token %}
+                <input type="hidden" id="object_id" name="object_id" value="{{article.id}}">
+                <textarea name = "content" class="form-control mt-3" placeholder="write a comment..." rows="3" required></textarea>
+                <br>
+                <button type="submit" class="btn btn-success pull-right">Post</button>
+            </form>
 
-                    {% include "comments/comments.html" %} 
+            {% include "comments/comments.html" %} 
 
-            </div>
         </div>
     </div>
 </div>
@@ -115,7 +162,7 @@
 <!-- Confirm delete dialog box  -->
 <div class="modal fade" id="ConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content text-center">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">You sure?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -125,11 +172,11 @@
       <div class="modal-body">
         Recovery Feature is not available yet which means deleting this article is going to be permanent and you can't access it ever again!
       </div>
-      <div class="modal-footer">
-        Press Confirm to delete and close if you don't think that's necessary
+      <div class="modal-footer" style="display:block;">
+        Press Confirm to continue the delete process
       </div>
       <div class="modal-footer">
-        <form class = "d-flex justify-content-between" style="width:100%" action = "{% url 'articles:detail' article.slug %}" method='post'>
+        <form style="margin:0px;width:100%;" class = "d-flex justify-content-between" style="width:100%" action = "{% url 'articles:detail' article.slug %}" method='post'>
             {% csrf_token %}
             <input type="hidden" id="deletemode" name="deletemode" value="{{True}}">
             <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
@@ -139,102 +186,6 @@
     </div>
   </div>
 </div>
-
+    {% endif %}
 
 {% endblock midcontent %}
-
-
-
-{% block javascript %}
-
-<script>
-
-
-    let vote = null
-
-    let voteForm = document.getElementById('vote-form');
-    let voteCount = document.getElementById('vote-count');
-    let upvoteButton = document.getElementById('upvote-button');
-    let downvoteButton = document.getElementById('downvote-button');
-
-
-    upvoteButton.onclick = () => vote = 'up'
-
-    downvoteButton.onclick = () => vote = 'down'
-
-
-    const disableVoting = () => {
-        upvoteButton.disabled = true;
-        downvoteButton.disabled = true;
-    }
-
-    const enableVoting = () => {
-        upvoteButton.disabled = false;
-        downvoteButton.disabled = false;
-    }
-
-    const upvoteClientSide = () => {
-        upvoteButton.classList.toggle('up-vote');
-        downvoteButton.classList.remove('down-vote');
-    }
-
-    const downvoteClientSide = () => {
-        downvoteButton.classList.toggle('down-vote');
-        upvoteButton.classList.remove('up-vote');
-    }
-
-    const updateClientSide = ({ vote_count }) => {
-        voteCount.innerHTML = vote_count
-        return (vote === 'up') ? upvoteClientSide() : downvoteClientSide()
-    }
-
-    const handleError = error => $('.article-vote-count').notify("Error! Please log in to vote", "error");
-
-
-    const postVote = (url, data, csrf_token) => {
-        
-        return new Promise((resolve, reject) => {
-
-            let request = new XMLHttpRequest();
-            request.open("POST", url, true);
-
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.setRequestHeader("X-CSRFToken", csrf_token);
-
-            request.onload = function() {
-                let response = JSON.parse(this.response);
-                if (response.status === 200)
-                    return resolve(response)
-                reject(response)
-            }
-
-            request.send(JSON.stringify(data));  
-        })
-    }
-
-
-    voteForm.onsubmit = event => {
-
-        event.preventDefault();
-
-        const { article_id, user_id, csrfmiddlewaretoken } = event.target;
-        let url = event.target.action;
-
-        let data = {
-            article_id : article_id.value,
-            user_id : user_id.value,
-            vote_type : vote
-        }
-
-        disableVoting();
-            
-        postVote(url, data, csrfmiddlewaretoken.value)
-            .then(response => updateClientSide(response))
-            .catch(error => handleError(error)) 
-            .finally(() => enableVoting())
-    }
-
-
-</script>
-
-{% endblock javascript%}

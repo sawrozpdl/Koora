@@ -108,7 +108,7 @@
         {% block banner %}
         <div class="banner text-center">
             <h1 class="display-4 header">Welcome to Koora</h1>
-            <p class="lead footer">Search for specific queries</p>
+            <p class="lead footer">Search your queries below</p>
         </div>
         {% endblock banner%} {% block content %}
 
@@ -171,7 +171,7 @@
                             <h5 class="m-1" style="display:inline">
                                 <a
                                     href="{% url 'articles:list'%}?tag={{tag.name}}"
-                                    class="badge badge-pill badge-success">
+                                    class="badge badge-pill badge-success" style="margin:2px;">
                                     {{tag.name}}
                                 </a>
                             </h5>
@@ -185,7 +185,7 @@
         </div>
 
         {% block footer %}
-        <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top:120px">
+        <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top:40px">
             <div class="container d-flex justify-content-between">
                 <span class="lead">Copyright 2020 Koora</span>
                 <span class="lead">All Rights Reserved</span>
@@ -209,7 +209,16 @@
         ></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
-        <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+
+        <script type="module" src="{% static 'js/request.js' %}"></script>
+        <script type="module" src="{% static 'js/vote.js' %}"></script>
+        <script type="module" src="{% static 'js/voter.js' %}"></script>
+
+        <script type="module" src="{% static 'js/dark.js' %}"></script>
+        <script type="module" src="{% static 'js/markdown.js' %}"></script>
+        <script type="module" src="{% static 'js/share.js' %}"></script>
+
 
         {% block javascript %} {% endblock javascript%}
     </body>

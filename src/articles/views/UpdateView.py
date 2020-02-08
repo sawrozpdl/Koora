@@ -3,59 +3,62 @@ from django.urls import reverse
 from django.conf import settings
 from django.template import loader
 from articles.models import Article
-from utils.decorators import fail_safe, protected_view
-from django.http import HttpResponse, HttpResponseRedirect
+from utils.decorators import protected_view
+from utils.request import api_call, suitableRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from utils.koora import setTagsFor, uploadImageFor, deleteImageFor, get_message_or_default, generate_url_for
 class UpdateView(View):
 
-    @fail_safe(for_model=Article)
     def get(self, request, slug):
 
-        if not request.user.is_authenticated:
-            return HttpResponseForbidden()
+        raw_response = api_call(
+            method='get',
+            request=request,
+            reverse_for="articles-api:detail",
+            reverse_kwargs={'slug' : slug}
+        )
+
+        response = raw_response.json()
+
 
         message = get_message_or_default(request, {
             "type" : "warning",
             "content" : "Change required field and Press Update to Publish the new verson of your Article"
         })
 
-        article = Article.objects.get(slug=slug)
+        if response['status'] == 200:
+            return HttpResponse(loader.get_template('articles/post_article.html').render({
+                "page_name": "articles",
+                "message" : message,
+                "article" : response['data']['article'],
+                "update_mode" : True,
+                "tags" : response['data']['article']['tag_string']
+            }, request))
+        else:
+            return suitableRedirect(response=raw_response, reverse_name="articles:update", reverse_kwargs={
+                "slug" : slug
+            })
 
-        return HttpResponse(loader.get_template('articles/post_article.html').render({
-            "page_name": "articles",
-            "message" : message,
-            "article" : article,
-            "update_mode" : True,
-            "tags" : article.get_tag_string()
-        }, request))
 
-
-
-    @fail_safe(for_model=Article)
     @protected_view(allow='logged_users', fallback='accounts/login.html', message="You don't have access to the page")
     def post(self, request, slug):
 
-        article = Article.objects.get(slug=slug)
+        raw_response = api_call(
+            method='put',
+            request=request,
+            reverse_for="articles-api:detail",
+            reverse_kwargs={'slug' : slug},
+            data = request.POST.dict(),
+            files = request.FILES.dict()
+        )
 
-        article.title = request.POST['title']
-        article.content = request.POST['content']
-        article.category = request.POST['category']
-        image = request.FILES.get('article_image', False)
-        
-        post_type=request.POST.get('post_type', 'public')
-        article.is_private = post_type == 'private'
+        response = raw_response.json()
 
-        if image:
-            deleteImageFor(article)
-            uploadImageFor(article, image, request.user.username)
 
-        article.remove_tags()
-
-        tags = request.POST.get('tags', '').strip().split(",")
-        
-        setTagsFor(article, tags)
-
-        article.save()
-
-        return HttpResponseRedirect(article.absolute_url)
+        if response['status'] == 200:
+            return HttpResponseRedirect(response['data']['article']['absolute_url'])
+        else:
+            return suitableRedirect(response=raw_response, reverse_name="articles:update", reverse_kwargs={
+                "slug" : slug
+            })
     
