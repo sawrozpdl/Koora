@@ -48,7 +48,7 @@
           </a>
         </li>
         <li class="nav-item{% ifequal page_name 'ask_question' %} active{% endifequal %}">
-          <a class="nav-link mx-2" href="#">
+          <a class="nav-link mx-2" href="{% url 'questions:create' %}">
             <i class="fa fa-question" style="font-size:18px"></i>
             Ask Question
           </a>

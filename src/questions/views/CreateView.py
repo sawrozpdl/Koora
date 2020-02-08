@@ -10,8 +10,29 @@ class CreateView(View):
             "messages" : [
                 {
                     "type" : "warning",
-                    "content" : "Fill up the ask question field"
+                    "content" : "You may create your question here!"
                 }
             ],
-            "categories" : settings.KOORA_CATEGORIES
         }, request))
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden() # redirect to login 
+        try:
+       
+            category = request.POST['category']
+            question = request.POST['question']
+            elaborate = request.POST['elaborate']
+            question = question.objects.create(category=category,question=question,elaborate=elaborate)
+            question.save()
+            return HttpResponse(loader.get_template("questions/create_question.html").render({
+                "page_name" : "create_question",
+                "messages" : [
+                    {
+                        "type" : "success",
+                        "content" : "Your question has been added!"
+                    }
+                ]
+            }, request))
+        except:
+            return HttpResponseServerError()
