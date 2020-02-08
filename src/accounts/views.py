@@ -21,7 +21,7 @@ def register_user(request):
     if User.objects.filter(username=username).exists():
         return HttpResponse(loader.get_template("accounts/register.html").render({
             "messages" : [
-                {+
+                {
                     "type" : "danger",
                     "content" : "Username is already taken"
                 }
