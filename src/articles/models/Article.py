@@ -94,7 +94,7 @@ class Article(Koora):
 
 
     def to_dict(self):
-        ignore_fields = ['objects', 'up_votes', 'down_votes', 'all_comments']
+        ignore_fields = ['objects', 'up_votes', 'down_votes']
         db_dict = model_to_dict(self)
         for attr in dir(self):
              if not attr.startswith('_') and not attr in ignore_fields and not callable(getattr(self, attr)) and not attr in dir(db_dict):
