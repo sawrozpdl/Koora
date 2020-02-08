@@ -65,10 +65,10 @@
                 </div>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary active">
-                        <input type="radio" name="post_type" value = "public" id="public"{% if not article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-globe"></i>
+                        <input type="radio" id="post_type" name="post_type" value = "public" id="public"{% if not article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-globe"></i>
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="radio" name="post_type" value = "private" id="private"{% if article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-lock"></i>
+                        <input type="radio" id="post_type" name="post_type" value = "private" id="private"{% if article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-lock"></i>
                     </label>
                 </div>
             </div>

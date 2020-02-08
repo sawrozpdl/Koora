@@ -1,6 +1,6 @@
 from django.views import View
 from django.template import loader
-from utils.request import api_call
+from utils.request import api_call, suitableRedirect
 from utils.koora import get_message_or_default
 from django.http import HttpResponse, HttpResponseServerError
 class ListView(View):

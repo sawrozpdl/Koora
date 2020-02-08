@@ -37,6 +37,9 @@ class Article(Koora):
     def all_comments(self):
         return Comment.objects.all_of_instance(self).count()
 
+    @property
+    def all_votes(self):
+        return Vote.objects.of_instance(self)
 
     @property
     def up_votes(self):
@@ -62,6 +65,11 @@ class Article(Koora):
     def content_type(self):
         return ContentType.objects.get_for_model(self.__class__)
 
+    @property
+    def c_type(self):
+        return ContentType.objects.get_for_model(self.__class__)
+        
+
     #   marking the markdown safe prevents django from messing with it for protection
 
     def contains_tag(self, tag):
@@ -84,10 +92,12 @@ class Article(Koora):
         for tag in self.tags.all():
             self.tags.remove(tag)
 
+
     def to_dict(self):
+        ignore_fields = ['objects', 'up_votes', 'down_votes', 'all_comments']
         db_dict = model_to_dict(self)
         for attr in dir(self):
-             if not attr.startswith('_') and not attr == 'objects' and not callable(getattr(self, attr)) and not attr in dir(db_dict):
+             if not attr.startswith('_') and not attr in ignore_fields and not callable(getattr(self, attr)) and not attr in dir(db_dict):
                 db_dict[attr] = getattr(self, attr)
         return db_dict
         
