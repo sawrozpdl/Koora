@@ -25,27 +25,28 @@
                                         Delete
                                 </button>
                         </form>
-                <div class="dropdown-divider"></div>
                 {% endif %}
-                <a href="#" name = "{{comment.content|truncatechars:10}}${{comment.user.username}}" class="dropdown-item report-button">Report</a>
+                {% if comment.user.username != request.user.username %}
+                        <div class="dropdown-divider"></div>
+                        <a href="#" name = "{{comment.content|truncatechars:10}}${{comment.user.username}}" class="dropdown-item report-button">Report</a>
+                {% endif %}
         </div>
         </div>
-        <p>
-        {{comment.content}}
-        </p>
+        <p class="to-markdown" style="margin: 15px 0px -15px 0px">{{comment.content}}</p>
 </div>       
 </div>
+<hr>
 <div class="button-group d-flex justify-content-between">
         <form action = "{% url 'articles-api:vote' %}" method="post" class="btn-group btn-group-toggle vote-form">
             {% csrf_token %}
             {% with vote_type=comment|vote_type_for:request.user.id %} 
-            <input type="hidden" id="access_token" name="access_token" value="{{request.COOKIES.accessToken}}">
+            <input type="hidden" name="access_token" value="{{request.COOKIES.accessToken}}">
             <input type="hidden" name="object_id" value="{{comment.id}}">
-            <input type="hidden" id="model_name" name="model_name" value="{{comment.c_type.model}}">
+            <input type="hidden" name="model_name" value="{{comment.c_type.model}}">
             <button type ="submit" class="upvote-button btn vote up-vote {% if vote_type != -1 and vote_type == True %}active{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
-            <label style="font-weight:bold;" class="vote-count btn btn-success article-vote-count">
+            <label style="font-weight:bold;" id="cmt-vote-{{comment.id}}" class="vote-count btn btn-secondary article-vote-count">
                 {{comment.vote_count}}
             </label>
             <button type = "submit" class="downvote-button btn vote down-vote {% if vote_type != -1 and vote_type == False %}active{%endif%}" name="vote" value="down">
@@ -69,7 +70,7 @@
                         <button type="submit" class="btn btn-success pull-right">Add</button>
                 </form>
         {% else %}
-        <span class="lead">You must be logged in to add or reply to a comment!</span>
+        <span class="lead" style="line-height : 4.2;">You must be logged in to add or reply to a comment!</span>
         {% endif %}
 </div>
 </div>

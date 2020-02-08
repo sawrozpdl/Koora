@@ -31,6 +31,9 @@ class Comment(Koora):
 
     objects = CommentManager()
 
+    class Meta:
+        ordering = ['published_at']
+
     def __str__(self):
         return str(self.user.username)
 

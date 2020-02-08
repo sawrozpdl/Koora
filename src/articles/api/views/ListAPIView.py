@@ -21,7 +21,7 @@ class ListAPIView(View):
 
 
 
-    #@fail_safe_api(for_model=Article)
+    @fail_safe_api(for_model=Article)
     def get(self, request):
 
         searchQuery = request.GET.get("searchQuery", False)

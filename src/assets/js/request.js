@@ -16,7 +16,7 @@ const request = (url, data, headers, method="GET") => {
               return resolve(response)
           reject(response)
       }
-      console.log('data : ', data, JSON.stringify(data))
+
       request.send(JSON.stringify(data));  
   })
 }

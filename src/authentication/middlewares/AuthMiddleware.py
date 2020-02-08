@@ -17,22 +17,28 @@ class AuthMiddleware(object):
     def __call__(self, request):
 
 
-        if request.user.is_authenticated and not 'accessToken' in request.COOKIES.keys(): 
-            
-            payload = {
-                'user_id': request.user.id,
-                'exp': datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
-            }
-            accessToken = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM).decode('utf-8')
+        if request.user.is_authenticated:
 
-            max_age = COOKIE_MAX_AGE
-            expires = datetime.now() + timedelta(seconds=max_age)
+            aToken = request.COOKIES.get('accessToken', '')
 
-            response = self.get_response(request)
+            try:
+                jwt.decode(aToken, JWT_SECRET, JWT_ALGORITHM)
+            except Exception:
+                
+                payload = {
+                    'user_id': request.user.id,
+                    'exp': datetime.utcnow() + timedelta(seconds=JWT_EXP_DELTA_SECONDS)
+                }
+                accessToken = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM).decode('utf-8')
 
-            response.set_cookie('accessToken', accessToken, expires=expires.utctimetuple())
+                max_age = COOKIE_MAX_AGE
+                expires = datetime.now() + timedelta(seconds=max_age)
 
-            return response
+                response = self.get_response(request)
+
+                response.set_cookie('accessToken', accessToken, expires=expires.utctimetuple())
+
+                return response
 
         elif not request.user.is_authenticated and 'accessToken' in request.COOKIES.keys(): 
 

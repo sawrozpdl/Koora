@@ -1,6 +1,5 @@
 import Voter from './voter.js';
 
-console.log('vote : ', new Voter())
 
 let voteForms = document.getElementsByClassName('vote-form');
 let voteCounts = document.getElementsByClassName('vote-count');

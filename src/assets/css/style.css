@@ -80,8 +80,8 @@ body {
 }
 
 .error-actions {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .error-actions .btn {
@@ -190,6 +190,10 @@ body {
 
 .hover-black:hover {
     color: black;
+}
+
+#post_type:checked {
+    color : green
 }
 
 @media (min-width: 992px) {

@@ -13,10 +13,11 @@ class Voter {
       this.upvoteButton = config.upvoteButton;
       this.downvoteButton = config.downvoteButton;
     }
+
   }
 
   
-  _handleError = error => $(`.${this.voteCount.classList[0]}`).notify("Please log in to vote", "error");
+  _handleError = error => $(`#${this.voteCount.id}`).notify("Please log in to vote", "error");
   
   _disableVoting = () => {
     this.upvoteButton.disabled = true;
