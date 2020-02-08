@@ -94,8 +94,6 @@ def suitableRedirect(*args, **kwargs):
         "content" : message
     }
 
-    print('this is it: ', response)
-
 
     if not response or response['status'] == 404:
         return Http404()

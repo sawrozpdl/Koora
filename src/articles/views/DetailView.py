@@ -31,7 +31,6 @@ class DetailView(View):
                 "page_name": "articles",
                 "article": article,
                 "message" : message,
-                "vote_type" : response['data']['vote_type'],
                 "comments" : article['comments']
             }
             return HttpResponse(template.render(content, request))

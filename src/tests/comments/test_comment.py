@@ -73,10 +73,10 @@ class CommentTestCase(TestCase):
 
         second_reply = c2_replies[1]
 
-        self.assertEqual(second_reply.content, 'c2c3')
+        self.assertEqual(second_reply.content, 'c2c4')
 
 
-        third_level_nested_reply = first_reply.children[0]
+        third_level_nested_reply = second_reply.children[0]
         expected_reply = Comment.objects.get(content='c4c5')
 
         self.assertEquals(third_level_nested_reply, expected_reply)
