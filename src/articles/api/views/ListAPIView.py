@@ -28,26 +28,23 @@ class ListAPIView(View):
         tag = request.GET.get("tag", False)  
         category = request.GET.get("category", False)
 
-        articles = Article.objects.public()
-        required_articles = articles
+        atype = request.GET.get("atype", False) if request.user.is_authenticated else False
+
+        required_articles = getattr(Article.objects, atype or 'public')(user=request.user if atype else None)
 
         query = {}
+
         if searchQuery:
             required_articles = list(filter(lambda article : article.contains_tag(searchQuery), required_articles))
-            query = {
-                "searchQuery" : searchQuery
-            }
+            query['searchQuery'] = searchQuery
+
         if category:
             required_articles = list(filter(lambda article : article.category == category, required_articles))
-            query = {
-                "category" : getValueFor(category)
-            }
+            query['category'] = getValueFor(category)
+
         if tag:
             required_articles = list(filter(lambda article : article.has_tag(tag), required_articles))
-            query = {
-                "tag" : tag
-            }
-
+            query['tag'] = tag
 
         template = loader.get_template("articles/articles.html")
 

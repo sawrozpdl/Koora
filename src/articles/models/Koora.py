@@ -6,14 +6,21 @@ from .Tag import *
 
 class KooraManager(models.Manager):
 
-    def private(self):
-        return super(KooraManager, self).filter(is_private=True)
+    def private(self, user = None):
+        to_return = super(KooraManager, self).filter(is_private=True)
+        return to_return.filter(user=user) if user else to_return
 
-    def public(self):
-        return super(KooraManager, self).filter(is_private=False, is_drafted=False)
+    def public(self, user = None):
+        to_return = super(KooraManager, self).filter(is_private=False, is_drafted=False)
+        return to_return.filter(user=user) if user else to_return
+    
+    def drafted(self, user = None):
+        to_return = super(KooraManager, self).filter(is_drafted=True)
+        return to_return.filter(user=user) if user else to_return
 
-    def active(self):
-        return super(KooraManager, self).filter(is_drafted=False)
+    def active(self, user=None):
+        to_return = super(KooraManager, self).filter(is_drafted=False)
+        return to_return.filter(user=user) if user else to_return
 
 
 class Koora(models.Model):
