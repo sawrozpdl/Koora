@@ -1,4 +1,5 @@
 from django.views import View 
+from questions.models import Questions
 from django.template import loader
 from django.http import HttpResponse, Http404, HttpResponseForbidden, HttpResponseServerError
 
@@ -36,3 +37,25 @@ class CreateView(View):
             }, request))
         except:
             return HttpResponseServerError()
+
+
+
+
+           
+def Question1(request):
+    return render(request,'questions/create_question.html')
+
+def Question_save(request):
+    if request.method== 'POST': 
+        Create_Question =request.POST['Create_Question']
+        Elaborate_Question= request.POST['Elaborate_Question']
+        
+        Question_obj = Questions(Create_Question=get_Create_Question,Elaborate_Question=get_Elaborate_Question)
+        Question_obj.save()
+        return HttpResponse("Save record!!")
+    else:
+        return HttpResponse("Error record saving!!")
+
+
+
+

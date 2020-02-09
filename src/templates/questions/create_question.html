@@ -14,7 +14,7 @@
     </ul>
       </div>
       </div>
-  <form class = "container" action = "{% url 'questions:create' %}" method = "get" enctype="multipart/form-data">
+  <form class = "container" action = "save/" method = "POST" enctype="">
     <div class="col-lg-9">
     {% csrf_token %}
 
@@ -45,11 +45,11 @@
               </select>
             <div class="form-group">
                 <label class="sr-only" for="message">question</label>
-                <textarea name = "title" required class="form-control" id="question-question" rows="1" placeholder="Start your question with 'what', 'how', 'why' etc.."></textarea>
+                <textarea name = "title" required class="form-control" id="Create_Question" rows="1" placeholder="Start your question with 'what', 'how', 'why' etc.."></textarea>
             </div>
             <div class="form-group">
                 <label class="sr-only" for="message">elaborate</label>
-                <textarea name = "content" required class="form-control" id="elaborate-question" rows="4" placeholder="You may elaborate about your question"></textarea>
+                <textarea name = "content" required class="form-control" id="Elaborate-Question" rows="4" placeholder="You may elaborate about your question"></textarea>
             </div>
             
     <div class="btn-toolbar justify-content-between">
