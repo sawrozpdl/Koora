@@ -187,6 +187,6 @@
 }
 
 
-[data-theme='dark'] .card .list-group-item {
+[data-theme='dark'] .list-group-item {
     background: none;
 }
