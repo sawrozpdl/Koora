@@ -1,6 +1,5 @@
 from django.urls import reverse
 from django.template import loader
-from django.shortcuts import render
 from django.contrib import messages
 from utils.request import generate_url_for
 from django.contrib.auth.models import User
@@ -28,36 +27,36 @@ def register_user(request):
         password=request.POST['f_password']
         confirm_password=request.POST['r_password']
 
-    if User.objects.filter(username=username).exists():
+        if User.objects.filter(username=username).exists():
 
-        return HttpResponseRedirect(generate_url_for("accounts:register", query={
-            "type" : "danger",
-            "content" : "Username is already taken"
-        }))
+            return HttpResponseRedirect(generate_url_for("accounts:register", query={
+                "type" : "danger",
+                "content" : "Username is already taken"
+            }))
 
 
-    if password != confirm_password:
+        if password != confirm_password:
 
-        return HttpResponseRedirect(generate_url_for("accounts:register", query={
-            "type" : "danger",
-            "content" : "Password doesn't match"
-        }))
+            return HttpResponseRedirect(generate_url_for("accounts:register", query={
+                "type" : "danger",
+                "content" : "Password doesn't match"
+            }))
 
-    else:
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.save()
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
 
-        return HttpResponseRedirect(generate_url_for("accounts:login", query={
-            "type" : "success",
-            "content" : "Signup Successfull, You may now login"
-        }))
+            return HttpResponseRedirect(generate_url_for("accounts:login", query={
+                "type" : "success",
+                "content" : "Signup Successfull, You may now login"
+            }))
 
 
 def authenticate_user(request):
 
     if request.user.is_authenticated:
         response = HttpResponseRedirect(reverse('home'))
-        return HttpResponseRedirect(reverse('home'))
+        return response
 
     if request.method =="GET":
 
@@ -89,4 +88,4 @@ def logout_user(request):
 
     logout(request)
 
-    return HttpResponseRedirect(reverse('auth-api:logout'))
+    return HttpResponseRedirect(generate_url_for('auth-api:logout'))
