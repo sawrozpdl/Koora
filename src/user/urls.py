@@ -5,5 +5,5 @@ from .views import SettingsView
 app_name = 'user'
 
 urlpatterns = [
-    path('<slug:username>/settings', SettingsView.as_view(), name='settings'),
+    path('settings/', SettingsView.as_view(), name='settings'),
 ]
