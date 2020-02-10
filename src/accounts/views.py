@@ -56,7 +56,6 @@ def register_user(request):
 def authenticate_user(request):
 
     if request.user.is_authenticated:
-        response = HttpResponseRedirect(reverse('home'))
         return HttpResponseRedirect(reverse('home'))
 
     if request.method =="GET":

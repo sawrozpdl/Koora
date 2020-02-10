@@ -10,6 +10,7 @@ urlpatterns = [
     path('articles/', include('articles.urls', namespace='articles'), name='articles'),
     path('accounts/', include('accounts.urls', namespace='accounts'), name='accounts'),
     path('comments/', include('comments.urls', namespace='comments'), name='comments'),
+    path('user/', include('user.urls', namespace='user'), name='user'),
 
 
     path('api/articles/', include('articles.api.urls', namespace='articles-api'), name='aritcles-api'),

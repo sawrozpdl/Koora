@@ -34,7 +34,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <img class="rounded-circle profile" width="45" src=" {% if article.user.has_image %} {{ article.user.avatar_url }} {% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="avatar">
+                    <img class="rounded-circle profile" width="45" src=" {% if article.user.profile.avatar_url %} {{ article.user.profile.avatar_url }} {% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="avatar">
                 </div>
                 <div class="ml-2">
                     <div class="h5 m-0">{{article.user.username}}</div>
@@ -112,7 +112,7 @@
             <button type ="submit" class="upvote-button btn vote up-vote {% if vote_type != -1 and vote_type == True %}active{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
-            <label style="font-weight:bold;"  id="article-vote-{{article.id}}" class="vote-count btn btn-secondary article-vote-count">
+            <label style="font-weight:bold;"  id="article-vote-{{article.id}}" class="vote-count btn btn-info article-vote-count">
                 {{article.vote_count}}
             </label>
             <button type = "submit" class="downvote-button btn vote down-vote {% if vote_type != -1 and vote_type == False %}active{%endif%}" name="vote" value="down">

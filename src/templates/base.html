@@ -10,8 +10,13 @@
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="https://uselooper.com/assets/stylesheets/theme.min.css" data-skin="default">
+    <link rel="stylesheet" href="https://uselooper.com/assets/stylesheets/theme-dark.min.css" data-skin="dark" disabled="true">
+    <link rel="stylesheet" href="https://uselooper.com/assets/stylesheets/custom.css">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" /> {% block css %}
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/v4-shims.css">
+    {% comment %} <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet" />
@@ -53,11 +58,11 @@
                     <li class="nav-item dropdown">
                         {% if request.user.is_authenticated %}
                         <a href="#" class="nav-link dropdown-toggle d-inline" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=35x35{% endif %}" class="profile rounded-circle" /> {{ request.user.username }}
+                            <img src="{% if request.user.profile.avatar_url %} {{ request.user.profile.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=35x35{% endif %}" class="profile rounded-circle" /> {{ request.user.username }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#">My Profile</a>
-                            <a class="dropdown-item" href="#">Settings</a>
+                            <a class="dropdown-item" href="{% url 'user:settings' %}">Settings</a>
                             <div class="dropdown-divider"></div>
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="darkSwitch" />
@@ -115,7 +120,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-2 text-center">
-                    <ul class="list-group">
+                    <ul class="aside-lg list-group">
                         <div class="list-group-item bg-light hover-black">
                             Categories
                         </div>
