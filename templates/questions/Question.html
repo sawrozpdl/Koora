@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block banner %}
+{% endblock banner %}
+
+{% block midcontent %}
+    <div class="container">
+        <div class="card gedf-card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <img class="rounded-circle profile" width="45" src=" {% if Question.user.has_image %} {{ Question.user.avatar_url }} {% else %}https://robohash.org/{{Question.user.username}}?size=50x50{% endif %}" alt="avatar">
+                </div>
+                <div class="ml-2">
+                    <div class="h5 m-0">{{Question.user.username}}</div>
+                    <div class="h7 text-muted">{{Question.user.first_name}} {{Question.user.last_name}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-cog"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop1">
+                        {% if Question.user == request.user %}
+                                <button class="dropdown-item" style="border:none;color:lightred" data-toggle="modal" data-target="#ConfirmDelete">
+                                    Delete
+                                </button>
+                                <a class="dropdown-item" href="{{ Question.update_url }}">Update</a>
+                            <div class="dropdown-divider"></div>
+                        {% endif %}
+
+                        {% if Question.image_url %}
+                            <a class="dropdown-item" href="{{ Question.image_url}}">Download</a>
+                        {% endif %}
+                        <a class="dropdown-item" href="#">Hide</a>
+                        <a class="dropdown-item" href="#">Report</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ Question.published_at|naturaltime }} </div>
+        <h5 class="card-title">{{Question.title}}</h5>
+        {% if Question.image_url %}
+            <div class="cardbox-item">
+                <img class="rounded mx-auto d-block img-fluid" src="{{ Question.image_url}}" alt="Image">
+            </div>
+        {% endif %}
+
+        <p class="card-text">
+            {{Question.get_markdown}}
+        </p>
+        <div>
+            {% if Question.tags %}
+                <hr>
+                <i class="fa fa-tags"></i> Tags:
+                {% for tag in Question.tags.all %}
+                    <h5 class = "mx-1" style="display:inline">
+                        <a href="{% url 'Questions:list'%}?tag={{tag.name}}" class="badge badge-pill badge-success">{{tag.name}}</a>
+                    </h5>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-footer bg-white d-flex justify-content-between">
+        <div class="btn-group btn-group-toggle">
+            <button class="btn btn-info" style="font-size: 18px;{% if vote_type != -1 and vote_type == True %}font-size: 22px;color:red{%endif%}" >
+                <i class="fa fa-arrow-up"></i>
+            </button>
+            <label style="font-weight:bold;" class="btn btn-secondary">
+                {{Question.vote_count}}
+            </label>
+            <button class="btn btn-info" style="font-size: 18px;{% if vote_type != -1 and vote_type == False %}font-size: 22px;color:red{%endif%}">
+                <i class="fa fa-arrow-down"></i>
+            </button>
+        </div>
+        <a class="btn btn-secondary" role = "button" data-toggle="collapse" href="#commentSection" aria-expanded="false" aria-controls="commentSection">
+                <i class="fa fa-comment"></i>
+                Comments
+        </a>
+        <a href="#" class="btn btn-secondary"><i class="fa fa-mail-forward"></i> Share</a>
+    </div>
+</div>
+
+<div class="collapse show mt-3" id="commentSection">
+    <div class="comment-wrapper">
+            <div class="panel panel-info">
+                <div class="panel-body" style="overflow:visible">
+                    <form action = "{{ Question.absolute_url }}" method = "POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="object_id" name="object_id" value="{{Question.id}}">
+                        <textarea name = "content" class="form-control mt-3" placeholder="write a comment..." rows="3"></textarea>
+                        <br>
+                        <button type="submit" class="btn btn-success pull-right">Post</button>
+                    </form>
+
+                    {% include "comments/comments.html" %} 
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Confirm delete dialog box  -->
+<div class="modal fade" id="ConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">You sure?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Recovery Feature is not available yet which means deleting this Question is going to be permanent and you can't access it ever again!
+      </div>
+      <div class="modal-footer">
+        Press Confirm to delete and close if you don't think that's necessary
+      </div>
+      <div class="modal-footer">
+        <form class = "d-flex justify-content-between" style="width:100%" action = "{% url 'Questions:detail' Question.slug %}" method='post'>
+            {% csrf_token %}
+            <input type="hidden" id="deletemode" name="deletemode" value="{{True}}">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-danger">Confirm</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock midcontent %}
+
+

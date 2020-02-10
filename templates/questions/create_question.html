@@ -14,9 +14,10 @@
     </ul>
       </div>
       </div>
-  <form class = "container" action = "save/" method = "POST" enctype="">
+      <form action = "{% url 'questions:create' %}" method = "post" enctype="multipart/form-data">
+        {% csrf_token %}
     <div class="col-lg-9">
-    {% csrf_token %}
+
 
     <div class="card gedf-card">
         <div class="card-header">
