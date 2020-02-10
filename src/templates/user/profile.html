@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block banner %}
+{% endblock banner %}
+{% block content %}
+{% load cmt_tag %}
+
+
+    <div class="container">
+    <div class="span3 well text-center">
+        <div class ="container">
+        <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src="{% if user.profile.avatar_url %}{{ user.profile.avatar_url }}{% else %}https://robohash.org/{{user.username}}?bgset=bg1&&size=650x650{% endif %}" name="aboutme" width="140" height="140" class="rounded-circle"></a>
+
+        <h1>{{user.username}}{% if user.profile.is_premium %}<span class="badge badge-info" style="font-size: 15px;position: relative;bottom: 17px;">Pro</span>{% endif %}</h1>
+        <h3 class="quote">{{user.profile.intro}}</h3>
+        <em>Click on the profile for more info</em>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade text-center" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title" id="myModalLabel" style="width:100%">More About Joe</h4>
+                    </div>
+                <div class="modal-body">
+                    <div class ="container">
+                    <img src="{% if user.profile.avatar_url %}{{ user.profile.avatar_url }}{% else %}https://robohash.org/{{user.username}}?bgset=bg2&&size=650x650{% endif %}" name="aboutme" width="140" height="140" class="rounded-circle"> 
+                    </a>
+                    <h3 class="media-heading">{{user.username}}</h3>
+                    Location : <small>{{user.profile.location.city}}</small>
+                    <hr>
+                    <span class="strong">Interests: </span>
+                    <span class="label label-info">
+                    {% if user.profile.interests %}
+                        {% for interest in user.profile.interests.all %}
+                            <h5 class = "mx-1" style="display:inline">
+                                <a href="{% url 'articles:list'%}?tag={{tag.name}}" class="badge badge-pill badge-success">{{interest.name}}</a>
+                            </h5>
+                        {% endfor %}
+                    {% endif %}
+                    </span>
+                    </div>
+                    {% if user.profile.intro %}
+                    <hr>
+                      <div class ="container"> 
+                      <p class="text-left strong">Introduction:
+                          {{user.profile.intro}}</p>
+                      </div>
+                    {% endif %}
+                    {% if user.profile.bio %}
+                    <hr>
+                      <div class ="container"> 
+                      <p class="text-left strong">Bio:
+                          {{user.profile.bio}}</p>
+                      </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <div class ="container"> 
+                    <button type="button" class="btn btn-success" data-dismiss="modal">I've heard enough about {{user.username}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+</div>
+<!-- Tabs -->
+<div class="container">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">Articles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu1">Social</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div id="home" class="container tab-pane active"><br>
+        {%  if page.object_list  %}
+        <ul class = "article-list" style="padding:0">
+            {% for article in page.object_list %}
+                <li class = "card w-50 text-align-center" style="text-align:center;margin:0px auto 40px auto">
+                    <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <img class="rounded-circle profile" width="45" src=" {% if article.user.profile.avatar_url %} {{ article.user.profile.avatar_url }} {% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="">
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h5 m-0">{{article.user.username}}</div>
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o" style="margin-right:5px"></i> {{ article.published_at|to_date|naturaltime }} </div>
+                        <h2 class="card-title">{{article.title}}</h2>
+                        </div>
+                    </div>
+                    <a class = 'btn btn-primary' href = "{{ article.absolute_url }}">Show</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <ul class="pagination justify-content-center">
+            {% if page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'articles:list' %}?page={{page.previous_page_number}}" tabindex="-1">Previous</a>
+                </li>
+            {% endif %}
+            {% for pn in page_range %}
+                <li class="page-item {% ifequal page.page_number pn %}active{% endifequal %}">
+                    <a class="page-link" href="{% url 'articles:list' %}?page={{pn}}">{{pn}}
+                        {% if page.page_number == pn %}
+                            <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+            {% if page.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'articles:list' %}?page={{page.next_page_number}}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+     </div>
+     
+      <div id="menu1" class="container tab-pane fade"><br>
+            <div class="list-group">
+              <div class="list-group-item text-center">
+                <span class="lead">Social Contacts</span>
+              </div>
+              <div class="list-group-item d-flex justify-content-start">
+                <div class="list-group-item-figure">
+                  <div class="tile tile-md bg-reddit">
+                    <i class="fa fa-reddit"></i>
+                  </div>
+                </div>
+
+                <div class="list-group-item-body code">
+                  {{user.profile.social.reddit_username}}
+                </div>
+              </div>
+
+              <div class="list-group-item d-flex justify-content-start">
+
+                <div class="list-group-item-figure">
+                  <div class="tile tile-md bg-facebook">
+                    <i class="fa fa-facebook"></i>
+                  </div>
+                </div>
+
+                <div class="list-group-item-body code">
+                  {{user.profile.social.facebook_username}}
+                </div>
+              </div>
+
+              <div class="list-group-item d-flex justify-content-start">
+
+                <div class="list-group-item-figure">
+                  <div class="tile tile-md bg-linkedin">
+                    <i class="fa fa-linkedin"></i>
+                  </div>
+                </div>
+
+                <div class="list-group-item-body code">
+                  {{user.profile.social.linkedin_username}}
+                </div>
+              </div>
+
+              <div class="list-group-item d-flex justify-content-start">
+
+                <div class="list-group-item-figure">
+                  <div class="tile tile-md bg-discord">
+                    <i class="fab fa-discord"></i>
+                  </div>
+                </div>
+
+                <div class="list-group-item-body code">
+                  {{user.profile.social.discord_username}}
+                </div>
+              </div>
+
+              <div class="list-group-item d-flex justify-content-start">
+
+                <div class="list-group-item-figure">
+                  <div class="tile tile-md bg-github">
+                    <i class="fa fa-github"></i>
+                  </div>
+                </div>
+
+                <div class="list-group-item-body code">
+                  {{user.profile.social.github_username}}
+                </div>
+              </div>
+            </div>
+      </div>
+      
+    {% elif not query %}
+        <div class = 'alert alert-warning'> {{ user.username }} has not posted anything yet! </div>
+    {% endif %}
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
