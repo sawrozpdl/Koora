@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.contenttypes',
     'articles.apps.ArticlesConfig',
+    'user.apps.UserConfig',
     'comments.apps.CommentsConfig',
     'django.contrib.auth',
     'authentication.apps.AuthenticationConfig',

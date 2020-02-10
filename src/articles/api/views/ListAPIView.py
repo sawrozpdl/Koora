@@ -9,10 +9,14 @@ from utils.models import nested_model_to_dict
 from utils.request import parse_body, set_user
 from utils.koora import getValueFor, setTagsFor, uploadImageFor
 
+
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
 class ListAPIView(View):
 
 
-
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         set_user(request)
         if request.user.is_authenticated:
