@@ -1,0 +1,30 @@
+{% raw %}{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block banner %}
+{% endblock banner %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>Oops! Internal Server Error!</h1>
+                <h2>Looks like something went wrong!</h2>
+                <div class="error-details">
+                    This generally does not happen, contact us if this problem persists.But in the meantime, try refreshing.
+                </div>
+                <div class="error-actions">
+                    <a href="{% url 'home' %}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
+                        Home </a><a href="#" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contact Us </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% endraw %}

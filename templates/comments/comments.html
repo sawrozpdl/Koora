@@ -1,0 +1,16 @@
+
+<div class="clearfix"></div>
+<hr>
+<span class="lead" style="display:block">Comments</span>
+{% if comments %}
+    <ul style="padding-left:0px">
+        {% for comment in comments%}
+            <li class="my-3" style="list-style:none">
+                {% include "comments/comment.html" %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <span>There are no comments in this post yet.</span>
+{% endif%}
+</div>

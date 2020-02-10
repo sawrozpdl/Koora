@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block banner %}
+{% endblock banner %}
+
+{% block content %}
+<div class="left">
+
+<h6 class="container"><strong>Tips on getting good answers quickly</strong></h6>
+<div class="container">
+    <ul class="list-unstyled">
+    <li><i class="fa fa-pencil-square-o"></i> Keep your question short and to the point.</li>
+    <li><i class="fa fa-pencil-square-o"></i> Double-check grammar and spelling.</li>
+    </ul>
+      </div>
+      </div>
+  <form class = "container" action = "save/" method = "POST" enctype="">
+    <div class="col-lg-9">
+    {% csrf_token %}
+
+    <div class="card gedf-card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Create Question</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Answers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Answers Later</a>
+                </li>
+            </ul>
+        </div>
+         
+   
+
+<div class="card-body">
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+            <select name = "category" class="form-group form-control form-control-md">
+                {% for key, value in categories %}
+                  <option value = "{{ key }}">{{ value }}</option>
+                {% endfor %}
+              </select>
+            <div class="form-group">
+                <label class="sr-only" for="message">question</label>
+                <textarea name = "Create_Question" required class="form-control" id="Create_Question" rows="1" placeholder="Start your question with 'what', 'how', 'why' etc.."></textarea>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="message">elaborate</label>
+                <textarea name = "Elaborate_Question" required class="form-control" id="Elaborate_Question" rows="4" placeholder="You may elaborate about your question"></textarea>
+            </div>
+            
+    <div class="btn-toolbar justify-content-between">
+        <div class="btn-group">
+            <button type="submit" class="btn btn-success">Post</button>
+            <button type="submit" class="btn btn-primary">Draft</button>
+        </div>
+        <div class="btn-group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="fa fa-globe"></i>
+            </button>
+            </form>
+            <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a>
+                <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Gopya(Private)</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+{% endblock content %}
+
+

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block banner%}
+{% endblock banner%}
+
+{% block midcontent %}
+
+<div class= 'container'>
+    {% if query %}
+        {% if not hasResults %}
+            <div class = 'alert alert-warning'>
+                 No results found for {% for key, value in query %} {{key}} : {{value}} {% endfor %}
+            </div>
+        {% else %}
+            <div class = 'alert alert-secondary'>
+                Search Results For {% for key, value in query %} {{key}} : {{value}} {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {%  if page.object_list  %}
+        <ul class = "question-list" style="padding:0">
+            {% for question in page.object_list %}
+                <li class = "card w-75 text-align-center" style="text-align:center;margin:0px auto 40px auto">
+                    <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <img class="rounded-circle profile" width="45" src=" {% if question.user.has_image %} {{ question.user.avatar_url }} {% else %}https://robohash.org/{{question.user.username}}?size=50x50{% endif %}" alt="">
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h5 m-0">{{question.user.username}}</div>
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ question.published_at|naturaltime }} </div>
+                        <h2 class="card-title">{{question.title}}</h2>
+                        </div>
+                    </div>
+                    <a class = 'btn btn-primary' href = "{{ question.absolute_url }}">Show</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+        <ul class="pagination justify-content-center">
+            {% if page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'questions:list' %}?page={{page.previous_page_number}}" tabindex="-1">Previous</a>
+                </li>
+            {% endif %}
+            {% for pn in page_range %}
+                <li class="page-item {% ifequal page.page_number pn %}active{% endifequal %}">
+                    <a class="page-link" href="{% url 'questions:list' %}?page={{pn}}">{{pn}}
+                        {% if page.page_number == pn %}
+                            <span class="sr-only">(current)</span>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+            {% if page.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'questions:list' %}?page={{page.next_page_number}}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+
+
+    {% elif not query %}
+        <div class = 'alert alert-warning'> No questions! Go to Create question to add some </div>
+    {% endif %}
+</div>
+{% endblock midcontent %}
