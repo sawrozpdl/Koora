@@ -230,3 +230,11 @@ body {
         -webkit-animation-fill-mode: both;
     }
 }
+
+@media (min-width: 400px) and (max-width: 992px) {
+    .categ {
+        display: none;
+    }
+}
+
+
