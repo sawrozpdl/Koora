@@ -19,10 +19,10 @@
                     <div class="card card-fluid">
                       <h6 class="card-header"> Settings </h6><!-- .nav -->
                       <nav class="nav nav-tabs flex-column border-0">
-                        <a id="one-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true" class="nav-link active">Profile</a>
-                        <a id="two-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true"class="nav-link">Account</a>
-                        <a id="four-tab" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="true"class="nav-link">Password</a>
-                        <a id="three-tab" data-toggle="tab" href="#premium" role="tab" aria-controls="premium" aria-selected="true"class="nav-link">Billing</a>
+                        <a id="profile_update" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true" class="nav-link active">Profile</a>
+                        <a id="account_update" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true"class="nav-link">Account</a>
+                        <a id="password_update" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="true"class="nav-link">Password</a>
+                        <a id="billing_update" data-toggle="tab" href="#premium" role="tab" aria-controls="premium" aria-selected="true"class="nav-link">Billing</a>
                       </nav><!-- /.nav -->
                     </div><!-- /.card -->
                   </div><!-- /grid column -->
@@ -46,15 +46,15 @@
                             <div class="media mb-3">
                             <!-- avatar -->
                             <div class="user-avatar user-avatar-xl fileinput-button">
-                              <div class="fileinput-button-label">{% if perms.profile.can_upload_profile_picture %} Change photo{% else %} Need Premium{% endif %}</div>
-                                <img src="{% if article.user.has_image %} {{ request.user.avatar_url }} {% else %}https://robohash.org/{{request.user.username}}?size=100x100&&bgset=bg1{% endif %}" class="profile rounded-circle" /> {{ request.user.username }}
-                              <input id="fileupload-avatar" type="file" name="avatar_image"{% if not perms.profile.can_upload_profile_picture %} disabled{% endif %}>
+                              <div class="fileinput-button-label">{% if perms.user.can_upload_profile_picture %} Change photo{% else %} Need Premium{% endif %}</div>
+                                <img src="{% if request.user.profile.avatar_url %}{{ request.user.profile.avatar_url }}{% else %}https://robohash.org/{{request.user.username}}?size=100x100&&bgset=bg1{% endif %}" class="profile rounded-circle" /> {{ request.user.username }}
+                              <input id="fileupload-avatar" type="file" name="avatar_image"{% if not perms.user.can_upload_profile_picture %} disabled{% endif %}>
                             </div><!-- /avatar -->
                             <!-- .media-body -->
                             <div class="media-body pl-3">
-                              <h3 class="card-title">{{request.user.username}}</h3>
-                                <h6 class="card-subtitle text-muted">Click the current avatar to change your photo. </h6>
-                              {% if not perms.profile.can_upload_profile_picture %}
+                              <h3 class="strong">{{request.user.username}}</h3>
+                                <h6 class="text-muted">Click the current avatar to change your photo. </h6>
+                              {% if not perms.user.can_upload_profile_picture %}
                                 <h6 class="card-subtitle text-danger mt-2">You need to be a premium member to upload your custom profile picture </h6>
                               {% endif %}
                             </div><!-- /.media-body -->
@@ -68,7 +68,7 @@
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <input type="text" name="intro" class="form-control" placeholder="Write down a one liner that represents you" id="input02" value="{{request.user.profile.intro}}">
-                                <small class="text-muted">Appears on your profile page.</small>
+                                <small class="text-warning">Appears on your profile page.</small>
                               </div><!-- /form column -->
                             </div><!-- /form row -->
                             <!-- form row -->
@@ -87,7 +87,7 @@
                               <label for="input003" class="col-md-3">Interests</label> <!-- /form column -->
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
-                                <textarea class="form-control" name="interests" placeholder="Add interests seperated by commas e.g. food, music, ..." id="input003">{{request.user.profile.interests}}</textarea>
+                                <textarea class="form-control" name="interests" placeholder="Add interests seperated by commas e.g. food, music, ..." id="input003">{{request.user.profile.interests_string}}</textarea>
                               </div><!-- /form column -->
                             </div><!-- /form row -->
 
@@ -95,7 +95,7 @@
                             <div class="form-row">
                               <label for="example-date-input" class="col-md-3">Birth Date</label>
                               <div class="col-md-9 mb-3">
-                                <input class="form-control" name="birth_date" type="date" value="{{request.user.profile.birth_date}}" id="birth-date-input">
+                                <input class="form-control" name="birth_date" type="date" value="{{request.user.profile.birth_date|date:'Y-m-d'}}" id="birth-date-input">
                               </div>
                             </div>
 
@@ -107,7 +107,8 @@
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <div class="custom-control custom-checkbox">
-                                  <input type="checkbox" class="custom-control-input" name="is_private" id="input04" checked> <label class="custom-control-label" for="input04">Make my profile Private</label>
+                                  <input type="checkbox" name="is_private" value="yep" id="input04"{% if not perms.user.can_make_profile_private %} disabled{% endif %}{% if request.user.profile.is_private %} checked{% endif %}>
+                                  <label for="input04">Make my profile Private</label>
                                 </div>
                               </div><!-- /form column -->
                             </div><!-- /form row -->
@@ -137,7 +138,7 @@
                               </div>
 
                               <div class="list-group-item-body">
-                                <input type="text" class="form-control" name = "reddit_username" value = "{{request.user.profile.reddit_username}}" id="reddit" placeholder="Reddit Username">
+                                <input type="text" class="form-control" name = "reddit_username" value = "{{request.user.profile.social.reddit_username}}" id="reddit" placeholder="Reddit Username">
                               </div><!-- /.list-group-item-body -->
                             </div><!-- /.list-group-item -->
       
@@ -150,7 +151,7 @@
                               </div>
       
                               <div class="list-group-item-body">
-                                <input type="text" class="form-control" name = "facebook_username" value = "{{request.user.profile.facebook_username}}" id="facebook" placeholder="Facebook Username">
+                                <input type="text" class="form-control" name = "facebook_username" value = "{{request.user.profile.social.facebook_username}}" id="facebook" placeholder="Facebook Username">
                               </div><!-- /.list-group-item-body -->
                             </div><!-- /.list-group-item -->
       
@@ -163,7 +164,7 @@
                               </div>
       
                               <div class="list-group-item-body">
-                                <input type="text" class="form-control" name = "linkedin_username" value = "{{request.user.profile.linkedin_username}}" id="linkedin" placeholder="Linkedin Username">
+                                <input type="text" class="form-control" name = "linkedin_username" value = "{{request.user.profile.social.linkedin_username}}" id="linkedin" placeholder="Linkedin Username">
                               </div><!-- /.list-group-item-body -->
                             </div><!-- /.list-group-item -->
       
@@ -176,7 +177,7 @@
                               </div>
 
                               <div class="list-group-item-body">
-                                <input type="text" class="form-control" name = "discord_username" value = "{{request.user.profile.discord_username}}" id="discord" placeholder="Discord Username">
+                                <input type="text" class="form-control" name = "discord_username" value = "{{request.user.profile.social.discord_username}}" id="discord" placeholder="Discord Username">
                               </div><!-- /.list-group-item-body -->
                             </div><!-- /.list-group-item -->
 
@@ -189,7 +190,7 @@
                               </div>
       
                               <div class="list-group-item-body">
-                                <input type="text" class="form-control" name = "github_username" value = "{{request.user.profile.github_username}}" id="github" placeholder="Github Username">
+                                <input type="text" class="form-control" name = "github_username" value = "{{request.user.profile.social.github_username}}" id="github" placeholder="Github Username">
                               </div><!-- /.list-group-item-body -->
                             </div><!-- /.list-group-item -->
                           </div><!-- /.list-group -->
@@ -238,7 +239,7 @@
                             <div class="form-group">
                               <label for="input05">Username</label>
                               <input type="text" class="form-control" id="input05" name="username" value={{request.user.username}}
-                              {% if not perms.profile.can_change_username %} readonly style="background : rgba(0,0,0,0.2)"
+                              {% if not perms.user.can_change_username %} readonly style="background : rgba(0,0,0,0.2)"
                               >
                               <small class="text-danger">You need to be a premium user to change your username</small>
                               {% else %}>{% endif %}
@@ -376,7 +377,7 @@
                                   <div class="col-md-6">
                                     <div class="form-group">
                                       <div class="form-label-group">
-                                        <input type="text" class="form-control" id="pm1" name="card_holder" value="{{request.user.profile.card.card_holder}}" placeholder="Name on card" required>
+                                        <input type="text" class="form-control" id="pm1" name="card_holder" value="{{request.user.profile.card.card_holder}}" placeholder="Name on card">
                                         <label for="pm1">Card holder</label>
                                       </div>
                                     </div>
@@ -385,7 +386,7 @@
                                   <div class="col-md-6">
                                     <div class="form-group">
                                       <div class="form-label-group">
-                                        <input type="number" pattern="^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$" class="form-control" id="pm2" name="card_number" value="{{request.user.profile.card.card_number}}" placeholder="XXXX XXXX XXXX XXXX" required>
+                                        <input type="number" pattern="^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$" class="form-control" id="pm2" name="card_number" value="{{request.user.profile.card.card_number}}" placeholder="XXXX XXXX XXXX XXXX">
                                         <label for="pm2">Card number</label>
                                       </div>
                                     </div>
@@ -397,7 +398,7 @@
                                   <div class="col-md-3">
                                     <div class="form-group">
                                       <div class="form-label-group">
-                                        <input type="date" class="form-control" id="pm3" name="exp_date" value="{{request.user.profile.card.exp_date}}" placeholder="MM/YY" required>
+                                        <input type="date" class="form-control" id="pm3" name="exp_date" value="{{request.user.profile.card.exp_date|date:'Y-m-d'}}" placeholder="MM/YY">
                                         <label for="pm3">Exp. date</label>
                                       </div>
                                     </div>
@@ -407,13 +408,15 @@
                                   <div class="col-md-3">
                                     <div class="form-group">
                                       <div class="form-label-group">
-                                        <input type="number" min = '99' max='9999' class="form-control" id="pm4" name="cvc" value="{{request.user.profile.card.cvc}}" placeholder="XXX" required>
+                                        <input type="number" min = '99' max='9999' class="form-control" id="pm4" name="cvc" value="{{request.user.profile.card.cvc}}" placeholder="XXX">
                                         <label for="pm4">CVC</label>
                                       </div>
                                     </div>
                                   </div><!-- /form col -->
                                   <!-- form col -->
                                 </div><!-- /form row -->
+                                <hr>
+                                <input type="password" class="form-control mr-3" id="input06" name="password" placeholder="Enter Current Password" required>
                               </div><!-- /.custom-control-hint -->
                             </div><!-- /.custom-control -->
                             <!-- .custom-control -->
@@ -431,6 +434,18 @@
               </div>
 
 
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const togo = params.get('target');
+  const toclick = document.getElementById(togo);
+  toclick.click();
+});
+
+</script>
 
 
 {% endblock content %}

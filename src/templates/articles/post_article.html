@@ -60,7 +60,7 @@
                 <div class="btn-group">
                     <button type="submit" name = "post_mode" value="publish" class="btn btn-success post-btn">{% if update_mode and not article.is_drafted %}Update{% else %}Publish{% endif %}</button>
                     {% if not update_mode and not article.is_drafted %}
-                        <button type="submit" name = "post_mode" value="draft" class="btn btn-primary post-btn">Draft</button>
+                        <button type="submit" name = "post_mode" value="draft" class="btn btn-primary post-btn"{% if not perms.articles.can_draft_article %} disabled{% endif %}>Draft</button>
                     {% endif %}
                 </div>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -68,7 +68,7 @@
                         <input type="radio" id="post_type" name="post_type" value = "public" id="public"{% if not article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-globe"></i>
                     </label>
                     <label class="btn btn-info">
-                        <input type="radio" id="post_type" name="post_type" value = "private" id="private"{% if article.is_private %} checked{% endif %}><i  style="font-size:22px" class="fa fa-lock"></i>
+                        <input type="radio" id="post_type" name="post_type" value = "private" id="private"{% if article.is_private %} checked{% endif %}{% if not perms.articles.can_make_article_private %} disabled{% endif %}><i  style="font-size:22px" class="fa fa-lock"></i>
                     </label>
                 </div>
             </div>

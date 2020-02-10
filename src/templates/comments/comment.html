@@ -4,7 +4,7 @@
 <div class="bg-light" style="border-radius:15px;padding:15px">
 <div class="media">
         <a href="#" class="pull-left">
-        <img src="{% if comment.user.has_image %} {{ comment.user.avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=35x35{% endif %}" alt="" class="profile rounded-circle mb-4">
+        <img src="{% if comment.user.profile.avatar_url %} {{ comment.user.profile.avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=35x35{% endif %}" alt="" class="profile rounded-circle mb-4">
 </a>
 <div class="media-body ml-2">
         <strong class="lead text-secondary">
