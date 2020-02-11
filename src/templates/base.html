@@ -128,7 +128,7 @@
                             ALL
                         </a>
                         {% if categories %} {% for key, value in categories %}
-                        <a href="{% url 'articles:list'%}?category={{key}}" class="list-group-item list-group-item-action">
+                        <a href="{% url 'articles:list'%}?category={{value}}" class="list-group-item list-group-item-action">
                             {{value}}
                         </a>
                         {% endfor%} {% else %} No Categories available! {% endif %}

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.views import View
 from articles.models import Tag
 from utils.pages import Paginator
@@ -10,13 +11,9 @@ from utils.request import parse_body, set_user
 from utils.koora import getValueFor, setTagsFor, uploadImageFor
 
 
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
-
 class ListAPIView(View):
 
 
-    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         set_user(request)
         if request.user.is_authenticated:
@@ -25,16 +22,29 @@ class ListAPIView(View):
 
 
 
-    @fail_safe_api(for_model=Article)
+    #@fail_safe_api(for_model=Article)
     def get(self, request):
 
         searchQuery = request.GET.get("searchQuery", False)
-        tag = request.GET.get("tag", False)  
+        tag = request.GET.get("tag", False)
         category = request.GET.get("category", False)
 
-        atype = request.GET.get("atype", False) if request.user.is_authenticated else False
+        user=request.user
 
-        required_articles = getattr(Article.objects, atype or 'public')(user=request.user if atype else None)
+        visitee=None
+
+        uid = request.GET.get("uid", False)
+
+        if uid:
+            visitee = User.objects.get(id=uid)
+
+        is_viewing_self = (user.username == visitee.username) if visitee else True
+
+        atype = request.GET.get('atype', False) if is_viewing_self else 'public'
+
+        to_show = visitee if uid else user
+
+        required_articles = getattr(Article.objects, atype or 'public')(user=to_show if atype else None)
 
         query = {}
 
@@ -43,8 +53,8 @@ class ListAPIView(View):
             query['searchQuery'] = searchQuery
 
         if category:
-            required_articles = list(filter(lambda article : article.category == category, required_articles))
-            query['category'] = getValueFor(category)
+            required_articles = list(filter(lambda article : getValueFor(article.category) == category, required_articles))
+            query['category'] = category
 
         if tag:
             required_articles = list(filter(lambda article : article.has_tag(tag), required_articles))
@@ -101,11 +111,11 @@ class ListAPIView(View):
 
         if (image):
             uploadImageFor(article, image, article.slug)
-            
+
         tags = request.POST.get('tags', '').strip().split(",")
-        
+
         setTagsFor(article, tags)
-            
+
         article.save()
 
         content = {

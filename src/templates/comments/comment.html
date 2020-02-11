@@ -4,7 +4,9 @@
 <div class="bg-light" style="border-radius:15px;padding:15px">
 <div class="media">
         <a href="#" class="pull-left">
-        <img src="{% if comment.user.profile.avatar_url %} {{ comment.user.profile.avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=40x40{% endif %}" alt="" class="profile rounded-circle mb-4">
+        <a href="{% url 'user:visitprofile' article.user.username %}">
+                <img src="{% if comment.user.profile.avatar_url %} {{ comment.user.profile.avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=40x40{% endif %}" alt="" class="profile rounded-circle mb-4">
+        </a>
 </a>
 <div class="media-body ml-2">
         <strong class="lead text-secondary">
@@ -12,7 +14,7 @@
         </strong>
         <span class="middle-dot"></span>
         <small class="text-secondary">{{ comment.published_at|to_date|naturaltime }}</small>
-        <div class="pull-right dropdown">
+        <div class="pull-right dropdown float-right">
                 <button class="btn btn-sm" type="button" id="gedf-drop2" data-toggle="dropdown">
                 <i class="fa fa-ellipsis-h"></i>
         </button>

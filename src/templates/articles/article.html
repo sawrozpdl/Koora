@@ -38,7 +38,7 @@
                 </a>
                 <div class="ml-2">
                     <div class="h5 m-0">{{article.user.username}}</div>
-                    <div class="h7 text-muted">{{article.user.first_name}} {{article.user.last_name}}</div>
+                    <div class="h8 text-muted">{{article.user.first_name}} {{article.user.last_name}}</div>
                 </div>
             </div>
             <div>
@@ -47,7 +47,7 @@
                         <i class="fa fa-cog"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop1">
-                        
+
                         {% if article.user.username == request.user.username %}
                                 <button class="dropdown-item" style="border:none;color:lightred" data-toggle="modal" data-target="#ConfirmDelete">
                                     Delete
@@ -58,7 +58,7 @@
                         {% if article.user.username == reqest.user.username %}
                             <div class="dropdown-divider"></div>
                         {% endif %}
-                            
+
                         {% if article.image_url %}
                             <a class="dropdown-item" href="{{ article.image_url}}">Download</a>
                         {% endif %}

@@ -190,6 +190,11 @@ body {
     color: white;
 }
 
+.aside-lg .list-group-item:first-child:hover {
+    background-color: grey;
+    color: black;
+}
+
 .hover-black:hover {
     color: black;
 }

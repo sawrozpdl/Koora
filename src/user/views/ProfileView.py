@@ -25,6 +25,9 @@ class ProfileView(View):
         params['atype'] = "public"
         params['size'] = 6
 
+        if username:
+            params['uid'] = user.id
+
         raw_response = api_call(
             method='get',
             request=request,
