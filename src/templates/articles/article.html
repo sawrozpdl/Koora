@@ -8,7 +8,7 @@
 {% endblock banner %}
 
 {% block midcontent %}
-    
+
     {% if article.user.username != request.user.username and article.is_private %}
         <div class="container">
         <div class="row">
@@ -20,7 +20,7 @@
                     </h2>
                     <div class="error-actions">
                         <a href="{% url 'articles:list' %}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
-                        Go Back 
+                        Go Back
                         </a>
                     </div>
                 </div>
@@ -34,11 +34,11 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-between align-items-center">
                 <a href="{% url 'user:visitprofile' article.user.username %}">
-                    <img class="rounded-circle profile" width="45" src="{% if article.user.profile.avatar_url %}{{ article.user.profile.avatar_url }}{% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="avatar">
+                    <img class="rounded-circle profile" width="45" src="{% if article.user_avatar_url %}{{ article.user_avatar_url }}{% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="avatar">
                 </a>
                 <div class="ml-2">
                     <div class="h5 m-0">{{article.user.username}}</div>
-                    <div class="h7 text-muted">{{article.user.first_name}} {{article.user.last_name}}</div>
+                    <div class="h8 text-muted">{{article.user.first_name}} {{article.user.last_name}}</div>
                 </div>
             </div>
             <div>
@@ -47,7 +47,7 @@
                         <i class="fa fa-cog"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="gedf-drop1">
-                        
+
                         {% if article.user.username == request.user.username %}
                                 <button class="dropdown-item" style="border:none;color:lightred" data-toggle="modal" data-target="#ConfirmDelete">
                                     Delete
@@ -58,7 +58,7 @@
                         {% if article.user.username == reqest.user.username %}
                             <div class="dropdown-divider"></div>
                         {% endif %}
-                            
+
                         {% if article.image_url %}
                             <a class="dropdown-item" href="{{ article.image_url}}">Download</a>
                         {% endif %}

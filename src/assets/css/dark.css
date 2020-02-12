@@ -159,6 +159,7 @@
 }
 
 [data-theme="dark"] .text-muted {
+    font-weight: normal;
     color: white !important;
 }
 
