@@ -45,7 +45,7 @@ class SettingsView(View):
 
         user.profile.intro = request.POST.get('intro', '')
         user.profile.bio = request.POST.get('bio', '')
-        user.profile.birth_date = request.POST.get('birth_date', None)
+        user.profile.birth_date = request.POST['birth_date'] or None
 
         avatar_image = request.FILES.get('avatar_image', False)
 
