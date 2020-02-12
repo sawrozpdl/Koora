@@ -41,14 +41,14 @@
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title" id="myModalLabel" style="width:100%">More About Joe</h4>
+                    <h4 class="modal-title" id="myModalLabel" style="width:100%">More About {{user.username}}</h4>
                     </div>
                 <div class="modal-body">
                     <div class ="container">
                     <img src="{% if user.profile.avatar_url %}{{ user.profile.avatar_url }}{% else %}https://robohash.org/{{user.username}}?bgset=bg2&&size=650x650{% endif %}" name="aboutme" width="140" height="140" class="rounded-circle"> 
                     </a>
                     <h3 class="media-heading">{{user.username}}</h3>
-                    Location : <small>{{user.profile.location.city}}</small>
+                    Location : <small>{% if user.profile.location.city %}{{user.profile.location.city}}{% else %}Not Added{% endif %}</small>
                     <hr>
                     <span class="strong">Interests: </span>
                     <span class="label label-info">
@@ -58,6 +58,8 @@
                                 <a href="{% url 'articles:list'%}?tag={{tag.name}}" class="badge badge-pill badge-success">{{interest.name}}</a>
                             </h5>
                         {% endfor %}
+                    {% else %}
+                    <span class="strong">Nothing here</span>
                     {% endif %}
                     </span>
                     </div>
