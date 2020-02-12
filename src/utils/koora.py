@@ -57,7 +57,10 @@ def deleteAvatarImageFor(user):
 
 def getValueFor(reqKey, choices=settings.KOORA_CATEGORIES):
     values = {key: value for key, value in choices}
-    return values[reqKey]
+    try:
+        return values[reqKey]
+    except:
+        return reqKey
 
 
 def get_message_or_default(request, default):

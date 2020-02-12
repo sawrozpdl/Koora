@@ -10,20 +10,17 @@ login to koora
 {%endblock banner%}
 
 {% block midcontent %}
-
-<div class="container d-flex justify-content-center mb-5">
-      <h1 class="display-4 text-secondary">Login For Koora</h1>
-</div>
-    <div class="row">
-          <form action ="{% url 'accounts:login' %}" method="post" style="width:70%;margin:auto">
-        {% csrf_token %}
+<div class="tab-content">
+         <form id="login" class="container tab-pane active" action ="{% url 'accounts:login' %}" method="post" style="width:70%;margin:auto">
+               <h1 class="display-4 text-secondary text-center mb-5">Login For Koora</h1>
+               {% csrf_token %}
                   <div class="form-group">
                      <input type="text" name="username"  class="form-control my-input" id="name" placeholder="Name" required>
                   </div>
 
                   <div class="form-group">
                      <input type="password" name="password" id="password"  class="form-control my-input" placeholder="Password" required>
-                  </div>            
+                  </div>
                   <div class="text-center mt-2">
                      <button type="submit" class="btn btn-success">Sign In</button>
                   </div>
@@ -35,15 +32,71 @@ login to koora
                   </div>
                   <div class="form-group text-center">
                      <a class="btn btn-danger" href="{% url 'social:begin' 'google-oauth2' %}">
-                     <i class="fa fa-google"></i> Sign in with Google
+                     <i class="fa fa-google"></i>
+                     <span>Sign in with Google</span>
                      </a>
                   </div>
-                  {% comment %} <div class="form-group">
-                     <a href="accounts/reset_password.html">forgot password?</a>
-                  </div> {% endcomment %}
+                  <div class="form-group text-center">
+                     <a   id ="forgot-click" class="lead nav-link" data-toggle="tab" href="#forgot" >Forgot password</a>
+                  </div>
 
-    </form>
+         </form>
 
-    </div>
-   
+
+   <div id ="forgot" class="container tab-pane fade">
+      <div class="row">
+         <div class="col-md-2"></div>
+         <div class="col-md-8 col-md-offset-4">
+               <div class="panel panel-default">
+               <div class="panel-body">
+                  <a id ="login-click" class="nav-link lead" data-toggle="tab" href="#login">Go Back</a>
+                  <div class="text-center">
+                        <h3><i class="fa fa-lock fa-4x" style="font-size:70px;"></i></h3>
+                        <h2 class="text-center">Forgot Password?</h2>
+                        <p>You can reset your password here.</p>
+                     <div class="panel-body">
+
+                        <form action="{% url 'accounts:reset' %}" id="register-form" role="form" autocomplete="off" class="form" method="post">
+                           {% csrf_token %}
+                           <div class="form-group">
+                              <div class="input-group">
+                              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
+                              <input id="email" name="email" placeholder="Enter the email associated with your account" class="form-control text-center"  type="email">
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Reset Password" type="submit">
+                           </div>
+                        </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+         </div>
+         <div class="col-md-2"></div>
+      </div>
+   </div>
+</div>
+
+
+<script>
+
+b1 = document.getElementById('login-click');
+b2 = document.getElementById('forgot-click');
+
+c1 = document.getElementById('login');
+c2 = document.getElementById('forgot');
+
+const tog = () => {
+   c1.classList.toggle('active');
+   c1.classList.toggle('fade');
+   c2.classList.toggle('active');
+   c2.classList.toggle('fade');
+}
+
+b1.onclick = () => tog()
+b2.onclick = () => tog()
+
+</script>
+
 {% endblock midcontent %}

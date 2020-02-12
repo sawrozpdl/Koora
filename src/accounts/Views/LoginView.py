@@ -20,7 +20,7 @@ class LoginView(View):
         if request.method =="GET":
 
             message = get_message_or_default(request, {})
-            
+
             return HttpResponse(loader.get_template("accounts/login.html").render({
                 'message' : message
             }, request))
@@ -28,6 +28,7 @@ class LoginView(View):
 
     @for_unauthenticated
     def post(self, request):
+
         username=request.POST['username']
         password=request.POST['password']
 

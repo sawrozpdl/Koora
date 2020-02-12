@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
@@ -298,6 +299,12 @@ COUNTRIES = [
     ('ZZ', 'Unknown or unspecified country'),
 ]
 
+EMAIL_HOST=os.environ['EMAIL_HOST']
+EMAIL_PORT=os.environ['EMAIL_PORT']
+EMAIL_HOST_USER=os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD=os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_USE_TLS=True
+
 
 # Application definition
 
@@ -422,13 +429,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, "assets"), ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'dipeshlama4869@gmail.com'
-EMAIL_HOST_PASSWORD = 'mikasaeren4869'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'dipeshlama4869@gmail.com'
+# EMAIL_HOST_PASSWORD = 'mikasaeren4869'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
 # MEDIA_URL = '/media/'
 
 # MEDIA_ROOT = os.path.join(BASE_DIR,'media')
