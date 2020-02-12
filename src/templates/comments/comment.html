@@ -4,7 +4,7 @@
 <div class="bg-light" style="border-radius:15px;padding:15px">
 <div class="media">
         <a href="#" class="pull-left">
-        <a href="{% url 'user:visitprofile' article.user.username %}">
+        <a href="{% url 'user:visitprofile' comment.user.username %}">
                 <img src="{% if comment.user_avatar_url %} {{ comment.user_avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=40x40{% endif %}" alt="" class="profile rounded-circle mb-4">
         </a>
 </a>
@@ -44,7 +44,7 @@
 <div class="button-group d-flex justify-content-between">
         <form action = "{% url 'articles-api:vote' %}" method="post" class="btn-group btn-group-toggle vote-form">
             {% csrf_token %}
-            {% with vote_type=comment|vote_type_for:request.user.id %} 
+            {% with vote_type=comment|vote_type_for:request.user.id %}
             <input type="hidden" name="access_token" value="{{request.COOKIES.accessToken}}">
             <input type="hidden" name="object_id" value="{{comment.id}}">
             <input type="hidden" name="model_name" value="{{comment.c_type.model}}">
