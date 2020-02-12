@@ -8,25 +8,30 @@ Register to Koora
 {% endblock banner %}
 
 {% block midcontent %}
-<div class="container d-flex justify-content-center mb-5">
+<div class="container d-flex justify-content-center mb-2">
       <h1 class="display-4 text-secondary">Signup For Koora</h1>
 </div>
-            
+         <div id="cont-img" class="rounded mx-auto mb-4" style="width:200px;height:200px;">
+            <img src="" style="width:200px;height:200px;" class="rounded-circle d-block" id="image_output" onerror="this.src='https:/\/www.classifapp.com/wp-content/uploads/2017/09/avatar-placeholder.png'" title="Your avatar">
+         </div>
     <div class="row">
                <form action="{% url 'accounts:register' %}" method="post" style="width:70%;margin:auto">
                {% csrf_token %}
-                  <div class="form-group">
-                     <input type="text" name="username" pattern="[a-z]{1,15}" title="Username should only contain lowercase letters. e.g. john" class="form-control my-input" id="name" placeholder="Username" required>
+                  <div class="form-group text-center">
+                     <span class="text-muted">Your <code>avatar</code> will be generated with the chosen username!</span>
                   </div>
                   <div class="form-group">
-                     <input type="email" name="email"  class="form-control my-input" id="email" placeholder="Email" required>
+                     <input type="text" name="username" pattern="[a-z0-9_-]{3,16}" title="Username should only contain lowercase letters. e.g. john"  required value="{{buffer.username}}" class="form-control my-input text-center" id="username" placeholder="Username">
                   </div>
                   <div class="form-group">
-                     <input type="password" name="f_password" pattern = ".{6,}" title="Passwords should have atleast 6 characters" id="pass"  class="form-control my-input" placeholder="Password" required>
+                     <input type="email" name="email"  class="form-control my-input text-center" id="email" placeholder="Email" required value={{buffer.email}}>
                   </div>
                   <div class="form-group">
-                     <input type="password" name="r_password" pattern = ".{6,}" title="Passwords should have atleast 6 characters" id="repass"  class="form-control my-input" placeholder="Confirm password" required>
-                  </div>                                
+                     <input type="password" name="f_password" pattern = ".{6,}" title="Passwords should have atleast 6 characters" id="pass"  class="form-control my-input text-center" placeholder="Password" required>
+                  </div>
+                  <div class="form-group">
+                     <input type="password" name="r_password" pattern = ".{6,}" title="Passwords should have atleast 6 characters" id="repass"  class="form-control my-input text-center" placeholder="Confirm password" required>
+                  </div>
                   <div class="text-center mt-2">
                      <button type="submit" class="btn btn-success">Sign Up</button>
                   </div>
@@ -42,5 +47,27 @@ Register to Koora
                      </a>
                   </div>
                </form>
-    </div>           
+    </div>
+
+    <script>
+
+
+    out = document.getElementById('image_output');
+    iny = document.getElementById('username');
+
+
+   let isLoading = false;
+
+    iny.onkeyup = async (e) => {
+       if (isLoading) return
+       isLoading = true
+       out.src = 'https://media0.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'
+       let edata = await fetch(`https://robohash.org/${e.target.value}?bgset=bg2`)
+       out.src = URL.createObjectURL(await edata.blob())
+       t = 0
+       isLoading = false
+    }
+
+    </script>
+
 {% endblock midcontent %}

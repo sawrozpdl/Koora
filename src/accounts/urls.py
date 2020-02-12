@@ -1,10 +1,13 @@
 from django.contrib import admin
 from django.urls import path
-from .views import register_user,authenticate_user, logout_user
+from .Views import (RegisterView, LoginView, LogoutView, ChangePasswordView, ResetPasswordView)
 
 app_name = "accounts"
+
 urlpatterns = [
-    path('register/',register_user, name="register"),
-    path('login/',authenticate_user, name="login"),
-    path('logout/', logout_user, name="logout")   
+    path('register/',RegisterView.as_view(), name="register"),
+    path('login/',LoginView.as_view(), name="login"),
+    path('logout/', LogoutView.as_view(), name="logout"),
+    path('reset/', ResetPasswordView.as_view(), name="reset"),
+    path('forgot/', ChangePasswordView.as_view(), name="forgot")
 ]

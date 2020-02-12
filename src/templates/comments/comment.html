@@ -4,15 +4,20 @@
 <div class="bg-light" style="border-radius:15px;padding:15px">
 <div class="media">
         <a href="#" class="pull-left">
-        <img src="{% if comment.user.has_image %} {{ comment.user.avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=35x35{% endif %}" alt="" class="profile rounded-circle mb-4">
+        <a href="{% url 'user:visitprofile' article.user.username %}">
+                <img src="{% if comment.user_avatar_url %} {{ comment.user_avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=40x40{% endif %}" alt="" class="profile rounded-circle mb-4">
+        </a>
 </a>
 <div class="media-body ml-2">
+        <div class="d-inline">
         <strong class="lead text-secondary">
         {{comment.user.username}}
         </strong>
+        {% comment %} <span class="text-footer small text-muted">{{comment.user.first_name}} {{comment.user.last_name}}</span> {% endcomment %}
+        </div>
         <span class="middle-dot"></span>
         <small class="text-secondary">{{ comment.published_at|to_date|naturaltime }}</small>
-        <div class="pull-right dropdown">
+        <div class="pull-right dropdown float-right">
                 <button class="btn btn-sm" type="button" id="gedf-drop2" data-toggle="dropdown">
                 <i class="fa fa-ellipsis-h"></i>
         </button>
@@ -33,7 +38,7 @@
         </div>
         </div>
         <p class="to-markdown" style="margin: 15px 0px -15px 0px">{{comment.content}}</p>
-</div>       
+</div>
 </div>
 <hr>
 <div class="button-group d-flex justify-content-between">
@@ -46,7 +51,7 @@
             <button type ="submit" class="upvote-button btn vote up-vote {% if vote_type != -1 and vote_type == True %}active{%endif%}" name="vote" value="up">
                 <i class = "fa fa-arrow-up"></i>
             </button>
-            <label style="font-weight:bold;" id="cmt-vote-{{comment.id}}" class="vote-count btn btn-secondary article-vote-count">
+            <label style="font-weight:bold;" id="cmt-vote-{{comment.id}}" class="vote-count btn btn-info article-vote-count">
                 {{comment.vote_count}}
             </label>
             <button type = "submit" class="downvote-button btn vote down-vote {% if vote_type != -1 and vote_type == False %}active{%endif%}" name="vote" value="down">

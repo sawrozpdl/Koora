@@ -1,7 +1,20 @@
 import json
 from django.template import loader
-from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseServerError
+from utils.koora import generate_url_for
+from django.http import HttpResponse, JsonResponse, Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned, SuspiciousOperation
+
+
+
+def for_unauthenticated(callback):
+    def wrapper(*args, **kwargs):
+        if not args[1].user.is_authenticated:
+            return callback(*args, **kwargs)
+        else:
+            return HttpResponseRedirect(generate_url_for('home'))
+    return wrapper
+
+
 
 def protected_view(*main_args, **main_kwargs):
     def protected_view_decorator(callback):

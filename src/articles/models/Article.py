@@ -15,7 +15,7 @@ class ArticleManager(KooraManager):
 
 
 class Article(Koora):
-    
+
     category = models.CharField(max_length=2, choices=settings.KOORA_CATEGORIES, default='RN', blank=True)
 
     objects = ArticleManager()

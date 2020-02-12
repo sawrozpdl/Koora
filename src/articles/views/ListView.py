@@ -14,11 +14,9 @@ class ListView(View):
             request=request,
             reverse_for="articles-api:list",
             reverse_params=params,
-            data = request.GET.dict()
         )
 
         response = raw_response.json()
-
 
         message = get_message_or_default(request, {})
 
@@ -33,7 +31,6 @@ class ListView(View):
                 "query" : response['data']['query'],
                 "hasResults" : response['data']['hasResults']
             }
-
             return HttpResponse(template.render(content, request))
         else:
             return suitableRedirect(response=raw_response, reverse_name="articles:list")

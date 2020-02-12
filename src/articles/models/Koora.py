@@ -6,14 +6,21 @@ from .Tag import *
 
 class KooraManager(models.Manager):
 
-    def private(self):
-        return super(KooraManager, self).filter(is_private=True)
+    def private(self, user = None):
+        to_return = super(KooraManager, self).filter(is_private=True)
+        return to_return.filter(user=user) if user else to_return
 
-    def public(self):
-        return super(KooraManager, self).filter(is_private=False, is_drafted=False)
+    def public(self, user = None):
+        to_return = super(KooraManager, self).filter(is_private=False, is_drafted=False)
+        return to_return.filter(user=user) if user else to_return
+    
+    def drafted(self, user = None):
+        to_return = super(KooraManager, self).filter(is_drafted=True)
+        return to_return.filter(user=user) if user else to_return
 
-    def active(self):
-        return super(KooraManager, self).filter(is_drafted=False)
+    def active(self, user=None):
+        to_return = super(KooraManager, self).filter(is_drafted=False)
+        return to_return.filter(user=user) if user else to_return
 
 
 class Koora(models.Model):
@@ -55,9 +62,12 @@ class Koora(models.Model):
     def content_type(self):
         return ContentType.objects.get_for_model(self.__class__)
 
+    @property
+    def user_avatar_url(self):
+        return self.user.profile.avatar_url if hasattr(self.user, 'profile') else None
 
-    def save(self, **kwargs): 
+    def save(self, **kwargs):
         if not self.slug:
             payload = self.title if self.title else self.content
-            self.slug = self.get_unique_slug(payload) 
+            self.slug = self.get_unique_slug(payload)
         super(Koora, self).save(**kwargs)

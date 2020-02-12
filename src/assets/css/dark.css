@@ -69,8 +69,9 @@
     color: #fff
 }
 
-[data-theme="dark"] .nav-link.active {
+[data-theme="dark"] .nav-link.active,[data-theme="dark"] .nav-link:hover {
     background-color: #333 !important;
+    color: white;
 }
 
 [data-theme="dark"] .inner-header {
@@ -153,6 +154,16 @@
     border-color: #333 !important;
 }
 
+[data-theme="dark"] .btn:hover {
+    background-color: #555 !important;
+}
+
+[data-theme="dark"] .text-muted {
+    font-weight: normal;
+    color: white !important;
+}
+
+
 [data-theme="dark"] .page-item.active .page-link {
     border-color: #fff !important;
 }
@@ -174,4 +185,9 @@
 
 [data-theme="dark"] .bg-dark {
     background-color: #303030 !important;
+}
+
+
+[data-theme='dark'] .list-group-item {
+    background: none;
 }

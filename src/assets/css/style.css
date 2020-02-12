@@ -67,6 +67,8 @@ body {
     box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
     margin-right: 5px;
     transition: 0.3s ease;
+    width: 40px;
+    height: 40px
 }
 
 .profile:hover {
@@ -183,9 +185,14 @@ body {
     margin: 0px
 }
 
-.list-group-item:hover {
+.aside-lg .list-group-item:hover {
     background-color: #5cb85c;
     color: white;
+}
+
+.aside-lg .list-group-item:first-child:hover {
+    background-color: grey;
+    color: black;
 }
 
 .hover-black:hover {
@@ -196,6 +203,30 @@ body {
     color : green
 }
 
+.list-group .fab, .list-group .fa, #social .fab, #social .fa {
+    font-size: 25px;
+    line-height: 1.4;
+}
+
+.bg-reddit {
+    background: #ff5700;
+    color : white;
+}
+
+.bg-discord {
+    background: #125688;
+    color : white;
+}
+
+.list-group-item:last-child {
+    border-width: 0px 0 0;
+}
+
+
+
+
+
+
 @media (min-width: 992px) {
     .animate {
         animation-duration: 0.3s;
@@ -204,3 +235,11 @@ body {
         -webkit-animation-fill-mode: both;
     }
 }
+
+@media (min-width: 400px) and (max-width: 992px) {
+    .categ {
+        display: none;
+    }
+}
+
+

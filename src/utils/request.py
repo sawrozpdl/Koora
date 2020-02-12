@@ -40,7 +40,7 @@ def set_user(request):
     active_user = AnonymousUser()
 
     try:
-        access_token = request.COOKIES.get('accessToken', None) if 'accessToken' in request.COOKIES.keys() else request.headers.get('Token', None)
+        access_token = request.COOKIES.get('accessToken', request.headers.get('Token', None))
         decoded = jwt.decode(access_token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         active_user = User.objects.get(id=decoded['user_id'])
     except Exception:
