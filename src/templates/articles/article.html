@@ -8,7 +8,7 @@
 {% endblock banner %}
 
 {% block midcontent %}
-    
+
     {% if article.user.username != request.user.username and article.is_private %}
         <div class="container">
         <div class="row">
@@ -20,7 +20,7 @@
                     </h2>
                     <div class="error-actions">
                         <a href="{% url 'articles:list' %}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
-                        Go Back 
+                        Go Back
                         </a>
                     </div>
                 </div>

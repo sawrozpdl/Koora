@@ -29,7 +29,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <a href="{% url 'user:visitprofile' article.user.username %}">
-                                    <img class="rounded-circle profile" width="45" src=" {% if article.user.profile.avatar_url %} {{ article.user.profile.avatar_url }} {% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="">
+                                    <img class="rounded-circle profile" width="45" src="{% if article.user.profile.avatar_url %}{{ article.user.profile.avatar_url }}{% else %}https://robohash.org/{{article.user.username}}?size=50x50{% endif %}" alt="">
                                 </a>
                                 <div class="ml-2">
                                     <div class="h5 m-0">{{article.user.username}}</div>
