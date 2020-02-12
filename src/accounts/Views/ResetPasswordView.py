@@ -46,7 +46,7 @@ class ResetPasswordView(View):
 
         html_message = render_to_string(
             'accounts/email_forgot_password.html', {
-                'username': 'Mr. forgetful',
+                'username': user.username if user else 'Mr. Visitor',
                 'action_url': reset_url,
                 'homepage': request.build_absolute_uri(generate_url_for('home')),
                 'operating_system': '{} {}'.format(platform.system(), platform.release()),

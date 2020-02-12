@@ -62,9 +62,12 @@ class Koora(models.Model):
     def content_type(self):
         return ContentType.objects.get_for_model(self.__class__)
 
+    @property
+    def user_avatar_url(self):
+        return self.user.profile.avatar_url if hasattr(self.user, 'profile') else None
 
-    def save(self, **kwargs): 
+    def save(self, **kwargs):
         if not self.slug:
             payload = self.title if self.title else self.content
-            self.slug = self.get_unique_slug(payload) 
+            self.slug = self.get_unique_slug(payload)
         super(Koora, self).save(**kwargs)

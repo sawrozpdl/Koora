@@ -5,13 +5,16 @@
 <div class="media">
         <a href="#" class="pull-left">
         <a href="{% url 'user:visitprofile' article.user.username %}">
-                <img src="{% if comment.user.profile.avatar_url %} {{ comment.user.profile.avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=40x40{% endif %}" alt="" class="profile rounded-circle mb-4">
+                <img src="{% if comment.user_avatar_url %} {{ comment.user_avatar_url }} {% else %}https://robohash.org/{{comment.user.username}}?size=40x40{% endif %}" alt="" class="profile rounded-circle mb-4">
         </a>
 </a>
 <div class="media-body ml-2">
+        <div class="d-inline">
         <strong class="lead text-secondary">
         {{comment.user.username}}
         </strong>
+        {% comment %} <span class="text-footer small text-muted">{{comment.user.first_name}} {{comment.user.last_name}}</span> {% endcomment %}
+        </div>
         <span class="middle-dot"></span>
         <small class="text-secondary">{{ comment.published_at|to_date|naturaltime }}</small>
         <div class="pull-right dropdown float-right">
@@ -35,7 +38,7 @@
         </div>
         </div>
         <p class="to-markdown" style="margin: 15px 0px -15px 0px">{{comment.content}}</p>
-</div>       
+</div>
 </div>
 <hr>
 <div class="button-group d-flex justify-content-between">
