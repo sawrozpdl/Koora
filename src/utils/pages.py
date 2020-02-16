@@ -1,5 +1,5 @@
 class Page:
-    
+
     object_list = []
     page_number = 1
 
@@ -13,20 +13,20 @@ class Page:
         self.object_list = object_list
         self.start_index = start_index
         self.end_index = self.start_index + len(object_list) - 1
-        
-    
+
+
     def has_next(self):
         return self.next_page is not None
-    
+
     def has_previous(self):
         return self.previous_page is not None
 
     def has_other_pages(self):
         return self.has_next() or self.has_previous()
-    
+
     def next_page_number(self):
         return self.next_page.page_number if self.has_next() else -1
-    
+
     def previous_page_number(self):
         return self.previous_page.page_number if self.has_previous() else -1
 
@@ -46,15 +46,15 @@ class Page:
             "next_page_number" : self.next_page_number(),
             "previous_page_number" : self.previous_page_number(),
         }
-    
+
 
 class Paginator:
-        
+
     count = 0
     num_pages = 0
     first_page = None
     last_page = None
-    
+
     def __init__(self, items, items_per_page):
         self.count = len(items)
         self.num_pages = -(-len(items) // items_per_page)
@@ -82,7 +82,7 @@ class Paginator:
             end += items_per_page
             if (end > self.count):
                 end = self.count
-    
+
     def page_range(self):
         return range(1, self.last_page.page_number + 1)
 
@@ -93,13 +93,3 @@ class Paginator:
                 return page
             page = page.next_page
         return None
-
-        
-    
-    
-    
-    
-    
-    
-    
-    
