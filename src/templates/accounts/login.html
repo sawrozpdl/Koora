@@ -15,7 +15,7 @@ login to koora
                <h1 class="display-4 text-secondary text-center mb-5">Login For Koora</h1>
                {% csrf_token %}
                   <div class="form-group">
-                     <input type="text" name="username"  class="form-control my-input" id="name" placeholder="Name" required>
+                     <input type="text" name="username" value="{{buffer.username}}"  class="form-control my-input" id="name" placeholder="Username/Email" required>
                   </div>
 
                   <div class="form-group">
@@ -37,7 +37,8 @@ login to koora
                      </a>
                   </div>
                   <div class="form-group text-center">
-                     <a   id ="forgot-click" class="lead nav-link" data-toggle="tab" href="#forgot" >Forgot password</a>
+                     <a id ="register-click" class="lead nav-link" href="{% url 'accounts:register' %}" >Sign Up</a>
+                     <a id ="forgot-click" class="lead nav-link" data-toggle="tab" href="#forgot" >Forgot password</a>
                   </div>
 
          </form>

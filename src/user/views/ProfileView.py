@@ -23,7 +23,7 @@ class ProfileView(View):
         params = request.GET.dict()
 
         params['atype'] = "public"
-        params['size'] = 6
+        params['size'] = 3
 
         if username:
             params['uid'] = user.id

@@ -25,10 +25,13 @@
 </head>
 
 <body>
-    <header class="bg-light">
-        <nav class="container mb-5 navbar navbar-expand-lg navbar-light bg-light info-color">
+
+    <div class="main-container">
+        <div class="body-content">
+                    <header class="bg-light">
+            <nav class="container mb-5 navbar navbar-expand-lg navbar-light bg-light info-color">
             <ul class="nav navbar-nav">
-                <li class="nav-item{% ifequal page_name 'home'%} active{% endifequal %}">
+                <li class="nav-item pl-3{% ifequal page_name 'home'%} active{% endifequal %}">
                     <a class="navbar-brand nav-link" href="{% url 'home' %}">Koora</a>
                 </li>
             </ul>
@@ -36,10 +39,10 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
             <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
-                <ul class="nav navbar-nav ml-3">
+                <ul class="nav navbar-nav">
                     <li class="nav-item{% ifequal page_name 'create_article' %} active{% endifequal %}">
-                        <a class="nav-link mx-2" href="{% url 'articles:create' %}">
-                            <i class="fa fa-edit" style="font-size:16px"></i> Create Article
+                        <a class="nav-link" href="{% url 'articles:create' %}">
+                            <i class="fa fa-edit" style="font-size:16px;line-height:1.5;top:0px;"></i> Create Article
                         </a>
                     </li>
                     {% comment %} <li class="nav-item{% ifequal page_name 'ask_question' %} active{% endifequal %}">
@@ -66,12 +69,9 @@
                             <div class="dropdown-divider"></div>
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-                                <label class="custom-control-label ml-3" for="darkSwitch">Dark Mode</label
-                                    >
+                                <label class="custom-control-label ml-3" for="darkSwitch">Dark Mode</label>
                                 </div>
-                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"
-                                    >Log Out</a
-                                >
+                                <a class="dropdown-item" href="{% url 'accounts:logout' %}">Log Out</a>
                             </div>
                             {% else %}
                             <a
@@ -85,9 +85,7 @@
                                     <i class="fa fa-user"></i>
                                     <span class="ml-1">Account</span>
                             </a>
-                            <div
-                                class="dropdown-menu dropdown-menu-right animate slideIn"
-                                aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'accounts:login' %}">Login</a>
                                 <a class="dropdown-item" href="{% url 'accounts:register' %}">
                                     Sign Up
@@ -117,7 +115,7 @@
         </div>
         {% endblock banner%} {% block content %}
 
-        <div class="container">
+        <div class="container main-content">
             <div class="row">
                 <div class="categ col-lg-2 text-center">
                     <ul class="aside-lg list-group">
@@ -188,15 +186,17 @@
 
             {% endblock content %}
         </div>
+        </div>
 
         {% block footer %}
-        <footer class="page-footer navbar navbar-expand-lg navbar-light bg-light" style="margin-top:40px">
+        <div class="page-footer navbar navbar-expand-lg navbar-light bg-light">
             <div class="container footer-copyright py-1 d-flex justify-content-between">
                 <span class="lead">Copyright 2020 Koora</span>
                 <span class="lead">All Rights Reserved</span>
             </div>
-        </footer>
+        </div>
         {% endblock footer %}
+        </div>
 
         <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"

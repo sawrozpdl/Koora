@@ -60,14 +60,15 @@
                         {% endif %}
 
                         {% if article.image_url %}
-                            <a class="dropdown-item" href="{{ article.image_url}}">Download</a>
+                            <a class="dropdown-item" href="{{ article.image_url}}" disabled={{}}>Download</a>
                         {% endif %}
 
                         {% if article.user.username != request.user.username %}
-                            <div class="dropdown-divider"></div>
+                            {% if article.image_url %}
+                                <div class="dropdown-divider"></div>
+                            {% endif %}
                             <a name = "{{article.title}}${{article.user.username}}" class="dropdown-item report-button" href="#">Report</a>
                         {% endif %}
-
                     </div>
                 </div>
             </div>
