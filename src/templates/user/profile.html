@@ -65,21 +65,21 @@
                     </div>
                     {% if user.profile.intro %}
                     <hr>
-                      <div class ="container"> 
+                      <div class ="container">
                       <p class="text-left strong">Introduction:
                           {{user.profile.intro}}</p>
                       </div>
                     {% endif %}
                     {% if user.profile.bio %}
                     <hr>
-                      <div class ="container"> 
+                      <div class ="container">
                       <p class="text-left strong">Bio:
                           {{user.profile.bio}}</p>
                       </div>
                     {% endif %}
                 </div>
                 <div class="modal-footer">
-                    <div class ="container"> 
+                    <div class ="container">
                     <button type="button" class="btn btn-success" data-dismiss="modal">I've heard enough about {{user.username}}</button>
                     </div>
                 </div>
@@ -134,12 +134,12 @@
         <ul class="pagination justify-content-center">
             {% if page.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="{% url 'articles:list' %}?page={{page.previous_page_number}}" tabindex="-1">Previous</a>
+                    <a class="page-link" href="{% url 'user:visitprofile' user.username %}?page={{page.previous_page_number}}" tabindex="-1">Previous</a>
                 </li>
             {% endif %}
             {% for pn in page_range %}
                 <li class="page-item {% ifequal page.page_number pn %}active{% endifequal %}">
-                    <a class="page-link" href="{% url 'articles:list' %}?page={{pn}}">{{pn}}
+                    <a class="page-link" href="{% url 'user:visitprofile' user.username %}?page={{pn}}">{{pn}}
                         {% if page.page_number == pn %}
                             <span class="sr-only">(current)</span>
                         {% endif %}
@@ -148,7 +148,7 @@
             {% endfor %}
             {% if page.has_next %}
             <li class="page-item">
-                <a class="page-link" href="{% url 'articles:list' %}?page={{page.next_page_number}}">Next</a>
+                <a class="page-link" href="{% url 'user:visitprofile' user.username %}?page={{page.next_page_number}}">Next</a>
             </li>
             {% endif %}
         </ul>

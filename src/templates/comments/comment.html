@@ -13,7 +13,6 @@
         <strong class="lead text-secondary">
         {{comment.user.username}}
         </strong>
-        {% comment %} <span class="text-footer small text-muted">{{comment.user.first_name}} {{comment.user.last_name}}</span> {% endcomment %}
         </div>
         <span class="middle-dot"></span>
         <small class="text-secondary">{{ comment.published_at|to_date|naturaltime }}</small>

@@ -40,6 +40,15 @@ class RegisterView(View):
                 'email' : email
             }))
 
+        if User.objects.filter(email=email).exists():
+
+            return HttpResponseRedirect(generate_url_for("accounts:register", query={
+                "type" : "danger",
+                "content" : "Email is already taken",
+                'username' : username,
+                'email' : email
+            }))
+
 
         if password != confirm_password:
 
