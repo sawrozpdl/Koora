@@ -68,20 +68,13 @@
                             <a class="dropdown-item" href="{% url 'user:settings' %}">Settings</a>
                             <div class="dropdown-divider"></div>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="darkSwitch" />
+                                <input type="checkbox" class="custom-control-input" id="darkSwitch">
                                 <label class="custom-control-label ml-3" for="darkSwitch">Dark Mode</label>
                                 </div>
                                 <a class="dropdown-item" href="{% url 'accounts:logout' %}">Log Out</a>
                             </div>
                             {% else %}
-                            <a
-                                href="#"
-                                class="nav-link dropdown-toggle"
-                                id="navbarDropdown"
-                                role="button"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
+                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-user"></i>
                                     <span class="ml-1">Account</span>
                             </a>
@@ -137,20 +130,10 @@
                     {% block midcontent %}
 
                     <div class="row justify-content-center warm-flame-gradient color-block mb-3 mx-auto z-depth-1-half">
-                        <form
-                            class="card card-sm bg-white"
-                            style="border:none;width:85%"
-                            action="{% url 'articles:list' %}"
-                            method="get">
+                        <form class="card card-sm bg-white" style="border:none;width:85%" action="{% url 'articles:list' %}" method="get">
                             <div class="row no-gutters align-items-center">
                                 <div class="col">
-                                    <input
-                                        name="searchQuery"
-                                        class="form-control form-control-lg form-control-borderless"
-                                        type="text"
-                                        placeholder="Search topics or keywords"
-                                        required
-                                    />
+                                    <input name="searchQuery" class="form-control form-control-lg form-control-borderless" type="text" placeholder="Search topics or keywords" required/>
                                 </div>
                                 <div class="col-auto">
                                     <button class="btn btn-lg btn-success ml-2" type="submit">
@@ -186,9 +169,7 @@
 
             {% endblock content %}
         </div>
-        </div>
-
-        {% block footer %}
+                {% block footer %}
         <div class="page-footer navbar navbar-expand-lg navbar-light bg-light">
             <div class="container footer-copyright py-1 d-flex justify-content-between">
                 <span class="lead">Copyright 2020 Koora</span>
@@ -197,6 +178,8 @@
         </div>
         {% endblock footer %}
         </div>
+
+
 
         <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"

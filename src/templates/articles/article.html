@@ -60,7 +60,7 @@
                         {% endif %}
 
                         {% if article.image_url %}
-                            <a class="dropdown-item" href="{{ article.image_url}}" disabled={{}}>Download</a>
+                            <a class="dropdown-item" href="{{ article.image_url}}">Download</a>
                         {% endif %}
 
                         {% if article.user.username != request.user.username %}
