@@ -11,21 +11,18 @@
 
   <div class="page-section container">
 
-                <!-- grid row -->
                 <div class="row">
-                  <!-- grid column -->
                   <div class="col-lg-2">
-                    <!-- .card -->
                     <div class="card card-fluid">
-                      <h6 class="card-header"> Settings </h6><!-- .nav -->
+                      <h6 class="card-header"> Settings </h6>
                       <nav class="nav nav-tabs flex-column border-0">
                         <a id="profile_update" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true" class="nav-link active">Profile</a>
                         <a id="account_update" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true"class="nav-link">Account</a>
                         <a id="password_update" data-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="true"class="nav-link">Password</a>
                         <a id="billing_update" data-toggle="tab" href="#premium" role="tab" aria-controls="premium" aria-selected="true"class="nav-link">Billing</a>
-                      </nav><!-- /.nav -->
-                    </div><!-- /.card -->
-                  </div><!-- /grid column -->
+                      </nav>
+                    </div>
+                  </div>
                   <div class="tab-content col-lg-10" id="myTabContent">
 
 
@@ -33,12 +30,9 @@
                     <!-- Profile -->
 
                     <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                      <!-- .card -->
                       <div class="card card-fluid">
-                        <h6 class="card-header"> Public Profile </h6><!-- .card-body -->
+                        <h6 class="card-header"> Public Profile </h6>
                         <div class="card-body">
-                          <!-- .media -->
-                          <!-- form -->
                           <form action="{% url 'user:settings' %}" method="post" enctype="multipart/form-data">
 
                             {% csrf_token %}
@@ -49,47 +43,44 @@
                               <div class="fileinput-button-label">{% if perms.user.can_upload_profile_picture %} Change photo{% else %} Need Premium{% endif %}</div>
                                 <img src="{% if request.user.profile.avatar_url %}{{ request.user.profile.avatar_url }}{% else %}https://robohash.org/{{request.user.username}}?size=100x100&&bgset=bg1{% endif %}" class="profile rounded-circle" /> {{ request.user.username }}
                               <input id="fileupload-avatar" type="file" name="avatar_image"{% if not perms.user.can_upload_profile_picture %} disabled{% endif %}>
-                            </div><!-- /avatar -->
-                            <!-- .media-body -->
+                            </div>
                             <div class="media-body pl-3">
                               <h3 class="strong">{{request.user.username}}</h3>
                                 <h6 class="text-muted">Click the current avatar to change your photo. </h6>
                               {% if not perms.user.can_upload_profile_picture %}
                                 <h6 class="card-subtitle text-danger mt-2">You need to be a premium member to upload your custom profile picture </h6>
                               {% endif %}
-                            </div><!-- /.media-body -->
-                          </div><!-- /.media -->
+                            </div>
+                          </div>
 
 
 
                             <div class="form-row">
-                              <!-- form column -->
-                              <label for="input02" class="col-md-3">Intro</label> <!-- /form column -->
-                              <!-- form column -->
+                              <label for="input02" class="col-md-3">Intro</label>
                               <div class="col-md-9 mb-3">
                                 <input type="text" name="intro" class="form-control" placeholder="Write down a one liner that represents you" id="input02" value="{{request.user.profile.intro}}">
                                 <small class="text-warning">Appears on your profile page.</small>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
-                            <!-- form row -->
+                              </div>
+                            </div>
+
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input03" class="col-md-3">Bio</label> <!-- /form column -->
+                              <label for="input03" class="col-md-3">Bio</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <textarea class="form-control" name="bio" placeholder="Say something about yourself" id="input03">{{request.user.profile.bio}}</textarea>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
+                              </div>
+                            </div>
 
 
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input003" class="col-md-3">Interests</label> <!-- /form column -->
+                              <label for="input003" class="col-md-3">Interests</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <textarea class="form-control" name="interests" placeholder="Add interests seperated by commas e.g. food, music, ..." id="input003">{{request.user.profile.interests_string}}</textarea>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
+                              </div>
+                            </div>
 
 
                             <div class="form-row">
@@ -100,18 +91,18 @@
                             </div>
 
 
-                            <!-- form row -->
+
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input04" class="col-md-3">Privacy</label> <!-- /form column -->
+                              <label for="input04" class="col-md-3">Privacy</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <div class="custom-control custom-checkbox">
                                   <input type="checkbox" name="is_private" value="yep" id="input04"{% if not perms.user.can_make_profile_private %} disabled{% endif %}{% if request.user.profile.is_private %} checked{% endif %}>
                                   <label for="input04">Make my profile Private</label>
                                 </div>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
+                              </div>
+                            </div>
                             <hr>
                             <!-- .form-actions -->
                             <div class="form-actions">
@@ -123,7 +114,7 @@
                       <!-- .card -->
                       <div class="card card-fluid">
                         <h6 class="card-header"> Social Networks </h6>
-                        
+
                         <!-- form -->
                         <form action="{% url 'user:settings' %}" method="post">
                           {% csrf_token %}
@@ -141,20 +132,20 @@
                                 <input type="text" class="form-control" name = "reddit_username" value = "{{request.user.profile.social.reddit_username}}" id="reddit" placeholder="Reddit Username">
                               </div><!-- /.list-group-item-body -->
                             </div><!-- /.list-group-item -->
-      
+
                             <div class="list-group-item d-flex justify-content-start">
-      
+
                               <div class="list-group-item-figure">
                                 <div class="tile tile-md bg-facebook">
                                   <i class="fa fa-facebook"></i>
                                 </div>
                               </div>
-      
+
                               <div class="list-group-item-body">
                                 <input type="text" class="form-control" name = "facebook_username" value = "{{request.user.profile.social.facebook_username}}" id="facebook" placeholder="Facebook Username">
                               </div><!-- /.list-group-item-body -->
                             </div><!-- /.list-group-item -->
-      
+
                             <div class="list-group-item d-flex justify-content-start">
 
                               <div class="list-group-item-figure">
@@ -162,12 +153,12 @@
                                   <i class="fa fa-linkedin"></i>
                                 </div>
                               </div>
-      
+
                               <div class="list-group-item-body">
                                 <input type="text" class="form-control" name = "linkedin_username" value = "{{request.user.profile.social.linkedin_username}}" id="linkedin" placeholder="Linkedin Username">
                               </div><!-- /.list-group-item-body -->
                             </div><!-- /.list-group-item -->
-      
+
                             <div class="list-group-item d-flex justify-content-start">
 
                               <div class="list-group-item-figure">
@@ -188,7 +179,7 @@
                                   <i class="fa fa-github"></i>
                                 </div>
                               </div>
-      
+
                               <div class="list-group-item-body">
                                 <input type="text" class="form-control" name = "github_username" value = "{{request.user.profile.social.github_username}}" id="github" placeholder="Github Username">
                               </div><!-- /.list-group-item-body -->
@@ -217,19 +208,19 @@
                           <!-- form -->
                           <form action="{% url 'user:settings' %}" method="post">
                             {% csrf_token %}
-                            <!-- form row -->
+
                             <div class="form-row">
                               <!-- form column -->
                               <div class="col-md-6 mb-3">
                                 <label for="input01">First Name</label>
                                 <input type="text" class="form-control" id="input01" name="first_name" placeholder="first name" value="{{request.user.first_name}}" required>
-                              </div><!-- /form column -->
+                              </div>
                               <!-- form column -->
                               <div class="col-md-6 mb-3">
                                 <label for="input02">Last Name</label>
                                 <input type="text" class="form-control" id="input02" name="last_name" placeholder="last name" value="{{request.user.last_name}}" required>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
+                              </div>
+                            </div>
                             <!-- .form-group -->
                             <div class="form-group">
                               <label for="input03">Email</label>
@@ -302,25 +293,25 @@
                             {% csrf_token %}
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input01" class="col-md-3">First Name</label> <!-- /form column -->
+                              <label for="input01" class="col-md-3">First Name</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <input type="text" placeholder="first name" class="form-control" id="input01" name="first_name" value="{{request.user.first_name}}" required>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
-                            <!-- form row -->
+                              </div>
+                            </div>
+
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input02" class="col-md-3">Last Name</label> <!-- /form column -->
+                              <label for="input02" class="col-md-3">Last Name</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <input type="text" placeholder="last name" class="form-control" id="input02" name="last_name" value="{{request.user.last_name}}" required>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
-                            <!-- form row -->
+                              </div>
+                            </div>
+
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input03" class="col-md-3">Country</label> <!-- /form column -->
+                              <label for="input03" class="col-md-3">Country</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <select id="input03" name = "country" class="custom-select">
@@ -329,49 +320,49 @@
                                     <option value = "{{ key }}"{% if request.user.profile.location.country == key %} selected{% endif %}>{{ value }}</option>
                                   {% endfor %}
                                 </select>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
-                            <!-- form row -->
+                              </div>
+                            </div>
+
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input04" class="col-md-3">Address</label> <!-- /form column -->
+                              <label for="input04" class="col-md-3">Address</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <input type="text" placeholder="address" class="form-control" id="input04" name="address" value="{{request.user.profile.location.address}}" required>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
-                            <!-- form row -->
+                              </div>
+                            </div>
+
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input06" class="col-md-3">City</label> <!-- /form column -->
+                              <label for="input06" class="col-md-3">City</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <input type="text" placeholder="city" class="form-control" id="input06" name="city" value="{{request.user.profile.location.city}}" required>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
-                            <!-- form row -->
+                              </div>
+                            </div>
+
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input07" class="col-md-3">Province / Region</label> <!-- /form column -->
+                              <label for="input07" class="col-md-3">Province / Region</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <input type="text" placeholder="province" class="form-control" id="input07" name="province" value="{{request.user.profile.location.province}}" required>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
-                            <!-- form row -->
+                              </div>
+                            </div>
+
                             <div class="form-row">
                               <!-- form column -->
-                              <label for="input08" class="col-md-3">Zip / Postal Code</label> <!-- /form column -->
+                              <label for="input08" class="col-md-3">Zip / Postal Code</label>
                               <!-- form column -->
                               <div class="col-md-9 mb-3">
                                 <input type="number" class="form-control" placeholder="postal code" id="input08" name="zip_code" value="{{request.user.profile.location.zip_code}}" required>
-                              </div><!-- /form column -->
-                            </div><!-- /form row -->
+                              </div>
+                            </div>
                             <hr class="my-4">
                             <h4 class="card-title"> Payment </h4><!-- .custom-control -->
                             <div class="mb-2">
                               <div>
-                                <!-- form row -->
+
                                 <div class="form-row">
                                   <!-- form col -->
                                   <div class="col-md-6">
@@ -391,8 +382,8 @@
                                       </div>
                                     </div>
                                   </div><!-- /form col -->
-                                </div><!-- /form row -->
-                                <!-- form row -->
+                                </div>
+
                                 <div class="form-row">
                                   <!-- form col -->
                                   <div class="col-md-3">
@@ -414,7 +405,7 @@
                                     </div>
                                   </div><!-- /form col -->
                                   <!-- form col -->
-                                </div><!-- /form row -->
+                                </div>
                                 <hr>
                                 <input type="password" class="form-control mr-3" id="input06" name="password" placeholder="Enter Current Password" required>
                               </div><!-- /.custom-control-hint -->

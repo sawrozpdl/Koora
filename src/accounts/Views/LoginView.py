@@ -21,8 +21,11 @@ class LoginView(View):
 
             message = get_message_or_default(request, {})
 
+            buffer = request.GET.dict()
+
             return HttpResponse(loader.get_template("accounts/login.html").render({
-                'message' : message
+                'message' : message,
+                'buffer' : buffer
             }, request))
 
 
@@ -32,14 +35,24 @@ class LoginView(View):
         username=request.POST['username']
         password=request.POST['password']
 
-        user = authenticate(username=username, password=password)
+        user = None
 
-        if user:
-            login(request,user)
+        try:
+            user = User.objects.get(username=username)
+        except:
+            try:
+                user = User.objects.get(email=username)
+            except:
+                pass
+
+
+        if user and user.check_password(password):
+            login(request,user, backend='django.contrib.auth.backends.ModelBackend')
             return HttpResponseRedirect(generate_url_for('home'))
 
         else:
             return HttpResponseRedirect(generate_url_for("accounts:login", query={
                 "type" : "danger",
-                "content" : "Username or Password is not correct"
+                "content" : "Username or Password is not correct",
+                "username" : username
             }))
